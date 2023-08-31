@@ -1,0 +1,5 @@
+Flask==2.0.1
+google-or-tools==8.3
+
+
+# You can then use pip install -r requirements.txt to install all these dependencies at once. 
