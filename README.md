@@ -24,6 +24,26 @@ The Explanatory Model includes the following key features:
 - Educational Drag-and-Drop Optimization Game
 - etc.
 
+## Project Structure
+
+This repository is organized as follows:
+
+- **backend**: This directory contains all the server-side logic.
+    - **api**: Here, you'll find all the API endpoints.
+  
+- **frontend**: All client-side code is located here.
+
+- **cop_model**: This directory contains everything related to the Constraint Optimization Problem (COP) model.
+
+- **in_memory_data**: This folder serves as the in-memory data store for quick data access and manipulation.
+
+- **reference_code**: This directory stores reference code which is not in active use but is kept for archival or reference purposes. The implementation was done by Sebastian Storcher.
+
+- **README.md**: Provides a comprehensive overview detailing how to navigate through the project.
+
+- **requirements.txt**: Lists all the Python dependencies required for this project.
+
+
 ## How to Run Locally
 
 ### Requirements
