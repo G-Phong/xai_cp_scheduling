@@ -1,4 +1,4 @@
-# You can then use pip install -r requirements.txt to install all these dependencies at once. 
+# Use "pip install -r requirements.txt" to install all these dependencies at once
 absl-py==1.4.0
 blinker==1.6.2
 click==8.1.7
