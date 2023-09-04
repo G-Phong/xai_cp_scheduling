@@ -1,0 +1,30 @@
+.week-view {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th,
+  td {
+    border: 1px solid #000000;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #8d6f6f;
+    color: #333; /* Dunkle Textfarbe für bessere Lesbarkeit */
+  }
+  
+  /* Bunte Farben für Datenzellen */
+  td {
+    background-color: #eab1e4; /* Hellrot */
+    color: #000000; /* Weiße Textfarbe */
+  }
+  
+  /* Weitere Styling-Anpassungen hier */
+  
