@@ -20,9 +20,9 @@ function WeekView() {
       });
   }, []);
 
-  //Hier wird der JSX-Code zurückgegeben, der gerendert wird, wenn die Komponente aufgerufen wird.
-  // Eine Tabelle wird erstellt, in der die Schichtplan-Daten aus shiftPlanData angezeigt werden.
-   return (
+/// Hier wird der JSX-Code zurückgegeben, der gerendert wird, wenn die Komponente aufgerufen wird.
+// Eine Tabelle wird erstellt, in der die Schichtplan-Daten aus shiftPlanData angezeigt werden.
+return (
     <div>
       <h2>Wochenansicht des Schichtplans</h2>
       <table>
@@ -41,33 +41,35 @@ function WeekView() {
             <td>Frühschicht</td>
             {Object.keys(shiftPlanData).map(day => (
               <td key={day + "-Frühschicht"}>
-                {shiftPlanData[day]["Frühschicht"].map(shift => (
-                  <div key={shift.employee}>
-                    {shift.employee} - {shift.job}
+                {shiftPlanData[day]["Frühschicht"].map((shift, index) => (
+                  <div key={day + "-Frühschicht" + index} className="cell">
+                    <div className="subcell">{shift.employee}</div>
+                    <div className="subcell">{shift.job}</div>
                   </div>
                 ))}
               </td>
             ))}
-            {/* Weitere Spalten für Wochentage hinzufügen */}
           </tr>
           <tr>
             <td>Spätschicht</td>
             {Object.keys(shiftPlanData).map(day => (
               <td key={day + "-Spätschicht"}>
-                {shiftPlanData[day]["Spätschicht"].map(shift => (
-                  <div key={shift.employee}>
-                    {shift.employee} - {shift.job}
+                {shiftPlanData[day]["Spätschicht"].map((shift, index) => (
+                  <div key={day + "-Spätschicht" + index} className="cell">
+                    <div className="subcell">{shift.employee}</div>
+                    <div className="subcell">{shift.job}</div>
                   </div>
                 ))}
               </td>
             ))}
-            {/* Weitere Spalten für Wochentage hinzufügen */}
           </tr>
-          {/* Weitere Zeilen für Mitarbeiter und Jobs einfügen */}
         </tbody>
       </table>
     </div>
   );
+
+  
+  
 
 
 }

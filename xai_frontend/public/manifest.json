@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "XAI App",
+  "name": "Shift Scheduling - Explanatory Model",
   "icons": [
     {
       "src": "favicon.ico",

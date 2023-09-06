@@ -1,30 +1,46 @@
+/* Hier die neuen CSS-Klassen hinzufügen */
+
+/* Stil für die Hauptansicht der Woche */
 .week-view {
-    width: 100%;
-    overflow-x: auto;
-  }
-  
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  th,
-  td {
-    border: 1px solid #000000;
-    padding: 8px;
-    text-align: center;
-  }
-  
-  th {
-    background-color: #8d6f6f;
-    color: #333; /* Dunkle Textfarbe für bessere Lesbarkeit */
-  }
-  
-  /* Bunte Farben für Datenzellen */
-  td {
-    background-color: #eab1e4; /* Hellrot */
-    color: #000000; /* Weiße Textfarbe */
-  }
-  
-  /* Weitere Styling-Anpassungen hier */
-  
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Stil für die Tabelle */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* Stil für Tabellenkopf und Zellen */
+th,
+td {
+  border: 1px solid #000000;
+  padding: 8px;
+  text-align: center;
+}
+
+/* Stil für Tabellenkopf */
+th {
+  background-color: #8d6f6f;
+  color: #333; /* Dunkle Textfarbe für bessere Lesbarkeit */
+}
+
+/* Stil für Datenzellen */
+td {
+  background-color: #eab1e4; /* Hellrot */
+  color: #000000; /* Schwarze Textfarbe */
+}
+
+/* Neue CSS-Klassen für die Unterzellen */
+.cell {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #000000;
+  padding: 8px;
+  text-align: center;
+}
+
+.subcell {
+  margin: 4px 0;
+}

@@ -9,16 +9,24 @@ import WeekView from './WeekView';
 // Hauptfunktionskomponente App
 function App() {
   const [anzahl, setAnzahl] = useState(0);
+  const [gesamtanzahl, setGesamtanzahl] = useState(0);
 
-  useEffect(() => {
+  const generateRandomNumber = () => {
     axios.get('http://localhost:5000/')
       .then(response => {
-        setAnzahl(response.data.anzahl); //Hier wird die empfangene Anzahl der Lösungen aus dem response-Objekt in den Zustand anzahl gespeichert. Die Daten sind in response.data.anzahl enthalten.
+        setAnzahl(response.data.anzahl);
+        setGesamtanzahl(prevGesamtanzahl => prevGesamtanzahl + 1); // Hier wird die Gesamtanzahl erhöht
       })
       .catch(error => {
         console.error("Es gab einen Fehler beim Abrufen der Daten: ", error);
       });
+  };
+
+  useEffect(() => {
+    setGesamtanzahl(0);
+    generateRandomNumber();
   }, []);
+ 
 
   return (
     /*
@@ -28,10 +36,12 @@ function App() {
      Der angezeigte Text enthält die Anzahl der Lösungen,
       die aus dem Zustand anzahl abgerufen wird.
     */
-    <div>
-      <h1>Anzahl der Lösungen (zufallsgeneriert): {anzahl}</h1>
+      <div className="App">
+      <h1>Zufallszahl (1 - 100): {anzahl}</h1>
+      <h2>Gesamtanzahl generierter Zufallszahlen: {gesamtanzahl}</h2>
+      <button onClick={generateRandomNumber}>Neue Zufallszahl generieren</button>
       <WeekView /> {/* TODO: Füge hier die WeekView-Komponente ein */}
-    </div>
+      </div>
   );
 }
 
