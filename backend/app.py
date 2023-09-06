@@ -2,9 +2,17 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 
 import random
+#import sys
+#sys.path.append('C:\\TUM_MASTER\MASTERARBEIT_FML\\04_Python_Code\\xai_cp_scheduling')
 
-#from reference_code.My_CP_Sat_Solver_Shifts_FINAL_5E_3J import solve_shifts
-from My_CP_Sat_Solver_Shifts_FINAL_5E_3J import solve_shifts
+
+#COP-Solver Library einfügen aus anderem Ordner
+#from ShiftOptimizer import ShiftOptimizer
+from cop_model.ShiftOptimizer import ShiftOptimizer
+
+
+# Verwenden Sie ShiftOptimizer in Ihrer Anwendung
+
 
 # Eine Flask-Anwendung wird mit dem Namen der Hauptdatei erstellt (__name__).
 # Dies erstellt eine Instanz der Flask-App
@@ -13,6 +21,13 @@ app = Flask(__name__)
 # Das CORS-Modul wird auf die Flask-Anwendung angewendet, um Cross-Origin-Anfragen zu ermöglichen. 
 # Dadurch können Anfragen von anderen Domains auf die API-Routen zugreifen.
 CORS(app)
+
+# Instanz von ShiftOptimizer mit Parametern
+COPoptimizer = ShiftOptimizer(num_employees=5,
+                                num_jobs=3,
+                                num_qualifications=3,
+                                num_days=5,
+                                num_shifts_per_day=2)
 
 # Mit @app.route('/') wird eine Route definiert, die auf die Wurzel-URL zugreift. 
 # Das methods=['GET'] gibt an, dass diese Route nur auf HTTP GET-Anfragen reagiert.
@@ -27,6 +42,7 @@ def anzahl_loesungen():
 # Hier sollen die Daten für den Wochenplan ans Frontend gesendet werden.
 @app.route('/schedule', methods=['GET'])
 def get_schedule():
+
     # TODO: Schichtplandaten sollen im JSON-Format übertragen werden
     schedule_JSON = {
 
@@ -60,42 +76,13 @@ def get_schedule():
                 }
             ]
         },
-        "Dienstag": {
-            "Frühschicht": [
-                {
-                    "employee": "Employee 0",
-                    "job": "Job 0"
-                },
-                {
-                    "employee": "Employee 2",
-                    "job": "Job 2"
-                },
-                {
-                    "employee": "Employee 4",
-                    "job": "Job 1"
-                }
-            ],
-            "Spätschicht": [
-                {
-                    "employee": "Employee 1",
-                    "job": "Job 2"
-                },
-                {
-                    "employee": "Employee 3",
-                    "job": "Job 0"
-                },
-                {
-                    "employee": "Employee 4",
-                    "job": "Job 1"
-                }
-            ]
-        },
-        # Weitere Tage hinzufügen
     }
 
-    schedule_data_COP = solve_shifts()
+    schedule_data = COPoptimizer.solve_shifts()
+    print("Schedule")
+    print(schedule_data)
 
-    return jsonify(schedule_data_COP)
+    return jsonify(schedule_data)
 
 
 if __name__ == '__main__':

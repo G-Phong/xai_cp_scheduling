@@ -356,24 +356,16 @@ def solve_shifts_withInput(shifts_solution, solver, schedule, employees, jobs, n
 
 def initialize_shifts_model():
     # Hier initialisieren Sie alle benötigten Daten und Einstellungen für Ihr COP-Modell
-    shifts_solution = ...
+
+    """ shifts_solution = ...
     solver = ...
     schedule = ...
     employees = ...
     jobs = ...
     number_shifts_per_day = ...
-    number_shifts_per_employee = ...
-
-    shifts
-    solver
-    schedule
-    employees
-    jobs
-    number_shifts_per_day, number_shifts_per_employee
-    
-
-
-    return shifts_solution, solver, schedule, employees, jobs, number_shifts_per_day, number_shifts_per_employee
+    number_shifts_per_employee = ... """
+ 
+    pass
 
 def divisible(currentschedule, numbershifts, counter_day):
     if currentschedule % numbershifts == 0:

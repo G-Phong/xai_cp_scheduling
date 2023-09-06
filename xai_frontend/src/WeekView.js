@@ -43,8 +43,8 @@ return (
               <td key={day + "-Frühschicht"}>
                 {shiftPlanData[day]["Frühschicht"].map((shift, index) => (
                   <div key={day + "-Frühschicht" + index} className="cell">
-                    <div className="subcell">{shift.employee}</div>
-                    <div className="subcell">{shift.job}</div>
+                    <div className="subcell">{"Employee-ID: " + shift.employee}</div>
+                    <div className="subcell">{"Job-ID: " + shift.job}</div>
                   </div>
                 ))}
               </td>
@@ -56,8 +56,8 @@ return (
               <td key={day + "-Spätschicht"}>
                 {shiftPlanData[day]["Spätschicht"].map((shift, index) => (
                   <div key={day + "-Spätschicht" + index} className="cell">
-                    <div className="subcell">{shift.employee}</div>
-                    <div className="subcell">{shift.job}</div>
+                    <div className="subcell">{"Employee-ID: " + shift.employee}</div>
+                    <div className="subcell">{"Job-ID: " +shift.job}</div>
                   </div>
                 ))}
               </td>
