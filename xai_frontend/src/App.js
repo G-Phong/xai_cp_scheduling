@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 // Wochenansicht
-import WeekView from "./WeekView";
+import WeekView from "./components/WeekView";
 
 // Navigationsleiste NavBar
-import Navbar from "./Navbar.js";
+import Navbar from "./components/Navbar.js";
 
 //App.css Stylesheet
 import "./App.css";

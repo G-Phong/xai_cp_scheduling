@@ -5,14 +5,9 @@ import random
 #import sys
 #sys.path.append('C:\\TUM_MASTER\MASTERARBEIT_FML\\04_Python_Code\\xai_cp_scheduling')
 
-
 #COP-Solver Library einfügen aus anderem Ordner
 #from ShiftOptimizer import ShiftOptimizer
 from cop_model.ShiftOptimizer import ShiftOptimizer
-
-
-# Verwenden Sie ShiftOptimizer in Ihrer Anwendung
-
 
 # Eine Flask-Anwendung wird mit dem Namen der Hauptdatei erstellt (__name__).
 # Dies erstellt eine Instanz der Flask-App
