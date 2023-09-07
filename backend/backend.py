@@ -111,5 +111,43 @@ def get_schedule():
     # Dies habe ich durch app.json.sort_keys = False jedoch global ausgeschaltet 
     return jsonify(response_data) 
 
+@app.route('/faq', methods=['GET'])
+def get_FAQ():
+
+    #TODO: FAQ senden
+    #FAQ elements to be returned
+    data_FAQ = "to be done"
+
+    #Beispiel-FAQ
+    data_FAQ = [
+    {
+        "question": "Frage 1",
+        "answer": "Antwort auf Frage 1."
+    },
+    {
+        "question": "Frage 2",
+        "answer": "Antwort auf Frage 2."
+    },
+    ]
+
+
+    """ 
+    Erstelle eine Flask-API-Route, die die FAQ-Daten als JSON zurückgibt.
+
+    Erstelle eine React-Komponente, die die FAQ-Daten von der Flask-API abruft.
+
+    Render die FAQ-Daten in deiner React-Komponente und implementiere die Klappfunktionen.
+
+    Verwende CSS, um das Erscheinungsbild der FAQ-Tabelle anzupassen.
+
+    Stelle sicher, dass die Navigation zur FAQ-Seite in deinem React-Frontend ordnungsgemäß funktioniert.
+
+    Bereite deine Flask-Anwendung und dein React-Frontend für die Bereitstellung vor, damit sie online verfügbar sind.
+    
+    """
+
+    return jsonify(data_FAQ)
+
+
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
