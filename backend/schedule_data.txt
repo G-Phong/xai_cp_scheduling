@@ -1,0 +1,152 @@
+{
+    "Montag": {
+        "Fr\u00fchschicht": [
+            {
+                "employee": 1,
+                "job": 1
+            },
+            {
+                "employee": 2,
+                "job": 0
+            },
+            {
+                "employee": 4,
+                "job": 2
+            }
+        ],
+        "Sp\u00e4tschicht": [
+            {
+                "employee": 1,
+                "job": 1
+            },
+            {
+                "employee": 2,
+                "job": 2
+            },
+            {
+                "employee": 4,
+                "job": 0
+            }
+        ]
+    },
+    "Dienstag": {
+        "Fr\u00fchschicht": [
+            {
+                "employee": 0,
+                "job": 0
+            },
+            {
+                "employee": 2,
+                "job": 2
+            },
+            {
+                "employee": 4,
+                "job": 1
+            }
+        ],
+        "Sp\u00e4tschicht": [
+            {
+                "employee": 0,
+                "job": 0
+            },
+            {
+                "employee": 2,
+                "job": 2
+            },
+            {
+                "employee": 4,
+                "job": 1
+            }
+        ]
+    },
+    "Mittwoch": {
+        "Fr\u00fchschicht": [
+            {
+                "employee": 0,
+                "job": 0
+            },
+            {
+                "employee": 1,
+                "job": 2
+            },
+            {
+                "employee": 4,
+                "job": 1
+            }
+        ],
+        "Sp\u00e4tschicht": [
+            {
+                "employee": 1,
+                "job": 2
+            },
+            {
+                "employee": 2,
+                "job": 0
+            },
+            {
+                "employee": 4,
+                "job": 1
+            }
+        ]
+    },
+    "Donnerstag": {
+        "Fr\u00fchschicht": [
+            {
+                "employee": 0,
+                "job": 1
+            },
+            {
+                "employee": 2,
+                "job": 0
+            },
+            {
+                "employee": 4,
+                "job": 2
+            }
+        ],
+        "Sp\u00e4tschicht": [
+            {
+                "employee": 1,
+                "job": 2
+            },
+            {
+                "employee": 3,
+                "job": 0
+            },
+            {
+                "employee": 4,
+                "job": 1
+            }
+        ]
+    },
+    "Freitag": {
+        "Fr\u00fchschicht": [
+            {
+                "employee": 1,
+                "job": 1
+            },
+            {
+                "employee": 3,
+                "job": 0
+            },
+            {
+                "employee": 4,
+                "job": 2
+            }
+        ],
+        "Sp\u00e4tschicht": [
+            {
+                "employee": 0,
+                "job": 1
+            },
+            {
+                "employee": 3,
+                "job": 0
+            },
+            {
+                "employee": 4,
+                "job": 2
+            }
+        ]
+    }
+}

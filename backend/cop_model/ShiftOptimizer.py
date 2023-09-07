@@ -234,7 +234,8 @@ class ShiftOptimizer:
             schedule_data[current_weekday] = day_data
 
         print("Schedule Data successfully generated!")
-        
+        print(schedule_data)
+
         return schedule_data
 
     # TODO: Muss das eine Instanzmethode sein mit "self"? 
