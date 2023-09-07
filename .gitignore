@@ -1,1 +1,21 @@
-xai_scheduling/
+# Python Virtual Environment
+xai_venv/
+
+# Node.js Modules
+node_modules/
+
+# Compiled JavaScript
+build/
+dist/
+
+# Log-Dateien
+*.log
+
+# Umgebungskonfigurationsdateien (z.B., .env)
+.env
+
+# Visual Studio Code-Dateien
+.vscode/
+
+# Lokale Konfigurationsdateien
+*.local
