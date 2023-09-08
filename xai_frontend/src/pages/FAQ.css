@@ -1,0 +1,42 @@
+/* FAQ.css */
+
+/* Styles for the FAQ header */
+faq-h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #007bff; /* Blue color for the title */
+}
+
+/* Styles for the accordion items */
+.accordion-item {
+  margin-bottom: 20px;
+  border: 1px solid #ddd; /* Gray border for each item */
+  border-radius: 4px;
+}
+
+/* Styles for the accordion button */
+.accordion-button {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #f5f5f5; /* Light gray background */
+  color: #333; /* Dark gray color for text */
+  border-radius: 4px 4px 0 0; /* Rounded top corners */
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Styles for the active accordion button */
+.accordion-button.active {
+  background-color: #007bff; /* Blue background for active item */
+  color: #fff; /* White color for text in active item */
+}
+
+/* Styles for the accordion content */
+.accordion-content {
+  padding: 10px 20px;
+  border-top: 1px solid #ddd; /* Gray border for content top */
+  border-radius: 0 0 4px 4px; /* Rounded bottom corners */
+  background-color: #fff; /* White background */
+}

@@ -1,0 +1,52 @@
+/* Home.css */
+
+
+/* Stil für die Hauptüberschrift (H1) */
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #007bff; /* Blaue Farbe für die Überschrift */
+  text-align: left; /* Text linksbündig ausrichten */
+}
+
+/* Stil für die Überschrift der Abschnitte (H2) */
+home-h2 {
+  font-size: 24px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #007bff; /* Blaue Farbe für Überschriften */
+  text-align: left; /* Text linksbündig ausrichten */
+}
+
+
+/* Style for the regular text (P) */
+p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  color: #333; /* Dark gray color for text */
+}
+
+/* Style for bullet points in key features */
+ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+/* Style for individual list items in key features */
+li {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #333; /* Dark gray color for text */
+}
+
+/* Style for links */
+a {
+  color: #007bff; /* Blue color for links */
+  text-decoration: underline;
+}
+
+/* Style for links on hover */
+a:hover {
+  text-decoration: none;
+}

@@ -39,54 +39,19 @@ COPoptimizer = ShiftOptimizer(num_employees=num_employees,
 # Das methods=['GET'] gibt an, dass diese Route nur auf HTTP GET-Anfragen reagiert.
 @app.route('/', methods=['GET'])
 def anzahl_loesungen():
-    #Beispiel: Zufallszahl zurücksenden
-    # Generiere eine Zufallszahl zwischen 1 und 100
-    zufallszahl = random.randint(1, 100) 
-   
-    return jsonify({"anzahl": zufallszahl})
+    
+    #Redirect zu Home?   
+    return jsonify(None)
 
 # Hier sollen die Daten für den Wochenplan ans Frontend gesendet werden.
 @app.route('/schedule', methods=['GET'])
 def get_schedule():
 
     # Schichtplandaten sollen im JSON-Format übertragen werden
-    schedule_JSON = {
-
-        "Montag": {
-            "Frühschicht": [
-                {
-                    "employee": "Employee 1",
-                    "job": "Job 1"
-                },
-                {
-                    "employee": "Employee 2",
-                    "job": "Job 0"
-                },
-                {
-                    "employee": "Employee 4",
-                    "job": "Job 2"
-                }
-            ],
-            "Spätschicht": [
-                {
-                    "employee": "Employee 1",
-                    "job": "Job 1"
-                },
-                {
-                    "employee": "Employee 2",
-                    "job": "Job 2"
-                },
-                {
-                    "employee": "Employee 4",
-                    "job": "Job 0"
-                }
-            ]
-        },
-    }
-
     schedule_data = COPoptimizer.solve_shifts()
-    print("Schedule")
-    print(schedule_data)
+
+    #print("Schedule")
+    #print(schedule_data)
 
     """     # JSON-Daten in einen JSON-Text umwandeln
     schedule_json_text = json.dumps(schedule_data, indent=4) """
@@ -147,6 +112,25 @@ def get_FAQ():
     """
 
     return jsonify(data_FAQ)
+
+# Endpoint für die Datenabfrage in /home
+@app.route('/randomButton', methods=['GET'])
+def randomButton():
+    
+    #Beispiel: Zufallszahl zurücksenden
+    # Generiere eine Zufallszahl zwischen 1 und 100
+    zufallszahl = random.randint(1, 100) 
+   
+    return jsonify({"anzahl": zufallszahl})
+
+# Endpoint für die Datenabfrage in /home
+@app.route('/home', methods=['GET'])
+def get_home_data():
+    
+    #TODO: sinnvolle Daten
+    status = True
+   
+    return jsonify(status)
 
 
 if __name__ == '__main__':
