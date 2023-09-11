@@ -32,32 +32,20 @@ function WeekView() {
       });
   }, []);
 
-  /*   // Sortieren Sie die Wochentage in der gewünschten Reihenfolge
-  const sortedDays = Object.keys(shiftPlanData).sort((a, b) => {
-    const daysOfWeek = [
-      "Montag",
-      "Dienstag",
-      "Mittwoch",
-      "Donnerstag",
-      "Freitag",
-    ];
-    return daysOfWeek.indexOf(a) - daysOfWeek.indexOf(b);
-  }); */
-
   /// Hier wird der JSX-Code zurückgegeben, der gerendert wird, wenn die Komponente aufgerufen wird.
   // Eine Tabelle wird erstellt, in der die Schichtplan-Daten aus shiftPlanData angezeigt werden.
   return (
     <div>
-      <h2>Wochenansicht des Schichtplans</h2>
+      <h2>Weekview Work Schedule</h2>
       <table>
         <thead>
           <tr>
             <th></th>
-            <th>Montag</th>
-            <th>Dienstag</th>
-            <th>Mittwoch</th>
-            <th>Donnerstag</th>
-            <th>Freitag</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
           </tr>
         </thead>
         <tbody>
@@ -94,12 +82,12 @@ function WeekView() {
         </tbody>
       </table>
       <div className="container mt-4">
-        <h3>Statistik</h3>
+        <h3>Statistics</h3>
         <table className="table table-bordered table-statistics">
           <thead>
             <tr>
-              <th>Statistik</th>
-              <th>Wert</th>
+              <th>Statistics</th>
+              <th>Value</th>
             </tr>
           </thead>
           <tbody>
@@ -117,3 +105,5 @@ function WeekView() {
 }
 
 export default WeekView;
+
+

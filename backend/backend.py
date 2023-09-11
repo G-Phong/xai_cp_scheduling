@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 import random
@@ -75,6 +75,43 @@ def get_schedule():
     #ACHTUNG: jsonify() ändert die Reihenfolge der Keys alphabetisch per default
     # Dies habe ich durch app.json.sort_keys = False jedoch global ausgeschaltet 
     return jsonify(response_data) 
+
+# Ändere den bestehenden Endpoint, um Präferenzen zu akzeptieren und die Schichtplanung durchzuführen
+@app.route('/solve_shifts_what_if', methods=['POST'])
+def solve_shifts_endpoint():
+
+        # Empfange die Präferenzen und andere Daten vom Frontend
+        request_data = request.get_json()
+
+        # Extrahiere die Präferenzen aus den Daten
+        job1_preference = request_data.get("job1Preference")  
+        job2_preference = request_data.get("job2Preference")  
+        job3_preference = request_data.get("job3Preference")  
+        # Weitere Daten extrahieren, falls vorhanden
+
+        # Aktualisiere die Präferenzen im ShiftOptimizer-Objekt
+        COPoptimizer.update_preferences(job1_preference, job2_preference, job3_preference)
+
+        # Führe die Schichtplanung mit den neuen Präferenzen durch
+        schedule_data = COPoptimizer.solve_shifts()
+
+        # Die globalen Variablen als Teil der Antwort senden
+        response_data = {
+            "schedule_data": schedule_data,
+            "statistics": {
+                "num_employees": num_employees,
+                "num_jobs": num_jobs,
+                "num_qualifications": num_qualifications,
+                "num_days": num_days,
+                "num_shifts_per_day": num_shifts_per_day
+            }
+        }
+
+        print(response_data) #debug purpose
+
+        return jsonify(response_data)
+
+
 
 @app.route('/faq', methods=['GET'])
 def get_FAQ():

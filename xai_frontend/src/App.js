@@ -14,6 +14,7 @@ import Home from "./pages/Home.js"; // Home-Page
 import FAQ from "./pages/FAQ.js"; // FAQ-Page
 import RandomButton from "./pages/RandomButton.js"; // RandomButton-Page
 import Schedule from "./pages/Schedule.js"; // Schedule-Page
+import WhatIfAnalysis from "./pages/WhatIfAnalysis.js"; // What-If-Analysis-Page
 import Quiz from "./pages/Quiz.js"; // Quiz-Page
 import EduGame from "./pages/EduGame.js"; // EduGame-Page
 import AboutUs from "./pages/AboutUs.js"; // Schedule-Page
@@ -29,6 +30,7 @@ function App() {
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/schedule" element={<Schedule />} />
+          <Route path="/what-if" element={<WhatIfAnalysis />} />
           <Route path="/edugame" element={<EduGame />} />
           <Route path="/Lernquiz" element={<Quiz />} />
           <Route path="/faq" element={<FAQ />} />

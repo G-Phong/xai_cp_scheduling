@@ -11,6 +11,9 @@ export default function Navbar() {
                 <a href="Schedule">Schedule</a>
             </li>
             <li className="active">
+                <a href="what-if">What-If-Analysis</a>
+            </li>
+            <li className="active">
                 <a href="EduGame">EduGame</a>
             </li>
             <li className="active">

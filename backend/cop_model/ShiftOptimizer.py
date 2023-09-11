@@ -180,10 +180,22 @@ class ShiftOptimizer:
        self.num_total_shifts = num_days * num_shifts_per_day
        
 
-    def update_preferences(self):       
-       pass
-    
+    def update_preferences(self, job1_preference, job2_preference, job3_preference):
+        """
+        Aktualisiert die Job-Präferenzen im ShiftOptimizer-Objekt nur für die erste Zeile.
 
+        Args:
+            job1_preference (int): Präferenzwert für Job 1.
+            job2_preference (int): Präferenzwert für Job 2.
+            job3_preference (int): Präferenzwert für Job 3.
+        """
+        # Aktualisiere nur die erste Zeile (Index 0) der Präferenzen im employee_job_preference_matrix
+        self.employee_job_preference_matrix[0, :] = [job1_preference, job2_preference, job3_preference]
+
+        print("Solving with updated preferences for the first employee!")
+        return
+
+    
     def solve_shifts(self):
         # Lösen und Zeitmessung
 
