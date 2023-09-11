@@ -1,9 +1,17 @@
-import {useState} from 'react'
-import "./WeekView.css"; // CSS Stylesheet
+import { useState, useEffect } from "react";
+import "./WeekView2.css"; // CSS Stylesheet
 
 export default function WeekView2({ shiftData, changedShifts }) {
   // State-Hook für die hervorgehobenen Schichten
   const [highlightedShifts, setHighlightedShifts] = useState([]);
+
+  useEffect(() => {
+    // Wenn sich die geänderten Schichten ändern, setzen Sie den Zustand für hervorgehobene Schichten neu
+    setHighlightedShifts(changedShifts);
+  }, [changedShifts]);
+
+  console.log("Changed shifts: ");
+  console.log(changedShifts);
 
   // Extrahiere schedule_data und statistics aus shiftData
   const { schedule_data, statistics } = shiftData;
@@ -18,7 +26,9 @@ export default function WeekView2({ shiftData, changedShifts }) {
 
   return (
     <div>
-      <h2>Weekview Work Schedule</h2>
+      <h2>
+        Weekview Work Schedule (Optimal Solutions: {shiftData.solution_count})
+      </h2>
       <table>
         <thead>
           <tr>
@@ -28,6 +38,7 @@ export default function WeekView2({ shiftData, changedShifts }) {
             ))}
           </tr>
         </thead>
+
         <tbody>
           {shiftTypes.map((shiftType) => (
             <tr key={shiftType}>
@@ -35,7 +46,17 @@ export default function WeekView2({ shiftData, changedShifts }) {
               {weekdays.map((weekday) => (
                 <td key={weekday}>
                   {schedule_data[weekday][shiftType].map((shift, index) => (
-                    <div key={index} className="cell">
+                    <div
+                      key={index}
+                      className={`cell ${
+                        // Überprüfen Sie, ob diese Schicht hervorgehoben werden soll
+                        highlightedShifts.some((highlightedShift) =>
+                          isSameShift(shift, highlightedShift)
+                        )
+                          ? "highlighted-cell"
+                          : ""
+                      }`}
+                    >
                       <div className="subcell">
                         {"Employee-ID: " + shift.employee}
                       </div>
@@ -68,5 +89,22 @@ export default function WeekView2({ shiftData, changedShifts }) {
         </table>
       </div>
     </div>
+  );
+}
+
+// Funktion zum Überprüfen, ob zwei Schichten gleich sind
+function isSameShift(shift1, shift2) {
+
+console.log("isSameShift()");
+console.log(shift1 &&
+    shift2 &&
+    shift1.employee === shift2.employee &&
+    shift1.job === shift2.job);
+
+  return (
+    shift1 &&
+    shift2 &&
+    shift1.employee === shift2.employee &&
+    shift1.job === shift2.job
   );
 }

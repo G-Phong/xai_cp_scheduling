@@ -83,6 +83,9 @@ def solve_shifts_endpoint():
         # Empfange die Präferenzen und andere Daten vom Frontend
         request_data = request.get_json()
 
+        print("Request data aus endpoint:")
+        print(request_data)
+
         # Extrahiere die Präferenzen aus den Daten
         job1_preference = request_data.get("job1Preference")  
         job2_preference = request_data.get("job2Preference")  
@@ -92,12 +95,13 @@ def solve_shifts_endpoint():
         # Aktualisiere die Präferenzen im ShiftOptimizer-Objekt
         COPoptimizer.update_preferences(job1_preference, job2_preference, job3_preference)
 
-        # Führe die Schichtplanung mit den neuen Präferenzen durch
-        schedule_data = COPoptimizer.solve_shifts()
+        # Führe die Schichtplanung mit den neuen Präferenzen durch (Ein Tupel wird zurückgegeben!)
+        schedule_data, optimal_solution_count = COPoptimizer.solve_shifts()
 
         # Die globalen Variablen als Teil der Antwort senden
         response_data = {
             "schedule_data": schedule_data,
+            "solution_count": optimal_solution_count,
             "statistics": {
                 "num_employees": num_employees,
                 "num_jobs": num_jobs,
@@ -107,6 +111,7 @@ def solve_shifts_endpoint():
             }
         }
 
+        print("Response data with solution_count: ")
         print(response_data) #debug purpose
 
         return jsonify(response_data)

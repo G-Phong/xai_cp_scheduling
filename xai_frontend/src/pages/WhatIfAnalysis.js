@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import WeekView2 from "../components/WeekView2.js";
 import axios from "axios"; // JavaScript Library für HTTP-Anfragen
 
@@ -6,7 +6,7 @@ export default function WhatIfAnalysis() {
   // Zustandsvariable für die Liste der Präferenzen
   const [preferencesList, setPreferencesList] = useState([100, 0, 0]);
   // Zustandsvariable für den aktuellen Wert
-  const [currentValueList, setCurrentValueList] = useState([100, 0, 0]);
+  const [currentValueList, setCurrentValueList] = useState([50, 20, 15]);
   // Zustandsvariable für den aktuellen Wert
   const [solutionData, setSolutionData] = useState(
     {       "schedule_data": {
@@ -40,127 +40,8 @@ export default function WhatIfAnalysis() {
               }
             ]
           },
-          "Dienstag": {
-            "Fr\u00fchschicht": [
-              {
-                "employee": 0,
-                "job": 0
-              },
-              {
-                "employee": 2,
-                "job": 2
-              },
-              {
-                "employee": 4,
-                "job": 1
-              }
-            ],
-            "Sp\u00e4tschicht": [
-              {
-                "employee": 0,
-                "job": 0
-              },
-              {
-                "employee": 2,
-                "job": 2
-              },
-              {
-                "employee": 4,
-                "job": 1
-              }
-            ]
-          },
-          "Mittwoch": {
-            "Fr\u00fchschicht": [
-              {
-                "employee": 0,
-                "job": 0
-              },
-              {
-                "employee": 1,
-                "job": 2
-              },
-              {
-                "employee": 4,
-                "job": 1
-              }
-            ],
-            "Sp\u00e4tschicht": [
-              {
-                "employee": 1,
-                "job": 2
-              },
-              {
-                "employee": 2,
-                "job": 0
-              },
-              {
-                "employee": 4,
-                "job": 1
-              }
-            ]
-          },
-          "Donnerstag": {
-            "Fr\u00fchschicht": [
-              {
-                "employee": 0,
-                "job": 1
-              },
-              {
-                "employee": 2,
-                "job": 0
-              },
-              {
-                "employee": 4,
-                "job": 2
-              }
-            ],
-            "Sp\u00e4tschicht": [
-              {
-                "employee": 1,
-                "job": 2
-              },
-              {
-                "employee": 3,
-                "job": 0
-              },
-              {
-                "employee": 4,
-                "job": 1
-              }
-            ]
-          },
-          "Freitag": {
-            "Fr\u00fchschicht": [
-              {
-                "employee": 1,
-                "job": 1
-              },
-              {
-                "employee": 3,
-                "job": 0
-              },
-              {
-                "employee": 4,
-                "job": 2
-              }
-            ],
-            "Sp\u00e4tschicht": [
-              {
-                "employee": 0,
-                "job": 1
-              },
-              {
-                "employee": 3,
-                "job": 0
-              },
-              {
-                "employee": 4,
-                "job": 2
-              }
-            ]
-          }
         },
+        "solution_count": 0,  
         "statistics": {
           "num_employees": 5,
           "num_jobs": 3,
@@ -170,6 +51,53 @@ export default function WhatIfAnalysis() {
         }
       }
   );
+ // Zustand für die vorherige Lösung
+  const [previousSolutionData, setPreviousSolutionData] = useState(
+    {       "schedule_data": {
+    "Montag": {
+      "Fr\u00fchschicht": [
+        {
+          "employee": "default",
+          "job": "default"
+        },
+        {
+          "employee": 2,
+          "job": 0
+        },
+        {
+          "employee": 4,
+          "job": 2
+        }
+      ],
+      "Sp\u00e4tschicht": [
+        {
+          "employee": 1,
+          "job": 1
+        },
+        {
+          "employee": 2,
+          "job": 2
+        },
+        {
+          "employee": 4,
+          "job": 0
+        }
+      ]
+    },
+  },
+  "solution_count": 0,  
+  "statistics": {
+    "num_employees": 5,
+    "num_jobs": 3,
+    "num_qualifications": 3,
+    "num_days": 5,
+    "num_shifts_per_day": 2
+  }
+}
+); 
+
+  // Zustandsvariable für veränderte Schichten
+  const [changedShifts, setChangedShifts] = useState([]); 
 
   // Funktion, um den Schichtplan mit den neuen Präferenzen zu lösen
   const solveWithPreferences = () => {
@@ -192,7 +120,14 @@ export default function WhatIfAnalysis() {
         // Verarbeite die Antwort vom Backend
         const solutionData = response.data;
 
+        // Vergleichen Sie die neue Lösung mit der vorherigen und markieren Sie die Unterschiede
+        const changedShifts = findChangedShifts(previousSolutionData, solutionData);
+        console.log("nach funktion changed: ");
+        console.log(changedShifts);
+        setChangedShifts(changedShifts);
+
         setSolutionData(solutionData);
+        //setPreviousSolutionData(solutionData);
 
         // Aktualisiere deine UI mit den Ergebnissen
         // Beispiel: setSchedule(solutionData);
@@ -215,13 +150,23 @@ export default function WhatIfAnalysis() {
       });
   };
 
-  function findChangedShifts(oldShiftPlan, newShiftPlan) {
+    // useEffect verwenden, um initial die vorherige Lösung zu setzen
+    useEffect(() => {
+    setPreviousSolutionData(solutionData);
+    }, [solutionData]);
+
+/*   function findChangedShifts(oldShiftPlan, newShiftPlan) {
     const changedShifts = [];
+    console.log("Aufruf findChangedShifts()");
+    console.log(oldShiftPlan);
+    console.log(newShiftPlan);
   
     // Durchlaufe die Wochentage
     for (const day in newShiftPlan) {
       // Durchlaufe die Schichttypen für den aktuellen Tag
       for (const shiftType in newShiftPlan[day]) {
+        console.log(oldShiftPlan[day][shiftType]);
+        console.log(newShiftPlan[day][shiftType]);
         const oldShifts = oldShiftPlan[day][shiftType];
         const newShifts = newShiftPlan[day][shiftType];
   
@@ -236,11 +181,60 @@ export default function WhatIfAnalysis() {
             oldShift.job !== newShift.job
           ) {
             changedShifts.push(newShift);
+            console.log("Schichtvergleich True: ");
+            console.log(newShift);
           }
         }
       }
     }
   
+    return changedShifts;
+  } */
+  
+  function findChangedShifts(oldShiftPlan, newShiftPlan) {
+    const changedShifts = [];
+    console.log("Funktion findchangedshifts(): ")
+
+    // Überprüfen, ob die Input-Parameter die erforderliche Struktur haben
+    if (
+      oldShiftPlan.schedule_data &&
+      newShiftPlan.schedule_data &&
+      typeof oldShiftPlan.schedule_data === "object" &&
+      typeof newShiftPlan.schedule_data === "object"
+    ) {
+      // Durchlaufe die Wochentage (Montag bis Freitag)
+      const weekdays = Object.keys(oldShiftPlan.schedule_data);
+      for (const weekday of weekdays) {
+        // Durchlaufe die Schichttypen (Frühschicht und Spätschicht)
+        const shiftTypes = Object.keys(oldShiftPlan.schedule_data[weekday]);
+        for (const shiftType of shiftTypes) {
+          const oldShifts = oldShiftPlan.schedule_data[weekday][shiftType];
+          const newShifts = newShiftPlan.schedule_data[weekday][shiftType];
+  
+          // Vergleiche die Schichten in oldShifts und newShifts
+          for (let i = 0; i < newShifts.length; i++) {
+            const oldShift = oldShifts[i];
+            const newShift = newShifts[i];
+  
+            // Vergleiche die Schichten auf Basis von Employee und Job
+            if (
+              oldShift &&
+              newShift &&
+              oldShift.employee !== newShift.employee &&
+              oldShift.job !== newShift.job
+            ) {
+              changedShifts.push(newShift);
+              console.log("Ungleichheit in Schicht gefunden:");
+              console.log("Alter Schichtplan:", oldShift);
+              console.log("Neuer Schichtplan:", newShift);
+            }
+          }
+        }
+      }
+    }
+  
+    console.log("changedShifts variable: ");
+    console.log(changedShifts);
     return changedShifts;
   }
   
@@ -290,7 +284,7 @@ export default function WhatIfAnalysis() {
       </div>
 
       {/* Wochenansicht */}
-      <WeekView2 shiftData={solutionData} /> {/* Übergebe die Schichtdaten an WeekView */}
+      <WeekView2 shiftData={solutionData} changedShifts={changedShifts} /> {/* Übergebe die Schichtdaten an WeekView */}
     </div>
   );
 }

@@ -5,6 +5,29 @@ import numpy as np
 import time
 import json
 
+class VarArraySolutionPrinter(cp_model.CpSolverSolutionCallback):
+    """Print intermediate solutions."""
+
+    def __init__(self, variables):
+        cp_model.CpSolverSolutionCallback.__init__(self)
+        self.__variables = variables
+        self.__solution_count = 0
+
+    def on_solution_callback(self):
+        self.__solution_count += 1
+        print()
+        print("--------------------------------------------------------------------------------------------------------")
+        print(f"Intermediate solution {self.__solution_count}:")
+        print("--------------------------------------------------------------------------------------------------------")
+        print()
+        
+        for v in self.__variables:
+            print(f"{v} = {self.Value(v)}", end=" ")
+        print()
+
+    def solution_count(self):
+        return self.__solution_count
+
 class ShiftOptimizer:
     """
     ShiftOptimizer ist eine Klasse zur Optimierung von Schichtplänen.
@@ -202,8 +225,19 @@ class ShiftOptimizer:
         #Start timing
         time_start = time.time()
 
+        #Pass the solution printer to the solver
+        solution_printer = VarArraySolutionPrinter(list(self.shifts.values()))
+
+        # Enumerate all solutions.
+        self.solver.parameters.enumerate_all_solutions = True
+
         #After this instruction the shifts[(e,s,j)] variable will be filled with solutions and accessible as instance var.
-        self.solver.Solve(self.model)
+        # Solve() will return a solutionStatus and this will be stored into this variable "status"
+        status = self.solver.Solve(self.model, solution_printer)
+
+        # number of optimal solutions
+        optimal_solution_count = solution_printer.solution_count()
+        print(f'Number of optimal solutions found: {optimal_solution_count}')
 
         #stop time and print out the time taken to calculate a solution
         time_end = time.time()
@@ -247,8 +281,16 @@ class ShiftOptimizer:
 
         print("Schedule Data successfully generated!")
         print(schedule_data)
+        print(optimal_solution_count)
 
-        return schedule_data
+        #return a tuple
+        return schedule_data, optimal_solution_count
+    
+        # the return-tuple can be accessed as follows:
+            # optimal_solution_count, schedule_data = solve_shifts(your_arguments_here)
+            #print(f'Number of optimal solutions: {optimal_solution_count}')
+  
+
 
     # TODO: Muss das eine Instanzmethode sein mit "self"? 
     def divisible(self, currentschedule, numbershifts, counter_day):
