@@ -265,19 +265,28 @@ class ShiftOptimizer:
                     "Spätschicht": []   # Liste für die Spätschicht
                 }
 
+
+            shift_dict = {
+                "Frühschicht": {},
+                "Spätschicht": {}
+            }
+
             for e in self.employees:
                 for j in self.jobs:
                     if self.solver.Value(self.shifts[(e, s, j)]) == 1:
+                        shift_type = "Frühschicht" if s % 2 == 0 else "Spätschicht"
+                        if j not in shift_dict[shift_type]:
+                            shift_dict[shift_type][j] = []
+                        shift_dict[shift_type][j].append({"employee": e, "job": j})
 
-                        #Zuweisung von Mitarbeiter in day_data
-                        if s % 2 == 0: 
-                            day_data["Frühschicht"].append({"employee": e, "job": j})
+            # Füge die Schichten in die richtige Reihenfolge in day_data ein
+            for shift_type in ["Frühschicht", "Spätschicht"]:
+                for job_id in sorted(shift_dict[shift_type].keys()):
+                    day_data[shift_type].extend(shift_dict[shift_type][job_id])
 
-                        else:
-                            day_data["Spätschicht"].append({"employee": e, "job": j})
-
-            # Die Tagesdaten zur schedule_data hinzufügen
+            # Füge die Tagesdaten zur schedule_data hinzu
             schedule_data[current_weekday] = day_data
+
 
         print("Schedule Data successfully generated!")
         print(schedule_data)
