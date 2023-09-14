@@ -7,62 +7,152 @@ const staticShiftPlan = {
   schedule_data: {
     Montag: {
       Frühschicht: [
-        { employee: 2, job: 0 },
-        { employee: "default", job: 1 },
-        { employee: 4, job: 2 },
+        {
+          employee: 2,
+          job: 0,
+        },
+        {
+          employee: 4,
+          job: 1,
+        },
+        {
+          employee: 1,
+          job: 2,
+        },
       ],
       Spätschicht: [
-        { employee: 0, job: 0 },
-        { employee: 4, job: 1 },
-        { employee: 1, job: 2 },
+        {
+          employee: 0,
+          job: 0,
+        },
+        {
+          employee: 4,
+          job: 1,
+        },
+        {
+          employee: 2,
+          job: 2,
+        },
       ],
     },
     Dienstag: {
       Frühschicht: [
-        { employee: 4, job: 0 },
-        { employee: 0, job: 1 },
-        { employee: 2, job: 2 },
+        {
+          employee: 4,
+          job: 0,
+        },
+        {
+          employee: 1,
+          job: 1,
+        },
+        {
+          employee: 2,
+          job: 2,
+        },
       ],
       Spätschicht: [
-        { employee: 0, job: 0 },
-        { employee: 4, job: 1 },
-        { employee: 2, job: 2 },
+        {
+          employee: 2,
+          job: 0,
+        },
+        {
+          employee: 0,
+          job: 1,
+        },
+        {
+          employee: 4,
+          job: 2,
+        },
       ],
     },
     Mittwoch: {
       Frühschicht: [
-        { employee: 2, job: 0 },
-        { employee: 4, job: 1 },
-        { employee: 1, job: 2 },
+        {
+          employee: 2,
+          job: 0,
+        },
+        {
+          employee: 4,
+          job: 1,
+        },
+        {
+          employee: 1,
+          job: 2,
+        },
       ],
       Spätschicht: [
-        { employee: 2, job: 0 },
-        { employee: 4, job: 1 },
-        { employee: 1, job: 2 },
+        {
+          employee: 3,
+          job: 0,
+        },
+        {
+          employee: 4,
+          job: 1,
+        },
+        {
+          employee: 1,
+          job: 2,
+        },
       ],
     },
     Donnerstag: {
       Frühschicht: [
-        { employee: 3, job: 0 },
-        { employee: 4, job: 1 },
-        { employee: 2, job: 2 },
+        {
+          employee: 0,
+          job: 0,
+        },
+        {
+          employee: 4,
+          job: 1,
+        },
+        {
+          employee: 2,
+          job: 2,
+        },
       ],
       Spätschicht: [
-        { employee: 3, job: 0 },
-        { employee: 1, job: 1 },
-        { employee: 4, job: 2 },
+        {
+          employee: 0,
+          job: 0,
+        },
+        {
+          employee: 1,
+          job: 1,
+        },
+        {
+          employee: 4,
+          job: 2,
+        },
       ],
     },
     Freitag: {
       Frühschicht: [
-        { employee: 0, job: 0 },
-        { employee: 4, job: 1 },
-        { employee: "default", job: 2 },
+        {
+          employee: 3,
+          job: 0,
+        },
+        {
+          employee: 1,
+          job: 1,
+        },
+        {
+          employee: 4,
+          job: 2,
+        },
       ],
       Spätschicht: [
-        { employee: 3, job: 0 },
-        { employee: 0, job: 1 },
-        { employee: 4, job: 2 },
+        {
+          employee: 3,
+          job: 0,
+        },
+        {
+          employee: 0,
+          job: 1,
+        },
+        {
+          employee: 4,
+          job: 2,
+        },
       ],
     },
   },
@@ -128,8 +218,8 @@ export default function WhatIfAnalysis() {
         ],
         Spätschicht: [
           { employee: 3, job: 0 },
-          { employee: 4, job: 2 },
           { employee: 1, job: 1 },
+          { employee: 4, job: 2 },
         ],
       },
       Freitag: {
@@ -145,7 +235,7 @@ export default function WhatIfAnalysis() {
         ],
       },
     },
-    solution_count: 2,
+    solution_count: 3,
     statistics: {
       num_employees: 5,
       num_jobs: 3,
@@ -231,19 +321,18 @@ export default function WhatIfAnalysis() {
 
   // Zustandsvariable für veränderte Schichten
   const [changedShifts, setChangedShifts] = useState({
-        Montag: {
-        Frühschicht: [
-          { isDifferent: true, job: 0 },
-          { isDifferent: false, job: 1 },
-          { isDifferent: false, job: 2 },
-        ],
-        Spätschicht: [
-          { isDifferent: false, job: 0 },
-          { isDifferent: false, job: 1 },
-          { isDifferent: false, job: 2 },
-        ],
-      },
-
+    Montag: {
+      Frühschicht: [
+        { isDifferent: true, job: 0 },
+        { isDifferent: false, job: 1 },
+        { isDifferent: false, job: 2 },
+      ],
+      Spätschicht: [
+        { isDifferent: false, job: 0 },
+        { isDifferent: false, job: 1 },
+        { isDifferent: false, job: 2 },
+      ],
+    },
   });
 
   // Funktion, um den Schichtplan mit den neuen Präferenzen zu lösen
@@ -266,6 +355,7 @@ export default function WhatIfAnalysis() {
       .then((response) => {
         // Verarbeite die Antwort vom Backend
         const solutionData = response.data; //muss statt "const" ein "let" benutzt werden?
+        setSolutionData(response.data);
 
         console.log("POST-Antwort Schedule");
         console.log(solutionData);
@@ -275,12 +365,6 @@ export default function WhatIfAnalysis() {
         console.log("nach funktion changed: ");
         console.log(changedShifts);
         setChangedShifts(changedShifts);
-
-        //const sortedSchedule = sortScheduleDataByJob(solutionData);
-        //console.log(sortedSchedule);
-        //setSolutionData(solutionData);
-
-        //setPreviousSolutionData(solutionData);
 
         // Aktualisiere deine UI mit den Ergebnissen
         // Beispiel: setSchedule(solutionData);
@@ -345,6 +429,10 @@ export default function WhatIfAnalysis() {
                 isDifferent: true,
                 job: newShift.job,
               });
+              console.log("oldShift");
+              console.log(oldShift);
+              console.log("newShift");
+              console.log(newShift);
             } else {
               changedShifts[weekday][shiftType].push({
                 isDifferent: false,

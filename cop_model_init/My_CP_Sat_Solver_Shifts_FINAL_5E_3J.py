@@ -78,6 +78,13 @@ def main():
                                                [65, 50, 15],
                                                [50, 50, 60]
                                                ])
+    
+    employee_job_preference_matrix = np.array([[0, 0, 100],
+                                            [0, 100, 50],
+                                            [90, 25, 45],
+                                            [65, 50, 15],
+                                            [50, 50, 60]
+                                            ])
 
     # 0.8) Definition of Employee-Job Preference Matrix
     #each employee has an individual "preference" (independent of the job_preference_matrix!) for rotation
@@ -310,7 +317,7 @@ def main():
     schedule_data_json = json.dumps(schedule_data, indent=4)  # Hier wird die Einrückung für eine bessere Lesbarkeit verwendet
 
     # Geben Sie den JSON-ähnlichen String aus
-    print("Datenstruktur:\n" + schedule_data_json)
+    #print("Datenstruktur:\n" + schedule_data_json)
 
 #TODO: Diese Funktion kann im Flask-Backend importiert werden und enthält dann die Schichtplanungsdaten in einem Dictionary-Format, dieses kann als JSON-Format ans Frontend gesendet werden zur ANzeige
 def solve_shifts_withInput(shifts_solution, solver, schedule, employees, jobs, number_shifts_per_day, number_shifts_per_employee):

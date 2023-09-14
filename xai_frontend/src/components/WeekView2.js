@@ -107,11 +107,16 @@ export default function WeekView2({
               {weekdays.map((weekday) => (
                 <td key={weekday}>
                   {schedule_data[weekday][shiftType].map((shift, index) => {
+                    //const isHighlighted =
+                    //highlightedShifts[weekday] &&
+                    //highlightedShifts[weekday][shiftType] &&
+                    //highlightedShifts[weekday][shiftType][index] &&
+                    //highlightedShifts[weekday][shiftType][index].isDifferent;
+
                     const isHighlighted =
-                      highlightedShifts[weekday] &&
-                      highlightedShifts[weekday][shiftType] &&
-                      highlightedShifts[weekday][shiftType][index] &&
-                      highlightedShifts[weekday][shiftType][index].isDifferent;
+                      schedule_data[weekday][shiftType][index].employee !==
+                      staticShiftData.schedule_data[weekday][shiftType][index]
+                        .employee;
 
                     return (
                       <div
@@ -121,7 +126,7 @@ export default function WeekView2({
                         }`}
                       >
                         <div className="subcell">
-                          {"Employee-ID: " + shift.employee}
+                          {" Employee-ID: " + shift.employee + "      Job-ID: " + shift.job}
                         </div>
                         {/* <div className="subcell">
                     {"Job-ID: " + shift.job}
@@ -168,16 +173,30 @@ export default function WeekView2({
                   {weekdays.map((weekday) => (
                     <td key={weekday}>
                       {staticShiftData.schedule_data[weekday][shiftType].map(
-                        (shift, index) => (
-                          <div key={index} className={`cell static-cell`}>
-                            <div className="subcell">
-                              {"Employee-ID: " + shift.employee}
+                        (shift, index) => {
+                          const isHighlighted =
+                            schedule_data[weekday][shiftType][index]
+                              .employee !==
+                            staticShiftData.schedule_data[weekday][shiftType][
+                              index
+                            ].employee;
+
+                          return (
+                            <div
+                              key={index}
+                              className={`cell ${
+                                isHighlighted ? "highlighted-cell" : ""
+                              }`}
+                            >
+                              <div className="subcell">
+                              {" Employee-ID: " + shift.employee + "       Job-ID: " + shift.job}
+                              </div>
+                              {/* <div className="subcell">
+                            {"Job-ID: " + shift.job}
+                          </div> */}
                             </div>
-                            {/* <div className="subcell">
-                              {"Job-ID: " + shift.job}
-                            </div> */}
-                          </div>
-                        )
+                          );
+                        }
                       )}
                     </td>
                   ))}

@@ -178,8 +178,16 @@ class ShiftOptimizer:
        self.num_total_shifts = num_days * num_shifts_per_day
        
 
-    def update_preferences(self):       
-       pass
+    def update_preferences(self, job1_preference, job2_preference, job3_preference):
+        print("Updating preferences: ")
+        print(job1_preference, job2_preference, job3_preference)
+        self.employee_job_preference_matrix = np.array([[job1_preference, job2_preference, job3_preference],
+                                               [0, 100, 50],
+                                               [90, 25, 45],
+                                               [65, 50, 15],
+                                               [50, 50, 60]
+                                               ])
+        return
     
 
     def solve_shifts(self):

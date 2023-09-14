@@ -5,6 +5,9 @@ import random
 #import sys
 #sys.path.append('C:\\TUM_MASTER\MASTERARBEIT_FML\\04_Python_Code\\xai_cp_scheduling')
 
+import logging
+
+
 #COP-Solver Library einfügen aus anderem Ordner
 #from ShiftOptimizer import ShiftOptimizer
 from cop_model.ShiftOptimizer import ShiftOptimizer
@@ -12,6 +15,10 @@ from cop_model.ShiftOptimizer import ShiftOptimizer
 # Eine Flask-Anwendung wird mit dem Namen der Hauptdatei erstellt (__name__).
 # Dies erstellt eine Instanz der Flask-App
 app = Flask(__name__)
+
+# Konfigurieren Sie das Logging
+logging.basicConfig(filename='app.log', level=logging.DEBUG)
+
 
 # The following config line will deactive the alphabetical sorting of the Dict-Keys from jsonify()
 app.json.sort_keys = False
@@ -83,6 +90,9 @@ def solve_shifts_endpoint():
         # Empfange die Präferenzen und andere Daten vom Frontend
         request_data = request.get_json()
 
+        # Lognachricht generieren
+        logging.debug('Request data aus endpoint: %s', request_data)
+
         print("Request data aus endpoint:")
         print(request_data)
 
@@ -113,6 +123,9 @@ def solve_shifts_endpoint():
 
         print("Response data with solution_count: ")
         print(response_data) #debug purpose
+
+        # Lognachricht mit Antwortdaten generieren
+        logging.debug('Response data with solution_count: %s', response_data)
 
         return jsonify(response_data)
 

@@ -214,30 +214,51 @@ class ShiftOptimizer:
         """
         # Aktualisiere nur die erste Zeile (Index 0) der Präferenzen im employee_job_preference_matrix
         self.employee_job_preference_matrix[0, :] = [job1_preference, job2_preference, job3_preference]
+        #self.employee_job_preference_matrix[1, :] = [job1_preference, job2_preference, job3_preference]
+        #self.employee_job_preference_matrix[2, :] = [job1_preference, job2_preference, job3_preference]
+        #self.employee_job_preference_matrix[3, :] = [job1_preference, job2_preference, job3_preference]
+        #self.employee_job_preference_matrix[4, :] = [job1_preference, job2_preference, job3_preference]
+
+        print("looking at new preferences: ")
+        print(self.employee_job_preference_matrix)
 
         print("Solving with updated preferences for the first employee!")
         return
 
     
     def solve_shifts(self):
+        print("Solving with updated preferences for the first employee!")
+        print("looking at new preferences in SOLVE_SHIFTS: ")
+        print(self.employee_job_preference_matrix)
+
+
         # Lösen und Zeitmessung
 
         #Start timing
         time_start = time.time()
 
         #Pass the solution printer to the solver
-        solution_printer = VarArraySolutionPrinter(list(self.shifts.values()))
+        #solution_printer = VarArraySolutionPrinter(list(self.shifts.values()))
+
+        
 
         # Enumerate all solutions.
-        self.solver.parameters.enumerate_all_solutions = True
+        #self.solver.parameters.enumerate_all_solutions = False
+
 
         #After this instruction the shifts[(e,s,j)] variable will be filled with solutions and accessible as instance var.
         # Solve() will return a solutionStatus and this will be stored into this variable "status"
-        status = self.solver.Solve(self.model, solution_printer)
+        #status = self.solver.Solve(self.model, solution_printer)
+
+        status = self.solver.Solve(self.model)
+
+        #print("Objective Value: ")
+        #print(self.solver.ObjectiveValue)
 
         # number of optimal solutions
-        optimal_solution_count = solution_printer.solution_count()
-        print(f'Number of optimal solutions found: {optimal_solution_count}')
+        #optimal_solution_count = solution_printer.solution_count()
+        optimal_solution_count = 3000
+        #print(f'Number of solutions found: {optimal_solution_count}')
 
         #stop time and print out the time taken to calculate a solution
         time_end = time.time()
@@ -291,6 +312,25 @@ class ShiftOptimizer:
         print("Schedule Data successfully generated!")
         print(schedule_data)
         print(optimal_solution_count)
+
+        # Pfad zur Datei, in die Sie die Daten schreiben möchten
+        output_file_path = "schedule_data.txt"
+
+        # Erstellen Sie ein gemeinsames Dictionary für beide Datensätze
+        combined_data = {
+            "employee_job_preference_matrix": str(self.employee_job_preference_matrix),
+            "schedule_data": schedule_data
+        }
+
+        # Pfad zur Datei, in die Sie die Daten schreiben möchten
+        output_file_path = "combined_data.txt"
+
+        # Öffnen Sie die Datei im Schreibmodus ('w') und verwenden Sie 'utf-8' für die Codierung
+        with open(output_file_path, 'w', encoding='utf-8') as output_file:
+            # Schreiben Sie das kombinierte Daten-Dictionary in die Datei im JSON-Format
+            json.dump(combined_data, output_file, indent=4)
+
+        print(f"Kombinierte Daten wurden in '{output_file_path}' geschrieben.")
 
         #return a tuple
         return schedule_data, optimal_solution_count
