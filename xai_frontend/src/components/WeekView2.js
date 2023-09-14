@@ -5,6 +5,8 @@ export default function WeekView2({
   shiftData,
   changedShifts,
   staticShiftData,
+  staticPreferenceMatrix,
+  updatedPreferenceMatrix,
 }) {
   // State-Hook für die hervorgehobenen Schichten
   const [highlightedShifts, setHighlightedShifts] = useState({
@@ -79,6 +81,94 @@ export default function WeekView2({
         Your updated preferences would change{" "}
         {getNumberDifferences(changedShifts)} shifts!
       </h2>
+
+      {/* Static Preference Matrix */}
+      <div className="matrix">
+        <h2>Static Preference Matrix</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Job 0</th>
+              <th>Job 1</th>
+              <th>Job 2</th>
+            </tr>
+          </thead>
+          <tbody>
+            {staticPreferenceMatrix.map((row, employeeIndex) => (
+              <tr key={employeeIndex}>
+                <td>Employee {employeeIndex}</td>
+                {row.map((staticPreference, jobIndex) => {
+                  const updatedPreference =
+                    updatedPreferenceMatrix[employeeIndex][jobIndex];
+                  const isDifferent = staticPreference !== updatedPreference;
+
+                  return (
+                    <td
+                      key={jobIndex}
+                      className={isDifferent ? "highlighted-cell" : ""}
+                    >
+                      {staticPreference}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Updated Preference Matrix */}
+      <div className="matrix">
+        <h2>Updated Preference Matrix</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Job 0</th>
+              <th>Job 1</th>
+              <th>Job 2</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {updatedPreferenceMatrix.map((row, employeeIndex) => (
+              <tr key={employeeIndex}>
+                <td>Employee {employeeIndex}</td>
+                {row.map((preference, jobIndex) => {
+                  const isDifferent =
+                    staticPreferenceMatrix[employeeIndex][jobIndex] !==
+                    updatedPreferenceMatrix[employeeIndex][jobIndex];
+
+                    console.log("matrix debug: ")
+                    console.log(staticPreferenceMatrix[employeeIndex][jobIndex]);
+                    console.log(updatedPreferenceMatrix[employeeIndex][jobIndex]);
+                    console.log("Boolean eval: ");
+                    console.log(isDifferent);
+
+                    const staticValue = staticPreferenceMatrix[employeeIndex][jobIndex];
+                    const updatedValue = updatedPreferenceMatrix[employeeIndex][jobIndex];
+                    const isDifferent2 = staticValue !== updatedValue;
+                    console.log("Matrix Debug 2:");
+                    console.log(`staticValue: ${staticValue}, type: ${typeof staticValue}`);
+                    console.log(`updatedValue: ${updatedValue}, type: ${typeof updatedValue}`);
+                    console.log(`Boolean evaluation: ${isDifferent2}`);
+
+                  return (
+                    <td
+                      key={jobIndex}
+                      className={isDifferent ? "highlighted-cell" : ""}
+                    >
+                      {preference}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       <table>
         <thead>
           <tr>
@@ -126,7 +216,10 @@ export default function WeekView2({
                         }`}
                       >
                         <div className="subcell">
-                          {" Employee-ID: " + shift.employee + "      Job-ID: " + shift.job}
+                          {" Employee-ID: " +
+                            shift.employee +
+                            "      Job-ID: " +
+                            shift.job}
                         </div>
                         {/* <div className="subcell">
                     {"Job-ID: " + shift.job}
@@ -189,7 +282,10 @@ export default function WeekView2({
                               }`}
                             >
                               <div className="subcell">
-                              {" Employee-ID: " + shift.employee + "       Job-ID: " + shift.job}
+                                {" Employee-ID: " +
+                                  shift.employee +
+                                  "       Job-ID: " +
+                                  shift.job}
                               </div>
                               {/* <div className="subcell">
                             {"Job-ID: " + shift.job}

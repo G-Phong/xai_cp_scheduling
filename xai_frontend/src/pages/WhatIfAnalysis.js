@@ -166,6 +166,15 @@ const staticShiftPlan = {
   },
 };
 
+// Präferenzmatrix (statisch)
+const staticPreferences = [
+  [50, 20, 15],
+  [0, 100, 50],
+  [90, 25, 45],
+  [65, 50, 15],
+  [50, 50, 60],
+];
+
 export default function WhatIfAnalysis() {
   // Zustandsvariable für die Liste der Präferenzen
   const [preferencesList, setPreferencesList] = useState([100, 0, 0]);
@@ -244,6 +253,15 @@ export default function WhatIfAnalysis() {
       num_shifts_per_day: 2,
     },
   });
+
+  //Zustandsvariable für updated Präferenzmatrix
+  const [updatedPreferenceMatrix, setUpdatedPreferenceMatrix] = useState([
+    [50, 20, 15],
+    [0, 100, 50],
+    [90, 25, 45],
+    [65, 50, 15],
+    [50, 50, 60],
+  ]);
 
   // Zustand für die vorherige Lösung
   const [previousSolutionData, setPreviousSolutionData] = useState({
@@ -354,8 +372,8 @@ export default function WhatIfAnalysis() {
       })
       .then((response) => {
         // Verarbeite die Antwort vom Backend
-        const solutionData = response.data; //muss statt "const" ein "let" benutzt werden?
-        setSolutionData(response.data);
+        const solutionData = response.data; //Achtung: lokale Variable!
+        setSolutionData(response.data); //das habe ich vorher vergessen ... ohje
 
         console.log("POST-Antwort Schedule");
         console.log(solutionData);
@@ -450,11 +468,25 @@ export default function WhatIfAnalysis() {
   }
 
   // Funktion zum Aktualisieren der Präferenzen in der Liste
-  const updatePreferences = (index, value) => {
+  const updatePreferences  = (index, value) => {
+    // Konvertiere den Wert zu einem Integer
+    const intValue = parseInt(value);
+
     const updatedList = [...preferencesList];
-    updatedList[index] = value;
+    updatedList[index] = intValue;
     setPreferencesList(updatedList);
+
+    // Erstelle eine Kopie der aktuellen Updated Preference Matrix
+    const updatedMatrix = [...updatedPreferenceMatrix];
+
+    // Ersetze die erste Zeile der Matrix mit den aktualisierten Präferenzen
+    updatedMatrix[0] = updatedList;
+
+    // Setze die aktualisierte Matrix im Zustand
+    setUpdatedPreferenceMatrix(updatedMatrix);
   };
+
+  
 
   /*   function sortScheduleDataByJob(scheduleData) {
     // Durchlaufe die Wochentage
@@ -550,6 +582,8 @@ export default function WhatIfAnalysis() {
         shiftData={solutionData}
         changedShifts={changedShifts}
         staticShiftData={staticShiftPlan} // statischer Schichtplan
+        staticPreferenceMatrix={staticPreferences} //statische Präferenzmatrix
+        updatedPreferenceMatrix={updatedPreferenceMatrix} //updated Präferenzmatrix
       />
       {/* Übergebe die Schichtdaten an WeekView */}
     </div>
