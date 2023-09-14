@@ -7,6 +7,8 @@ export default function WeekView2({
   staticShiftData,
   staticPreferenceMatrix,
   updatedPreferenceMatrix,
+  sumShiftsPerEmployee,
+  individualPreferenceScore,
 }) {
   // State-Hook für die hervorgehobenen Schichten
   const [highlightedShifts, setHighlightedShifts] = useState({
@@ -140,19 +142,25 @@ export default function WeekView2({
                     staticPreferenceMatrix[employeeIndex][jobIndex] !==
                     updatedPreferenceMatrix[employeeIndex][jobIndex];
 
-                    console.log("matrix debug: ")
-                    console.log(staticPreferenceMatrix[employeeIndex][jobIndex]);
-                    console.log(updatedPreferenceMatrix[employeeIndex][jobIndex]);
-                    console.log("Boolean eval: ");
-                    console.log(isDifferent);
+                  console.log("matrix debug: ");
+                  console.log(staticPreferenceMatrix[employeeIndex][jobIndex]);
+                  console.log(updatedPreferenceMatrix[employeeIndex][jobIndex]);
+                  console.log("Boolean eval: ");
+                  console.log(isDifferent);
 
-                    const staticValue = staticPreferenceMatrix[employeeIndex][jobIndex];
-                    const updatedValue = updatedPreferenceMatrix[employeeIndex][jobIndex];
-                    const isDifferent2 = staticValue !== updatedValue;
-                    console.log("Matrix Debug 2:");
-                    console.log(`staticValue: ${staticValue}, type: ${typeof staticValue}`);
-                    console.log(`updatedValue: ${updatedValue}, type: ${typeof updatedValue}`);
-                    console.log(`Boolean evaluation: ${isDifferent2}`);
+                  const staticValue =
+                    staticPreferenceMatrix[employeeIndex][jobIndex];
+                  const updatedValue =
+                    updatedPreferenceMatrix[employeeIndex][jobIndex];
+                  const isDifferent2 = staticValue !== updatedValue;
+                  console.log("Matrix Debug 2:");
+                  console.log(
+                    `staticValue: ${staticValue}, type: ${typeof staticValue}`
+                  );
+                  console.log(
+                    `updatedValue: ${updatedValue}, type: ${typeof updatedValue}`
+                  );
+                  console.log(`Boolean evaluation: ${isDifferent2}`);
 
                   return (
                     <td
@@ -197,12 +205,6 @@ export default function WeekView2({
               {weekdays.map((weekday) => (
                 <td key={weekday}>
                   {schedule_data[weekday][shiftType].map((shift, index) => {
-                    //const isHighlighted =
-                    //highlightedShifts[weekday] &&
-                    //highlightedShifts[weekday][shiftType] &&
-                    //highlightedShifts[weekday][shiftType][index] &&
-                    //highlightedShifts[weekday][shiftType][index].isDifferent;
-
                     const isHighlighted =
                       schedule_data[weekday][shiftType][index].employee !==
                       staticShiftData.schedule_data[weekday][shiftType][index]
@@ -233,6 +235,48 @@ export default function WeekView2({
           ))}
         </tbody>
       </table>
+
+      {/* Anzeige weiterer Schichtplandaten */}
+      <div className="row">
+        <div className="col-md-6">
+          <h2>Sum of Shifts per Employee:</h2>
+          <table className="table table-bordered table-statistics">
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Number of Shifts</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(sumShiftsPerEmployee).map((employee) => (
+                <tr key={employee}>
+                  <td>{employee}</td>
+                  <td>{sumShiftsPerEmployee[employee]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="col-md-6">
+          <h2>Individual Preference Score:</h2>
+          <table className="table table-bordered table-statistics">
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Total Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(individualPreferenceScore).map((employee) => (
+                <tr key={employee}>
+                  <td>{employee}</td>
+                  <td>{individualPreferenceScore[employee]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       {/* Anzeige des statischen Schichtplans */}
       <h2>Original shift schedule</h2>

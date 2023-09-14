@@ -191,6 +191,9 @@ class ShiftOptimizer:
         # Problem solver: Cp.Solver() searches for solutions
         self.solver = cp_model.CpSolver()
 
+        # TODO: SolutionPrinter Klasse beachten!
+
+
         print("COP_Solver was successfully initialized!")
 
     def set_problem_parameters(self, num_employees, num_jobs, num_qualifications, num_days, num_shifts_per_day):
@@ -227,20 +230,29 @@ class ShiftOptimizer:
 
     
     def solve_shifts(self):
-        print("Solving with updated preferences for the first employee!")
-        print("looking at new preferences in SOLVE_SHIFTS: ")
+        """
+        Löst das Schichtplanungsproblem mit den aktualisierten Präferenzen und gibt die generierten Daten zurück.
+
+        Returns:
+            dict: Ein strukturiertes Dictionary mit den Schichtplanungsdaten. (3-fach verschachteltes Dictionary)
+            int: Die Anzahl der optimalen Lösungen.
+
+            Das äußerste Dictionary hat Wochentage (Montag, Dienstag, ...) als Schlüssel.
+            Für jeden Wochentag gibt es ein weiteres Dictionary, das die Schichttypen (Frühschicht, Spätschicht) als Schlüssel enthält.
+            In jedem Schichttyp-Dictionary gibt es eine Liste von Dictionarys, die die Zuweisungen von Mitarbeitern zu Jobs für diese Schicht enthalten.
+        """
+
+        print("Lösen des Problems mit aktualisierten Präferenzen für den ersten Mitarbeiter.")
+        print("Betrachtung der neuen Präferenzen in SOLVE_SHIFTS:")
         print(self.employee_job_preference_matrix)
 
 
         # Lösen und Zeitmessung
-
         #Start timing
         time_start = time.time()
 
         #Pass the solution printer to the solver
         #solution_printer = VarArraySolutionPrinter(list(self.shifts.values()))
-
-        
 
         # Enumerate all solutions.
         #self.solver.parameters.enumerate_all_solutions = False
@@ -338,7 +350,58 @@ class ShiftOptimizer:
         # the return-tuple can be accessed as follows:
             # optimal_solution_count, schedule_data = solve_shifts(your_arguments_here)
             #print(f'Number of optimal solutions: {optimal_solution_count}')
-  
+
+    def sum_shifts_per_employee(self):
+        """
+        Summiert die Anzahl der Schichten pro Mitarbeiter und gibt eine Liste oder ein Dictionary zurück,
+        das die Anzahl der Schichten pro Mitarbeiter enthält.
+
+        Returns:
+            dict: Ein Dictionary, das die Anzahl der Schichten pro Mitarbeiter enthält.
+
+        Beispielausgabe:
+            number_shifts_per_employee = {
+                0: 12,  # Mitarbeiter 0 hat 12 Schichten
+                1: 13,  # Mitarbeiter 1 hat 13 Schichten
+                2: 11,  # Mitarbeiter 2 hat 11 Schichten
+                # ... und so weiter für alle Mitarbeiter
+            }
+        """
+
+        number_shifts_per_employee = {e: 0 for e in self.employees}
+
+        counter_day = 1
+        # Operator für Ganzzahldivision. Ergebnis wird auf die nächstkleinere Ganzzahl gerundet
+        number_shifts_per_day = len(self.schedule) // len(self.employees)
+
+        for s in self.schedule:
+            counter_day = self.divisible(s + 1, number_shifts_per_day, counter_day)
+            for e in self.employees:
+                for j in self.jobs:
+                    if self.solver.Value(self.shifts[(e, s, j)]) == 1:
+                        number_shifts_per_employee[e] += 1
+
+        return number_shifts_per_employee
+    
+    def calculate_individual_preference_score(self):
+        """
+        Berechnet die Gesamtpräferenz pro Mitarbeiter basierend auf den Präferenzen.
+
+        Returns:
+            dict: Ein Dictionary, das die Gesamtpunktzahl pro Mitarbeiter enthält.
+        """
+        individual_score = {e: 0 for e in self.employees} # Anfangswert 0 für jeden Employee
+
+        for e in self.employees:
+            for s in self.schedule:
+                for j in self.jobs:
+                    if self.solver.Value(self.shifts[(e, s, j)]) == 1:
+                        # Hier solltest du den entsprechenden Präferenzwert für den Mitarbeiter und den Job hinzufügen
+                        # anstelle von 0. Du kannst auf self.employee_job_preference_matrix[e, j] zugreifen.
+                        individual_score[e] += self.employee_job_preference_matrix[e, j]
+
+        return individual_score
+
 
 
     # TODO: Muss das eine Instanzmethode sein mit "self"? 

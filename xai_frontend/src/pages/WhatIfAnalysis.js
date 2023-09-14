@@ -263,6 +263,10 @@ export default function WhatIfAnalysis() {
     [50, 50, 60],
   ]);
 
+  const [sumShiftsPerEmployee, setSumShiftsPerEmployee] = useState({});
+  const [individualPreferenceScore, setIndividualPreferenceScore] = useState({});
+
+
   // Zustand für die vorherige Lösung
   const [previousSolutionData, setPreviousSolutionData] = useState({
     schedule_data: {
@@ -378,6 +382,10 @@ export default function WhatIfAnalysis() {
         console.log("POST-Antwort Schedule");
         console.log(solutionData);
 
+        // Aktualisieren Sie die Zustandsvariablen mit den neuen Dat1en
+        setSumShiftsPerEmployee(solutionData.sum_shifts_per_employee);
+        setIndividualPreferenceScore(solutionData.individual_preference_score);
+
         // Vergleichen Sie die neue Lösung mit der vorherigen und markieren Sie die Unterschiede
         const changedShifts = findChangedShifts(staticShiftPlan, solutionData);
         console.log("nach funktion changed: ");
@@ -398,6 +406,9 @@ export default function WhatIfAnalysis() {
           console.log("Datentyp von solutionData:", typeof solutionData);
           console.log("Inhalt von solutionData:", solutionData);
         }
+
+        
+
       })
       .catch((error) => {
         // Handle Fehler, falls auftreten
@@ -486,64 +497,6 @@ export default function WhatIfAnalysis() {
     setUpdatedPreferenceMatrix(updatedMatrix);
   };
 
-  
-
-  /*   function sortScheduleDataByJob(scheduleData) {
-    // Durchlaufe die Wochentage
-    for (const day in scheduleData) {
-      // Durchlaufe die Schichttypen (Frühschicht, Spätschicht, usw.)
-      for (const shiftType in scheduleData[day]) {
-        // Sortiere die Schichten nach der job-ID
-        scheduleData[day][shiftType].sort((shift1, shift2) => {
-          return shift1.job - shift2.job;
-        });
-      }
-    }
-
-    console.log(scheduleData);
-
-    return scheduleData;
-  } */
-
-  function sortScheduleDataByJob(scheduleData) {
-    const sortedScheduleData = {};
-
-    // Durchlaufe die Wochentage
-    for (const day in scheduleData) {
-      sortedScheduleData[day] = {};
-
-      // Durchlaufe die Schichttypen (Frühschicht, Spätschicht, usw.)
-      for (const shiftType in scheduleData[day]) {
-        const shifts = scheduleData[day][shiftType];
-
-        // Erstelle ein leeres Array für jeden Job
-        const jobShifts = {};
-
-        // Gruppiere die Schichten nach Job-ID
-        for (const shift of shifts) {
-          const jobID = shift.job;
-          if (!jobShifts[jobID]) {
-            jobShifts[jobID] = [];
-          }
-          jobShifts[jobID].push(shift);
-        }
-
-        // Sortiere die Schichten innerhalb jedes Jobs nach Mitarbeiter-ID
-        const sortedShifts = {};
-        for (const jobID in jobShifts) {
-          sortedShifts[jobID] = jobShifts[jobID].sort((shift1, shift2) => {
-            return shift1.employee - shift2.employee;
-          });
-        }
-
-        sortedScheduleData[day][shiftType] = sortedShifts;
-      }
-    }
-    console.log("sorted schedule: ");
-    console.log(scheduleData);
-    return sortedScheduleData;
-  }
-
   return (
     <div className="container">
       <h1>What-If-Analysis</h1>
@@ -584,6 +537,8 @@ export default function WhatIfAnalysis() {
         staticShiftData={staticShiftPlan} // statischer Schichtplan
         staticPreferenceMatrix={staticPreferences} //statische Präferenzmatrix
         updatedPreferenceMatrix={updatedPreferenceMatrix} //updated Präferenzmatrix
+        sumShiftsPerEmployee={sumShiftsPerEmployee} //sum shifts per empl
+        individualPreferenceScore={individualPreferenceScore} //ind. score
       />
       {/* Übergebe die Schichtdaten an WeekView */}
     </div>

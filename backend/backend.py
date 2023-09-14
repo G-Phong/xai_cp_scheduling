@@ -6,6 +6,7 @@ import random
 #sys.path.append('C:\\TUM_MASTER\MASTERARBEIT_FML\\04_Python_Code\\xai_cp_scheduling')
 
 import logging
+import json
 
 
 #COP-Solver Library einfügen aus anderem Ordner
@@ -108,6 +109,23 @@ def solve_shifts_endpoint():
         # Führe die Schichtplanung mit den neuen Präferenzen durch (Ein Tupel wird zurückgegeben!)
         schedule_data, optimal_solution_count = COPoptimizer.solve_shifts()
 
+        individual_preference_score = COPoptimizer.calculate_individual_preference_score()
+
+        sum_shifts_per_employee = COPoptimizer.sum_shifts_per_employee()
+
+        # Beispiel für die Umwandlung der Dictionaries in Zeichenketten
+        #sum_shifts_per_employee_str = json.dumps(sum_shifts_per_employee)
+        #individual_preference_score_str = json.dumps(individual_preference_score)
+
+        print(individual_preference_score)
+        print(sum_shifts_per_employee)
+
+        # Annahme: sum_shifts_per_employee und individual_preference_score sind Dictionaries mit int-Schlüsseln und int-Werten
+        sum_shifts_per_employee_str = {str(k): str(v) for k, v in sum_shifts_per_employee.items()}
+        individual_preference_score_str = {str(k): str(v) for k, v in individual_preference_score.items()}
+
+
+
         # Die globalen Variablen als Teil der Antwort senden
         response_data = {
             "schedule_data": schedule_data,
@@ -118,7 +136,9 @@ def solve_shifts_endpoint():
                 "num_qualifications": num_qualifications,
                 "num_days": num_days,
                 "num_shifts_per_day": num_shifts_per_day
-            }
+            },
+            "sum_shifts_per_employee": sum_shifts_per_employee_str,  # Ergebnis von sum_shifts_per_employee hinzufügen
+            "individual_preference_score": individual_preference_score_str  # Ergebnis von calculate_individual_preference_score hinzufügen
         }
 
         print("Response data with solution_count: ")
