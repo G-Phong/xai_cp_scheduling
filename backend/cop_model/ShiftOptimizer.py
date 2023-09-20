@@ -5,7 +5,7 @@ import numpy as np
 import time
 import json
 
-class VarArraySolutionPrinter(cp_model.CpSolverSolutionCallback):
+class VarArraySolutionPrinter2(cp_model.CpSolverSolutionCallback):
     """Print intermediate solutions."""
 
     def __init__(self, variables):
@@ -21,12 +21,66 @@ class VarArraySolutionPrinter(cp_model.CpSolverSolutionCallback):
         print("--------------------------------------------------------------------------------------------------------")
         print()
         
-        for v in self.__variables:
+        """for v in self.__variables:
             print(f"{v} = {self.Value(v)}", end=" ")
-        print()
+        print() """
 
     def solution_count(self):
         return self.__solution_count
+    
+class VarArraySolutionPrinter(cp_model.CpSolverSolutionCallback):
+    """Print intermediate solutions."""
+
+    def __init__(self, variables, employee_job_preference_matrix, employees, schedule, jobs):
+        cp_model.CpSolverSolutionCallback.__init__(self)
+        self.__variables = variables
+        self.__employee_job_preference_matrix = employee_job_preference_matrix
+        self.__solution_count = 0
+        self.__employees = employees
+        self.__schedule = schedule
+        self.__jobs = jobs
+
+    def on_solution_callback(self):
+        self.__solution_count += 1
+        print()
+        print("--------------------------------------------------------------------------------------------------------")
+        print(f"Solution {self.__solution_count}:")
+        print("--------------------------------------------------------------------------------------------------------")
+        print()
+
+        total_preference = 0  # Initialize total preference
+
+        """ for e in self.__employees:
+            for s in self.__schedule:
+                for j in self.__jobs:
+                    if self.Value(self.__variables[(e, s, j)]) == 1:
+                        total_preference += self.__employee_job_preference_matrix[e, j]
+                        print(f"Employee {e}, Shift {s}, Job {j}: {self.Value(self.__variables[(e, s, j)])}")  """
+
+        """ for e in self.__employees:
+            for s in self.__schedule:
+                for j in self.__jobs:
+                    variable = self.__variables[e][s][j]
+                    if self.Value(variable) == 1:
+                        total_preference += self.__employee_job_preference_matrix[e, j]
+                        print(f"Employee {e}, Shift {s}, Job {j}: {self.Value(variable)}") """
+        
+        for e in self.__employees:
+            for s in self.__schedule:
+                for j in self.__jobs:
+                    index = e * (len(self.__schedule) * len(self.__jobs)) + s * len(self.__jobs) + j
+                    if self.Value(self.__variables[index]) == 1:
+                        total_preference += self.__employee_job_preference_matrix[e, j]
+                        print(f"Employee {e}, Shift {s}, Job {j}: {self.Value(self.__variables[index])}")
+
+        print(f"Total Preference for this solution: {total_preference}")
+
+        
+
+
+    def solution_count(self):
+        return self.__solution_count
+
 
 class ShiftOptimizer:
     """
@@ -192,9 +246,25 @@ class ShiftOptimizer:
         self.solver = cp_model.CpSolver()
 
         # TODO: SolutionPrinter Klasse beachten!
+        #Pass the solution printer to the solver
+        self.solution_printer = VarArraySolutionPrinter(list(self.shifts.values()),self.employee_job_preference_matrix, self.employees, self.schedule, self.jobs)
+
+        print(self.solution_printer.solution_count)
+
+        # Enumerate all solutions.
+        self.solver.parameters.enumerate_all_solutions = True
+
+        # Solve.
+        self.status = self.solver.Solve(self.model, self.solution_printer)
+
+        #print status
+        print()
+        print('Status = %s' % self.solver.StatusName(self.status))
+        print('Number of solutions found: %i' % self.solution_printer.solution_count())
+        print()
 
 
-        print("COP_Solver was successfully initialized!")
+        print("__init__: COP_Solver was successfully initialized!")
 
     def set_problem_parameters(self, num_employees, num_jobs, num_qualifications, num_days, num_shifts_per_day):
 
@@ -264,17 +334,23 @@ class ShiftOptimizer:
 
         status = self.solver.Solve(self.model)
 
-        #print("Objective Value: ")
-        #print(self.solver.ObjectiveValue)
+        #print status
+        print()
+        print('Status = %s' % self.solver.StatusName(self.status))
+        print('Number of solutions found: %i' % self.solution_printer.solution_count())
+        print()
+
 
         # number of optimal solutions
-        #optimal_solution_count = solution_printer.solution_count()
-        optimal_solution_count = 3000
+        optimal_solution_count = self.solution_printer.solution_count()
+        #optimal_solution_count = 3000 #debug
         #print(f'Number of solutions found: {optimal_solution_count}')
 
         #stop time and print out the time taken to calculate a solution
         time_end = time.time()
         print(f"Solving took {time_end - time_start} seconds")
+
+
 
         # Ausgabe in einem strukturierten Dict -> wird von dieser Fuunktion zurückgegeben
         schedule_data = {}
