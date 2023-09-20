@@ -1,5 +1,5 @@
 {
-    "employee_job_preference_matrix": "[[ 50 100   0]\n [  0 100  50]\n [ 90  25  45]\n [ 65  50  15]\n [ 50  50  60]]",
+    "employee_job_preference_matrix": "[[100   0   0]\n [  0 100  50]\n [ 90  25  45]\n [ 65  50  15]\n [ 50  50  60]]",
     "schedule_data": {
         "Montag": {
             "Fr\u00fchschicht": [
