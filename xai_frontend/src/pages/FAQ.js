@@ -2,101 +2,108 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css"; // Importiere Bootstrap-CSS
 import "./FAQ.css"; // Importiere Ihre CSS-Datei
 
-function FAQ() {
+export default function FAQ() {
   // FAQ-Daten mit Fragen und Antworten
   const faqData = [
     {
-      question: "Wie kann ich meine Schichtpräferenzen im System hinterlegen?",
-      answer:
-        "Bevor die Schichtplanung beginnt, haben Sie die Möglichkeit, Ihre Präferenzen über ein Benutzerinterface einzugeben. Dort können Sie für jeden Schichttyp eine Bewertung von 0-100 abgeben, wobei 100 die höchste Präferenz darstellt.",
-    },
-    {
-      question:
-        "Wann ist der Zeitpunkt, meine Präferenzen für die Schichtplanung anzugeben?",
-      answer:
-        "Präferenzen sollten idealerweise bis zu einer festgelegten Frist vor der eigentlichen Schichtplanerstellung angegeben werden. Details zur Fristfindung entnehmen Sie bitte den betriebsinternen Kommunikationskanälen.",
-    },
-    {
-      question:
-        "Wie kann ich nach der Schichtplanerstellung Feedback zum Plan geben?",
-      answer:
-        "Nachdem der Schichtplan erstellt wurde, gibt es eine Feedback-Phase. Sie können Ihr Feedback direkt über das System einreichen. Dort ist ein Bereich vorgesehen, in dem Sie Anmerkungen und Bewertungen zu den zugewiesenen Schichten abgeben können.",
-    },
+      category: "AI-based shift scheduling system",
+      items: [
+        {
+          question:
+            "How does the AI-based shift scheduling work? How do I use it?",
+          answer:
+            "The AI-based shift scheduling system automates the process of allocating shifts to employees, rendering it more efficient, quicker, and optimized. Utilizing machine learning and constraint optimization techniques, the algorithm considers multiple variables such as operational requirements, legal constraints, and employee preferences. The system is designed to be trust-worthy and human-centric; it gives due importance to the needs and preferences of individual employees while ensuring operational efficiency. To use the system, simply log into the designated user interface and enter your shift preferences before the planning phase begins. The intuitive interface makes it easy to specify your preferences and view your assigned shifts.",
+        },
 
-    {
-      question:
-        "Was ist ein Bedingungserfüllungsproblem mit Optimierung (COP)?",
-      answer:
-        "Ein Bedingungserfüllungsproblem mit Optimierung (Constraint Optimization Problem, COP) ist ein Spezialfall eines Bedingungserfüllungsproblems (Constraint Satisfaction Problem, CSP). Im Gegensatz zum CSP, bei dem es lediglich darum geht, alle Bedingungen zu erfüllen, zielt ein COP darauf ab, eine Lösung zu finden, die nicht nur alle Bedingungen erfüllt, sondern auch eine Zielfunktion optimiert, beispielsweise die Minimierung von Überstunden oder die Maximierung der Mitarbeiterzufriedenheit.",
+        {
+          question: "How can I enter my shift preferences in the system?",
+          answer:
+            "Before the shift planning begins, you have the opportunity to enter your preferences via a user interface. There you can give a rating from 0-100 for each type of shift, where 100 represents the highest preference.",
+        },
+        {
+          question:
+            "When is the deadline for entering my preferences for shift planning?",
+          answer:
+            "Preferences should ideally be submitted by a set deadline before the actual shift scheduling begins. Please refer to the internal communication channels of the company for details on the deadline.",
+        },
+        {
+          question:
+            "How can I give feedback on the shift plan after it has been created?",
+          answer:
+            "Once the shift plan has been created, there is a feedback phase. You can submit your feedback directly via the system. A designated area is provided where you can make comments and reviews on the assigned shifts.",
+        },
+        {
+          question:
+            "How can employees incorporate their feedback and preferences into the process?",
+          answer:
+            "Before the creation of the shift plan, employees can state their preferences for specific jobs on a scale of 0 to 100. After the shift schedule has been created, there is also the opportunity to provide feedback on the received plan.",
+        },
+        {
+          question:
+            "How are legal and operational requirements taken into account?",
+          answer:
+            "The algorithm is designed to consider all legal requirements and operational guidelines, such as maximum working hours or mandatory breaks, as hard constraints. These are prioritized in the optimization.",
+        },
+      ],
     },
     {
-      question:
-        "Was ist der Unterschied zwischen harten und weichen Bedingungen?",
-      answer:
-        "Harte Bedingungen sind nicht verhandelbar und müssen in jeder gültigen Lösung erfüllt sein. Beispiele sind gesetzliche Vorgaben oder notwendige Qualifikationen für bestimmte Schichten. Weiche Bedingungen sind flexibler und dienen der Optimierung. Sie können unter bestimmten Umständen vernachlässigt werden, etwa wenn dadurch eine bessere Gesamtlösung erreicht wird.",
-    },
-    {
-      question:
-        "Wie entscheidet der Algorithmus, welche Schicht einem Mitarbeiter zugewiesen wird?",
-      answer:
-        "Der Algorithmus verwendet eine Heuristik, die eine Kombination aus verschiedenen Faktoren wie Verfügbarkeit, Qualifikation und Präferenzen des Mitarbeiters sowie betrieblichen Anforderungen berücksichtigt. Durch die Optimierung der Zielfunktion wird versucht, eine gerechte und effiziente Schichtzuweisung zu erreichen.",
-    },
-    {
-      question: "Wie wurden meine persönlichen Präferenzen berücksichtigt?",
-      answer:
-        "Ihre persönlichen Präferenzen werden im Vorfeld der Schichtplanerstellung erfasst und als weiche Bedingungen in den Algorithmus eingebracht. Diese weichen Bedingungen beeinflussen die Optimierungsentscheidung, wobei allerdings Kompromisse mit anderen Faktoren, wie z.B. betrieblichen Anforderungen und Präferenzen anderer Mitarbeiter, gemacht werden können. Das Erklärmodell beinhaltet zudem ein What-if-Tool, mit dem Sie Ihre individuellen Präferenzen modifizieren können. Das Tool zeigt Ihnen in Echtzeit die Auswirkungen Ihrer Änderungen auf den Schichtplan und weitere relevante Metriken.",
-    },
-    {
-      question: "Warum erhalte ich nicht immer meine bevorzugte Schicht?",
-      answer:
-        "Die Zuweisung von Schichten ist ein komplexes Optimierungsproblem, das mehrere Randbedingungen und Präferenzen berücksichtigt. Obwohl Ihre Präferenzen im Algorithmus berücksichtigt werden, können andere Faktoren wie betriebliche Anforderungen oder die Präferenzen anderer Mitarbeiter dazu führen, dass Sie nicht immer Ihre bevorzugte Schicht erhalten.",
-    },
-    {
-      question: "Kann der Algorithmus immer eine „gute“ Lösung finden?",
-      answer:
-        "Der Algorithmus zielt darauf ab, eine möglichst optimale Lösung zu finden. Allerdings kann die Qualität der Lösung durch verschiedene Faktoren wie die Komplexität des Problems, die Anzahl der Mitarbeiter und Schichten sowie die vorhandenen Ressourcen beeinflusst werden. Eine „gute“ Lösung ist daher relativ und hängt von den spezifischen Anforderungen und Beschränkungen ab.",
-    },
-    {
-      question:
-        "Wie werden rechtliche und betriebliche Anforderungen berücksichtigt?",
-      answer:
-        " Der Algorithmus ist darauf ausgelegt, sämtliche rechtliche Vorgaben und betriebliche Richtlinien, wie etwa maximale Arbeitszeiten oder gesetzliche Pausen, als harte Bedingungen zu berücksichtigen. Diese werden in der Optimierung priorisiert.",
-    },
-    {
-      question:
-        "Wie wird der Algorithmus mit Konflikten umgehen, bei denen mehrere Mitarbeiter die gleiche Schicht bevorzugen?",
-      answer:
-        "In solchen Fällen führt der Algorithmus eine Optimierung durch, um den Konflikt so fair wie möglich zu lösen. Dabei werden auch weiche Bedingungen und andere Metriken berücksichtigt.",
-    },
-    {
-      question:
-        "Wie können Mitarbeiter ihr Feedback und ihre Präferenzen in den Prozess einbringen?",
-      answer:
-        "Vor der Erstellung des Schichtplans können Mitarbeiter ihre Präferenzen für bestimmte Jobs auf einer Skala von 0 bis 100 angeben. Nach der Schichtplanerstellung besteht zudem die Möglichkeit, Feedback zum erhaltenen Plan abzugeben.",
-    },
-    {
-      question:
-        "Kann der Algorithmus meine längerfristigen Wünsche berücksichtigen, z.B. wenn ich weiß, dass ich in einem bestimmten Monat mehr Freizeit möchte?",
-      answer:
-        "Derzeit ist diese Funktionalität noch nicht implementiert, jedoch ist es geplant, solche längerfristigen Wünsche in zukünftigen Updates des Algorithmus zu berücksichtigen.",
-    },
-    {
-      question:
-        "Wie beeinflussen Krankmeldungen oder plötzliche Abwesenheiten den Schichtplan?",
-      answer:
-        "Krankmeldungen oder plötzliche Abwesenheiten lösen eine erneute Optimierung des Schichtplans aus, um die Auswirkungen auf das Gesamtsystem zu minimieren.",
-    },
-    {
-      question:
-        "Gibt es eine Möglichkeit, den Algorithmus zu trainieren, um besser auf die speziellen Bedürfnisse unseres Betriebs einzugehen?",
-      answer:
-        "Das Erklärmodell enthält Mechanismen für ein fortlaufendes Feedback, welches zur Feinjustierung des Algorithmus verwendet werden kann. Dadurch kann der Algorithmus zunehmend besser auf die spezifischen Anforderungen des Betriebs eingehen.",
-    },
-    {
-      question:
-        "Wie schnell kann der Algorithmus auf plötzliche Änderungen reagieren?",
-      answer:
-        "Der Algorithmus ist so konzipiert, dass er schnell auf Änderungen reagieren kann. Die genaue Reaktionszeit hängt von der Komplexität des Problems und den zur Verfügung stehenden Rechenressourcen ab.",
+      category: "Optimization and Algorithm",
+      items: [
+        {
+          question:
+            "How does the algorithm decide which shift is assigned to an employee?",
+          answer:
+            "The algorithm uses a heuristic that combines various factors such as availability, qualifications, and employee preferences as well as operational requirements. The objective function is optimized to achieve fair and efficient shift allocation.",
+        },
+        {
+          question: "What is a Constraint Optimization Problem (COP)?",
+          answer:
+            "A Constraint Optimization Problem (COP) is a special case of a Constraint Satisfaction Problem (CSP). Unlike CSP, which only aims to satisfy all constraints, COP aims to find a solution that not only satisfies all constraints but also optimizes an objective function, such as minimizing overtime or maximizing employee satisfaction.",
+        },
+        {
+          question: "What is the difference between hard and soft constraints?",
+          answer:
+            "Hard constraints are non-negotiable and must be met in any valid solution. Examples include legal requirements or necessary qualifications for specific shifts. Soft constraints are more flexible and serve for optimization. They can be neglected under certain circumstances, for instance, if it results in a better overall solution.",
+        },
+        {
+          question: "Why don’t I always get my preferred shift?",
+          answer:
+            "The allocation of shifts is a complex optimization problem that takes into account multiple constraints and preferences. While your preferences are considered in the algorithm, other factors such as operational requirements or the preferences of other employees may mean that you do not always get your preferred shift.",
+        },
+        {
+          question: "Can the algorithm always find a “good” solution?",
+          answer:
+            "The algorithm aims to find the most optimal solution possible. However, the quality of the solution can be influenced by various factors such as the complexity of the problem, the number of employees and shifts, and available resources. A “good” solution is therefore relative and depends on specific requirements and constraints.",
+        },
+        {
+          question:
+            "How will the algorithm handle conflicts where multiple employees prefer the same shift?",
+          answer:
+            "In such cases, the algorithm performs an optimization to resolve the conflict as fairly as possible. Soft constraints and other metrics are also considered.",
+        },
+        {
+          question:
+            "Can the algorithm consider my long-term wishes, for example, if I know I want more time off in a particular month?",
+          answer:
+            "This functionality is not currently implemented, but it is planned to consider such long-term wishes in future updates of the algorithm.",
+        },
+        {
+          question:
+            "How do sick leaves or sudden absences affect the shift schedule?",
+          answer:
+            "Sick leaves or sudden absences trigger a re-optimization of the shift plan to minimize the impact on the overall system.",
+        },
+        {
+          question: "How quickly can the algorithm respond to sudden changes?",
+          answer:
+            "The algorithm is designed to respond quickly to changes. The exact response time depends on the complexity of the problem and the available computational resources.",
+        },
+        {
+          question: "How are my personal preferences taken into account?",
+          answer:
+            "Your personal preferences are captured prior to the creation of the shift schedule and are introduced as soft constraints into the algorithm. These soft constraints influence the optimization decision, although compromises with other factors, such as operational requirements and the preferences of other employees, may be made. The explanation model aims to provide insights into how your preferences were considered in the schedule.",
+        },
+      ],
     },
   ];
 
@@ -113,40 +120,52 @@ function FAQ() {
   return (
     <div className="container">
       <h1 className="mt-5">FAQ</h1>
-      {faqData.map((item, index) => (
-        <div
-          key={index}
-          className={`accordion mb-3 ${activeItems[index] ? "show" : ""}`}
-        >
-          <div className="accordion-item">
-            <h2 className="accordion-header" id={`faq-heading-${index}`}>
-              <button
-                className={`accordion-button ${
-                  activeItems[index] ? "" : "collapsed"
-                }`}
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target={`#faq-collapse-${index}`}
-                onClick={() => handleItemClick(index)}
-              >
-                {item.question}
-              </button>
-            </h2>
+      {faqData.map((category, categoryIndex) => (
+        <div key={categoryIndex}>
+          <h2>{category.category}</h2>
+          {category.items.map((item, itemIndex) => (
             <div
-              id={`faq-collapse-${index}`}
-              className={`accordion-collapse collapse ${
-                activeItems[index] ? "show" : ""
+              key={itemIndex}
+              className={`accordion mb-3 ${
+                activeItems[categoryIndex * 100 + itemIndex] ? "show" : ""
               }`}
-              aria-labelledby={`faq-heading-${index}`}
-              data-bs-parent="#accordionExample"
             >
-              <div className="accordion-body">{item.answer}</div>
+              <div className="accordion-item">
+                <h2
+                  className="accordion-header"
+                  id={`faq-heading-${itemIndex}`}
+                >
+                  <button
+                    className={`accordion-button ${
+                      activeItems[categoryIndex * 100 + itemIndex]
+                        ? ""
+                        : "collapsed"
+                    }`}
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target={`#faq-collapse-${itemIndex}`}
+                    onClick={() =>
+                      handleItemClick(categoryIndex * 100 + itemIndex)
+                    }
+                  >
+                    {item.question}
+                  </button>
+                </h2>
+                <div
+                  id={`faq-collapse-${itemIndex}`}
+                  className={`accordion-collapse collapse ${
+                    activeItems[categoryIndex * 100 + itemIndex] ? "show" : ""
+                  }`}
+                  aria-labelledby={`faq-heading-${itemIndex}`}
+                  data-bs-parent="#accordionExample"
+                >
+                  <div className="accordion-body">{item.answer}</div>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       ))}
     </div>
   );
 }
-
-export default FAQ;

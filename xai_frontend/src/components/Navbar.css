@@ -1,46 +1,75 @@
 /* Navbar.css */
 
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
-
-.nav {
-  background-color: #333;
+/* Stil für die Navbar */
+.navbar {
+  background-color: #ed0808;
   color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center; /* Vertically center-align the Navbar */
-  gap: 2rem;
-  padding: 0 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 150px; /* Feste Breite */
+  display: block;
+  flex-direction: column;
+  padding: 1rem;
+  overflow-y: auto;
 }
 
-.site-title {
-  font-size: 2rem;
-  color: white;
-  margin-left: 20px;
+/* Stil für den Brand-Text */
+.navbar-brand {
+  font-size: 1.5rem;
+  text-align: left;
+  margin-left: 10px;
 }
 
-.nav ul {
-  padding: 0;
-  margin: 0;
+/* Stil für die Liste der Links */
+.navbar-nav {
   list-style: none;
-  display: flex;
-  gap: 1rem;
+  padding: 0;
+  margin-top: 1rem;
+  flex-grow: 1; /* Füllt den verfügbaren vertikalen Raum aus */
+  overflow-y: auto; /* Scrollleiste bei Überlauf hinzufügen */
 }
 
-.nav a {
+/* Stil für die Listenelemente in der Navbar */
+.nav-item {
+  margin-bottom: 0.5rem;
+}
+
+/* Stil für die Link-Texte */
+.nav-link {
   color: white;
   text-decoration: none;
 }
 
-.nav li.active {
+/* Aktives Listenelement in der Navbar */
+.nav-item.active {
   background-color: #555;
 }
 
-.nav li:hover {
+/* Hover-Effekt für Listenelemente */
+.nav-item:hover {
   background-color: #777;
+}
+
+/* das ist ein versuch die navbar durchgängig nach unten zu gestalten */
+
+
+ .sidebar {
+  background-color: #333;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  z-index: 1;
+}
+
+.main-content {
+  margin-left: 250px;
+  padding: 1rem;
 }

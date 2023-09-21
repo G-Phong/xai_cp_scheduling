@@ -1,34 +1,56 @@
-import "./Navbar.css"
+import React from "react";
+import { Link } from "react-router-dom";
 
-export default function Navbar() {
-    return <nav className="nav">
-        <a href="/" className="site-title">Explainify.AI</a>
-        <ul>
-            <li className="active">
-                <a href="Home">Home</a>
-            </li>
-            <li className="active">
-                <a href="Schedule">Schedule</a>
-            </li>
-            <li className="active">
-                <a href="what-if">What-If-Analysis</a>
-            </li>
-            <li className="active">
-                <a href="EduGame">EduGame</a>
-            </li>
-            <li className="active">
-                <a href="Lernquiz">Flipped Classroom: Quiz</a>
-            </li>
-            <li className="active">
-                <a href="faq">FAQ</a>
-            </li>
-            <li className="active">
-                <a href="randomButton">Random Button</a>
-            </li>
-            <li className="active">
-                <a href="about-us">Über uns</a>
-            </li>
-        </ul>
+import "./Navbar.css";
+
+function Navbar() {
+  return (
+    <nav className="navbar navbar-dark bg-dark">
+      <span className="navbar-brand mb-0 h1">Explainify.AI</span>
+      <ul className="navbar-nav">
+        <li className="nav-item">
+          <Link to="/home" className="nav-link">
+            Home
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/schedule" className="nav-link">
+            Pop-Up-Schedule
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/what-if" className="nav-link">
+            What-If Analysis
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/edugame" className="nav-link">
+            EduGame
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/quiz" className="nav-link">
+            AI Quiz
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/faq" className="nav-link">
+            FAQ
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/randomButton" className="nav-link">
+            Random Button
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/about-us" className="nav-link">
+            About Us
+          </Link>
+        </li>
+      </ul>
     </nav>
-
+  );
 }
+
+export default Navbar;
