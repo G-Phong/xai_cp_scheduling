@@ -75,108 +75,116 @@ export default function WeekView2({
 
   return (
     <div>
-      <h2>
-        "What-If" week schedule Optimal Solutions: {shiftData.solution_count}
-      </h2>
+      {/* Format as row to have both matrices next to each other */}
+      <div className="row">
+        {/* Updated Preference Matrix */}
+        <div className="col-md-6">
+          <div className="matrix">
+            <h2>Your updated "What if" Preference Matrix</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>Job 0</th>
+                  <th>Job 1</th>
+                  <th>Job 2</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {updatedPreferenceMatrix.map((row, employeeIndex) => (
+                  <tr key={employeeIndex}>
+                    <td>Employee {employeeIndex}</td>
+                    {row.map((preference, jobIndex) => {
+                      const isDifferent =
+                        staticPreferenceMatrix[employeeIndex][jobIndex] !==
+                        updatedPreferenceMatrix[employeeIndex][jobIndex];
+
+                      console.log("matrix debug: ");
+                      console.log(
+                        staticPreferenceMatrix[employeeIndex][jobIndex]
+                      );
+                      console.log(
+                        updatedPreferenceMatrix[employeeIndex][jobIndex]
+                      );
+                      console.log("Boolean eval: ");
+                      console.log(isDifferent);
+
+                      const staticValue =
+                        staticPreferenceMatrix[employeeIndex][jobIndex];
+                      const updatedValue =
+                        updatedPreferenceMatrix[employeeIndex][jobIndex];
+                      const isDifferent2 = staticValue !== updatedValue;
+                      console.log("Matrix Debug 2:");
+                      console.log(
+                        `staticValue: ${staticValue}, type: ${typeof staticValue}`
+                      );
+                      console.log(
+                        `updatedValue: ${updatedValue}, type: ${typeof updatedValue}`
+                      );
+                      console.log(`Boolean evaluation: ${isDifferent2}`);
+
+                      return (
+                        <td
+                          key={jobIndex}
+                          className={isDifferent ? "highlighted-cell" : ""}
+                        >
+                          {preference}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {/* Static Preference Matrix */}
+        <div className="col-md-6">
+          <div className="matrix">
+            <h2>Original Preference Matrix</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>Job 0</th>
+                  <th>Job 1</th>
+                  <th>Job 2</th>
+                </tr>
+              </thead>
+              <tbody>
+                {staticPreferenceMatrix.map((row, employeeIndex) => (
+                  <tr key={employeeIndex}>
+                    <td>Employee {employeeIndex}</td>
+                    {row.map((staticPreference, jobIndex) => {
+                      const updatedPreference =
+                        updatedPreferenceMatrix[employeeIndex][jobIndex];
+                      const isDifferent =
+                        staticPreference !== updatedPreference;
+
+                      return (
+                        <td
+                          key={jobIndex}
+                          className={isDifferent ? "highlighted-cell" : ""}
+                        >
+                          {staticPreference}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
       <h2>
+        "What-If" week schedule Optimal Solutions: {shiftData.solution_count}
+        <br />
         Your updated preferences would change{" "}
         {getNumberDifferences(changedShifts)} shifts!
       </h2>
-
-      {/* Static Preference Matrix */}
-      <div className="matrix">
-        <h2>Static Preference Matrix</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Employee</th>
-              <th>Job 0</th>
-              <th>Job 1</th>
-              <th>Job 2</th>
-            </tr>
-          </thead>
-          <tbody>
-            {staticPreferenceMatrix.map((row, employeeIndex) => (
-              <tr key={employeeIndex}>
-                <td>Employee {employeeIndex}</td>
-                {row.map((staticPreference, jobIndex) => {
-                  const updatedPreference =
-                    updatedPreferenceMatrix[employeeIndex][jobIndex];
-                  const isDifferent = staticPreference !== updatedPreference;
-
-                  return (
-                    <td
-                      key={jobIndex}
-                      className={isDifferent ? "highlighted-cell" : ""}
-                    >
-                      {staticPreference}
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Updated Preference Matrix */}
-      <div className="matrix">
-        <h2>Updated Preference Matrix</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Employee</th>
-              <th>Job 0</th>
-              <th>Job 1</th>
-              <th>Job 2</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {updatedPreferenceMatrix.map((row, employeeIndex) => (
-              <tr key={employeeIndex}>
-                <td>Employee {employeeIndex}</td>
-                {row.map((preference, jobIndex) => {
-                  const isDifferent =
-                    staticPreferenceMatrix[employeeIndex][jobIndex] !==
-                    updatedPreferenceMatrix[employeeIndex][jobIndex];
-
-                  console.log("matrix debug: ");
-                  console.log(staticPreferenceMatrix[employeeIndex][jobIndex]);
-                  console.log(updatedPreferenceMatrix[employeeIndex][jobIndex]);
-                  console.log("Boolean eval: ");
-                  console.log(isDifferent);
-
-                  const staticValue =
-                    staticPreferenceMatrix[employeeIndex][jobIndex];
-                  const updatedValue =
-                    updatedPreferenceMatrix[employeeIndex][jobIndex];
-                  const isDifferent2 = staticValue !== updatedValue;
-                  console.log("Matrix Debug 2:");
-                  console.log(
-                    `staticValue: ${staticValue}, type: ${typeof staticValue}`
-                  );
-                  console.log(
-                    `updatedValue: ${updatedValue}, type: ${typeof updatedValue}`
-                  );
-                  console.log(`Boolean evaluation: ${isDifferent2}`);
-
-                  return (
-                    <td
-                      key={jobIndex}
-                      className={isDifferent ? "highlighted-cell" : ""}
-                    >
-                      {preference}
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
       <table>
         <thead>
           <tr>
@@ -235,48 +243,6 @@ export default function WeekView2({
           ))}
         </tbody>
       </table>
-
-      {/* Anzeige weiterer Schichtplandaten */}
-      <div className="row">
-        <div className="col-md-6">
-          <h2>Sum of Shifts per Employee:</h2>
-          <table className="table table-bordered table-statistics">
-            <thead>
-              <tr>
-                <th>Employee</th>
-                <th>Number of Shifts</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(sumShiftsPerEmployee).map((employee) => (
-                <tr key={employee}>
-                  <td>{employee}</td>
-                  <td>{sumShiftsPerEmployee[employee]}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="col-md-6">
-          <h2>Individual Preference Score:</h2>
-          <table className="table table-bordered table-statistics">
-            <thead>
-              <tr>
-                <th>Employee</th>
-                <th>Total Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(individualPreferenceScore).map((employee) => (
-                <tr key={employee}>
-                  <td>{employee}</td>
-                  <td>{individualPreferenceScore[employee]}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
 
       {/* Anzeige des statischen Schichtplans */}
       <h2>Original shift schedule</h2>
@@ -347,24 +313,78 @@ export default function WeekView2({
         </div>
       )}
 
-      <div className="container mt-4">
-        <h3>Statistics</h3>
-        <table className="table table-bordered table-statistics">
-          <thead>
-            <tr>
-              <th>Statistics</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.entries(statistics).map(([key, value]) => (
-              <tr key={key}>
-                <td>{key.replace(/_/g, " ")}</td>
-                <td>{value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {/* Anzeige weiterer Schichtplandaten */}
+      <div className="row">
+        <div className="col-md-4">
+          {/* Sum of Shifts per Employee */}
+          <div className="matrix">
+            <h2>Sum of Shifts per Employee:</h2>
+            <table className="table table-bordered table-statistics">
+              {/* Tabelle für Summe der Schichten pro Mitarbeiter */}
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>Number of Shifts</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.keys(sumShiftsPerEmployee).map((employee) => (
+                  <tr key={employee}>
+                    <td>{employee}</td>
+                    <td>{sumShiftsPerEmployee[employee]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="col-md-4">
+          {/* Individual Preference Score */}
+          <div className="matrix">
+            <h2>Individual Preference Score:</h2>
+            <table className="table table-bordered table-statistics">
+              {/* Tabelle für individuelle Präferenzpunkte */}
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>Total Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.keys(individualPreferenceScore).map((employee) => (
+                  <tr key={employee}>
+                    <td>{employee}</td>
+                    <td>{individualPreferenceScore[employee]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="col-md-4">
+          {/* Statistics */}
+          <div className="matrix">
+            <h3>Work Statistics</h3>
+            <table className="table table-bordered table-statistics">
+              <thead>
+                <tr>
+                  <th>Statistics</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(statistics).map(([key, value]) => (
+                  <tr key={key}>
+                    <td>{key.replace(/_/g, " ")}</td>
+                    <td>{value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );

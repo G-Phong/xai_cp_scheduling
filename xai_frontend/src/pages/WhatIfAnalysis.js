@@ -500,28 +500,31 @@ export default function WhatIfAnalysis() {
   return (
     <div className="container">
       <h1>What-If-Analysis</h1>
-      <h2>Input mask (Change your preferences here):</h2>
-      {/* Eingabefelder für Job-Präferenzen */}
-      {[0, 1, 2].map((index) => (
-        <div className="row" key={index}>
-          <div className="col-md-6">
+      <h2>Change preferences of Employee 0 here
+        <br />
+         (0 = no preference, 100 = full preference)</h2>
+      <div className="row">
+        {[0, 1, 2].map((index) => (
+          <div className="col-md-4" key={index}>
             <label>Job {index + 1} Preference (1-100):</label>
-            <input
-              type="number"
-              min="1"
-              max="100"
-              className="form-control"
-              value={preferencesList[index]}
-              onChange={(e) => updatePreferences(index, e.target.value)}
-            />
-          </div>
-          <div className="col-md-6">
-            <div className="current-value">
-              Current Value: {currentValueList[index]}
+            <div className="input-group">
+              <input
+                type="number"
+                min="1"
+                max="100"
+                className="form-control"
+                value={preferencesList[index]}
+                onChange={(e) => updatePreferences(index, e.target.value)}
+              />
+              <div className="input-group-append">
+                <span className="input-group-text">
+                  Current Value: {currentValueList[index]}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
       {/* Solve Button */}
       <div className="row">
         <div className="col-md-12">
@@ -530,17 +533,20 @@ export default function WhatIfAnalysis() {
           </button>
         </div>
       </div>
+
       {/* Wochenansicht */}
       <WeekView2
         shiftData={solutionData}
         changedShifts={changedShifts}
         staticShiftData={staticShiftPlan} // statischer Schichtplan
-        staticPreferenceMatrix={staticPreferences} //statische Präferenzmatrix
-        updatedPreferenceMatrix={updatedPreferenceMatrix} //updated Präferenzmatrix
-        sumShiftsPerEmployee={sumShiftsPerEmployee} //sum shifts per empl
-        individualPreferenceScore={individualPreferenceScore} //ind. score
+        staticPreferenceMatrix={staticPreferences} // statische Präferenzmatrix
+        updatedPreferenceMatrix={updatedPreferenceMatrix} // aktualisierte Präferenzmatrix
+        sumShiftsPerEmployee={sumShiftsPerEmployee} // Summe der Schichten pro Mitarbeiter
+        individualPreferenceScore={individualPreferenceScore} // individuelle Präferenzpunktzahl
       />
       {/* Übergebe die Schichtdaten an WeekView */}
     </div>
   );
+  
+
 }
