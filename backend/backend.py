@@ -74,9 +74,6 @@ def solve_shifts_with_preferences():
     schedule_data, optimal_solution_count = temp_optimizer.solve_shifts()
 
     logging.debug('Type of schedule_data: %s', schedule_data)
-
-
-    print("after solving!")
     
     individual_preference_score = temp_optimizer.calculate_individual_preference_score()
     sum_shifts_per_employee = temp_optimizer.sum_shifts_per_employee()
@@ -110,8 +107,6 @@ def solve_shifts_with_preferences():
     
     logging.debug('Response data with solution_count: %s', response_data)
 
-    print("after response_data generation!")
-    
     return jsonify(response_data)
 
 

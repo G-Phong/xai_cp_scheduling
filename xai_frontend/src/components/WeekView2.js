@@ -61,7 +61,7 @@ export default function WeekView2({
           for (const shift of shifts) {
             if (shift.isDifferent === true) {
               diffCounter++;
-              console.log("DiffCounter: " + diffCounter);
+              //console.log("DiffCounter: " + diffCounter);
             }
           }
         }
@@ -100,7 +100,7 @@ export default function WeekView2({
                         staticPreferenceMatrix[employeeIndex][jobIndex] !==
                         updatedPreferenceMatrix[employeeIndex][jobIndex];
 
-                      console.log("matrix debug: ");
+                      /* console.log("matrix debug: ");
                       console.log(
                         staticPreferenceMatrix[employeeIndex][jobIndex]
                       );
@@ -108,21 +108,21 @@ export default function WeekView2({
                         updatedPreferenceMatrix[employeeIndex][jobIndex]
                       );
                       console.log("Boolean eval: ");
-                      console.log(isDifferent);
+                      console.log(isDifferent); */
 
                       const staticValue =
                         staticPreferenceMatrix[employeeIndex][jobIndex];
                       const updatedValue =
                         updatedPreferenceMatrix[employeeIndex][jobIndex];
                       const isDifferent2 = staticValue !== updatedValue;
-                      console.log("Matrix Debug 2:");
+                      /* console.log("Matrix Debug 2:");
                       console.log(
                         `staticValue: ${staticValue}, type: ${typeof staticValue}`
                       );
                       console.log(
                         `updatedValue: ${updatedValue}, type: ${typeof updatedValue}`
                       );
-                      console.log(`Boolean evaluation: ${isDifferent2}`);
+                      console.log(`Boolean evaluation: ${isDifferent2}`); */
 
                       return (
                         <td

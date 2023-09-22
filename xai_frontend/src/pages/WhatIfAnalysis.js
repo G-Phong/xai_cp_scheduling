@@ -405,10 +405,10 @@ export default function WhatIfAnalysis() {
                 isDifferent: true,
                 job: newShift.job,
               });
-              console.log("oldShift");
+              /* console.log("oldShift");
               console.log(oldShift);
               console.log("newShift");
-              console.log(newShift);
+              console.log(newShift); */
             } else {
               changedShifts[weekday][shiftType].push({
                 isDifferent: false,

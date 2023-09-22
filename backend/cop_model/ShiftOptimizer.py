@@ -348,8 +348,6 @@ class ShiftOptimizer:
         with open(output_file_path, 'w', encoding='utf-8') as output_file:
             json.dump(combined_data, output_file, indent=4)
 
-        print(f"Combined data written to '{output_file_path}'.")
-
         # Return a tuple containing schedule data and optimal solution count
         return schedule_data, optimal_solution_count
 
