@@ -1,152 +1,155 @@
 {
-    "Montag": {
-        "Fr\u00fchschicht": [
-            {
-                "employee": 2,
-                "job": 0
-            },
-            {
-                "employee": 4,
-                "job": 1
-            },
-            {
-                "employee": 1,
-                "job": 2
-            }
-        ],
-        "Sp\u00e4tschicht": [
-            {
-                "employee": 0,
-                "job": 0
-            },
-            {
-                "employee": 4,
-                "job": 1
-            },
-            {
-                "employee": 2,
-                "job": 2
-            }
-        ]
-    },
-    "Dienstag": {
-        "Fr\u00fchschicht": [
-            {
-                "employee": 4,
-                "job": 0
-            },
-            {
-                "employee": 1,
-                "job": 1
-            },
-            {
-                "employee": 2,
-                "job": 2
-            }
-        ],
-        "Sp\u00e4tschicht": [
-            {
-                "employee": 2,
-                "job": 0
-            },
-            {
-                "employee": 0,
-                "job": 1
-            },
-            {
-                "employee": 4,
-                "job": 2
-            }
-        ]
-    },
-    "Mittwoch": {
-        "Fr\u00fchschicht": [
-            {
-                "employee": 2,
-                "job": 0
-            },
-            {
-                "employee": 4,
-                "job": 1
-            },
-            {
-                "employee": 1,
-                "job": 2
-            }
-        ],
-        "Sp\u00e4tschicht": [
-            {
-                "employee": 3,
-                "job": 0
-            },
-            {
-                "employee": 4,
-                "job": 1
-            },
-            {
-                "employee": 1,
-                "job": 2
-            }
-        ]
-    },
-    "Donnerstag": {
-        "Fr\u00fchschicht": [
-            {
-                "employee": 0,
-                "job": 0
-            },
-            {
-                "employee": 4,
-                "job": 1
-            },
-            {
-                "employee": 2,
-                "job": 2
-            }
-        ],
-        "Sp\u00e4tschicht": [
-            {
-                "employee": 0,
-                "job": 0
-            },
-            {
-                "employee": 1,
-                "job": 1
-            },
-            {
-                "employee": 4,
-                "job": 2
-            }
-        ]
-    },
-    "Freitag": {
-        "Fr\u00fchschicht": [
-            {
-                "employee": 3,
-                "job": 0
-            },
-            {
-                "employee": 1,
-                "job": 1
-            },
-            {
-                "employee": 4,
-                "job": 2
-            }
-        ],
-        "Sp\u00e4tschicht": [
-            {
-                "employee": 3,
-                "job": 0
-            },
-            {
-                "employee": 0,
-                "job": 1
-            },
-            {
-                "employee": 4,
-                "job": 2
-            }
-        ]
+    "employee_job_preference_matrix": "[[  0   0  20]\n [  0 100  50]\n [ 90  25  45]\n [ 65  50  15]\n [ 50  50  60]]",
+    "schedule_data": {
+        "Monday": {
+            "EarlyShift": [
+                {
+                    "employee": 4,
+                    "job": 0
+                },
+                {
+                    "employee": 1,
+                    "job": 1
+                },
+                {
+                    "employee": 2,
+                    "job": 2
+                }
+            ],
+            "LateShift": [
+                {
+                    "employee": 2,
+                    "job": 0
+                },
+                {
+                    "employee": 4,
+                    "job": 1
+                },
+                {
+                    "employee": 1,
+                    "job": 2
+                }
+            ]
+        },
+        "Tuesday": {
+            "EarlyShift": [
+                {
+                    "employee": 2,
+                    "job": 0
+                },
+                {
+                    "employee": 4,
+                    "job": 1
+                },
+                {
+                    "employee": 1,
+                    "job": 2
+                }
+            ],
+            "LateShift": [
+                {
+                    "employee": 2,
+                    "job": 0
+                },
+                {
+                    "employee": 4,
+                    "job": 1
+                },
+                {
+                    "employee": 0,
+                    "job": 2
+                }
+            ]
+        },
+        "Wednesday": {
+            "EarlyShift": [
+                {
+                    "employee": 4,
+                    "job": 0
+                },
+                {
+                    "employee": 1,
+                    "job": 1
+                },
+                {
+                    "employee": 0,
+                    "job": 2
+                }
+            ],
+            "LateShift": [
+                {
+                    "employee": 4,
+                    "job": 0
+                },
+                {
+                    "employee": 0,
+                    "job": 1
+                },
+                {
+                    "employee": 2,
+                    "job": 2
+                }
+            ]
+        },
+        "Thursday": {
+            "EarlyShift": [
+                {
+                    "employee": 3,
+                    "job": 0
+                },
+                {
+                    "employee": 0,
+                    "job": 1
+                },
+                {
+                    "employee": 4,
+                    "job": 2
+                }
+            ],
+            "LateShift": [
+                {
+                    "employee": 4,
+                    "job": 0
+                },
+                {
+                    "employee": 1,
+                    "job": 1
+                },
+                {
+                    "employee": 0,
+                    "job": 2
+                }
+            ]
+        },
+        "Friday": {
+            "EarlyShift": [
+                {
+                    "employee": 3,
+                    "job": 0
+                },
+                {
+                    "employee": 4,
+                    "job": 1
+                },
+                {
+                    "employee": 1,
+                    "job": 2
+                }
+            ],
+            "LateShift": [
+                {
+                    "employee": 3,
+                    "job": 0
+                },
+                {
+                    "employee": 4,
+                    "job": 1
+                },
+                {
+                    "employee": 2,
+                    "job": 2
+                }
+            ]
+        }
     }
 }

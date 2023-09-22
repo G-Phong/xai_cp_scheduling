@@ -10,15 +10,15 @@ export default function WeekView2({
   sumShiftsPerEmployee,
   individualPreferenceScore,
 }) {
-  // State-Hook für die hervorgehobenen Schichten
+  // State hook for highlighted shifts
   const [highlightedShifts, setHighlightedShifts] = useState({
-    Montag: {
-      Frühschicht: [
+    Monday: {
+      EarlyShift: [
         { isDifferent: true, job: 0 },
         { isDifferent: false, job: 1 },
         { isDifferent: false, job: 2 },
       ],
-      Spätschicht: [
+      LateShift: [
         { isDifferent: false, job: 0 },
         { isDifferent: false, job: 1 },
         { isDifferent: false, job: 2 },
@@ -27,24 +27,24 @@ export default function WeekView2({
   });
 
   useEffect(() => {
-    // Wenn sich die geänderten Schichten ändern, setzen Sie den Zustand für hervorgehobene Schichten neu
+    // Reset the state for highlighted shifts when changedShifts change
     setHighlightedShifts(changedShifts);
   }, [changedShifts]);
 
-  // Extrahiere schedule_data und statistics aus shiftData
+  // Extract schedule_data and statistics from shiftData
   const { schedule_data, statistics } = shiftData;
 
-  // Extrahiere die Wochentage aus schedule_data
+  // Extract weekdays from schedule_data
   const weekdays = Object.keys(schedule_data);
 
-  // Extrahiere die Schichttypen aus dem ersten Wochentag (angenommen, sie sind für alle Wochentage gleich)
+  // Extract shift types from the first weekday (assuming they are the same for all weekdays)
   const shiftTypes = Object.keys(schedule_data[weekdays[0]]);
 
-  // Job-Bezeichnungen für die Überschriften
+  // Job descriptions for table headings
   const jobDescriptions = {
-    0: "Gabelstapler",
-    1: "Lager sortieren",
-    2: "Kommissionieren",
+    0: "Forklift",
+    1: "Sorting",
+    2: "Picking",
   };
 
   function getNumberDifferences(changedShifts) {
@@ -67,7 +67,7 @@ export default function WeekView2({
         }
       }
     } else {
-      console.log("changedShifts has wrong input!");
+      console.log("changedShifts has the wrong input format!");
     }
 
     return diffCounter;
@@ -75,7 +75,7 @@ export default function WeekView2({
 
   return (
     <div>
-      {/* Format as row to have both matrices next to each other */}
+      {/* Format as a row to have both matrices next to each other */}
       <div className="row">
         {/* Updated Preference Matrix */}
         <div className="col-md-6">
@@ -226,14 +226,8 @@ export default function WeekView2({
                         }`}
                       >
                         <div className="subcell">
-                          {" Employee-ID: " +
-                            shift.employee +
-                            "      Job-ID: " +
-                            shift.job}
+                          {" Employee-ID: " + shift.employee}
                         </div>
-                        {/* <div className="subcell">
-                    {"Job-ID: " + shift.job}
-                  </div> */}
                       </div>
                     );
                   })}
@@ -244,7 +238,7 @@ export default function WeekView2({
         </tbody>
       </table>
 
-      {/* Anzeige des statischen Schichtplans */}
+      {/* Display the static shift schedule */}
       <h2>Original shift schedule</h2>
       {staticShiftData && (
         <div>
@@ -292,14 +286,8 @@ export default function WeekView2({
                               }`}
                             >
                               <div className="subcell">
-                                {" Employee-ID: " +
-                                  shift.employee +
-                                  "       Job-ID: " +
-                                  shift.job}
+                                {" Employee-ID: " + shift.employee}
                               </div>
-                              {/* <div className="subcell">
-                            {"Job-ID: " + shift.job}
-                          </div> */}
                             </div>
                           );
                         }
@@ -313,14 +301,14 @@ export default function WeekView2({
         </div>
       )}
 
-      {/* Anzeige weiterer Schichtplandaten */}
+      {/* Display additional shift plan data */}
       <div className="row">
         <div className="col-md-4">
           {/* Sum of Shifts per Employee */}
           <div className="matrix">
             <h2>Sum of Shifts per Employee:</h2>
             <table className="table table-bordered table-statistics">
-              {/* Tabelle für Summe der Schichten pro Mitarbeiter */}
+              {/* Table for sum of shifts per employee */}
               <thead>
                 <tr>
                   <th>Employee</th>
@@ -344,7 +332,7 @@ export default function WeekView2({
           <div className="matrix">
             <h2>Individual Preference Score:</h2>
             <table className="table table-bordered table-statistics">
-              {/* Tabelle für individuelle Präferenzpunkte */}
+              {/* Table for individual preference scores */}
               <thead>
                 <tr>
                   <th>Employee</th>

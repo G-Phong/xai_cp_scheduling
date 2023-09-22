@@ -1,5 +1,5 @@
 {
-    "employee_job_preference_matrix": "[[ 50  20  15]\n [  0 100  50]\n [ 90  25  45]\n [ 65  50  15]\n [ 50  50  60]]",
+    "employee_job_preference_matrix": "[[ 22  80   1]\n [  0 100  50]\n [ 90  25  45]\n [ 65  50  15]\n [ 50  50  60]]",
     "schedule_data": {
         "Montag": {
             "Fr\u00fchschicht": [
@@ -8,25 +8,25 @@
                     "job": 0
                 },
                 {
-                    "employee": 1,
+                    "employee": 4,
                     "job": 1
                 },
                 {
-                    "employee": 4,
+                    "employee": 1,
                     "job": 2
                 }
             ],
             "Sp\u00e4tschicht": [
                 {
-                    "employee": 0,
+                    "employee": 2,
                     "job": 0
                 },
                 {
-                    "employee": 4,
+                    "employee": 1,
                     "job": 1
                 },
                 {
-                    "employee": 1,
+                    "employee": 4,
                     "job": 2
                 }
             ]
@@ -34,25 +34,25 @@
         "Dienstag": {
             "Fr\u00fchschicht": [
                 {
-                    "employee": 4,
+                    "employee": 2,
                     "job": 0
                 },
                 {
-                    "employee": 0,
+                    "employee": 4,
                     "job": 1
                 },
                 {
-                    "employee": 2,
+                    "employee": 1,
                     "job": 2
                 }
             ],
             "Sp\u00e4tschicht": [
                 {
-                    "employee": 0,
+                    "employee": 4,
                     "job": 0
                 },
                 {
-                    "employee": 4,
+                    "employee": 0,
                     "job": 1
                 },
                 {
@@ -64,7 +64,7 @@
         "Mittwoch": {
             "Fr\u00fchschicht": [
                 {
-                    "employee": 2,
+                    "employee": 0,
                     "job": 0
                 },
                 {
@@ -78,15 +78,15 @@
             ],
             "Sp\u00e4tschicht": [
                 {
-                    "employee": 2,
+                    "employee": 3,
                     "job": 0
                 },
                 {
-                    "employee": 4,
+                    "employee": 1,
                     "job": 1
                 },
                 {
-                    "employee": 1,
+                    "employee": 4,
                     "job": 2
                 }
             ]
@@ -94,7 +94,7 @@
         "Donnerstag": {
             "Fr\u00fchschicht": [
                 {
-                    "employee": 3,
+                    "employee": 0,
                     "job": 0
                 },
                 {
@@ -108,15 +108,15 @@
             ],
             "Sp\u00e4tschicht": [
                 {
-                    "employee": 3,
+                    "employee": 4,
                     "job": 0
                 },
                 {
-                    "employee": 1,
+                    "employee": 0,
                     "job": 1
                 },
                 {
-                    "employee": 4,
+                    "employee": 1,
                     "job": 2
                 }
             ]
@@ -124,20 +124,6 @@
         "Freitag": {
             "Fr\u00fchschicht": [
                 {
-                    "employee": 0,
-                    "job": 0
-                },
-                {
-                    "employee": 4,
-                    "job": 1
-                },
-                {
-                    "employee": 1,
-                    "job": 2
-                }
-            ],
-            "Sp\u00e4tschicht": [
-                {
                     "employee": 3,
                     "job": 0
                 },
@@ -147,6 +133,20 @@
                 },
                 {
                     "employee": 4,
+                    "job": 2
+                }
+            ],
+            "Sp\u00e4tschicht": [
+                {
+                    "employee": 3,
+                    "job": 0
+                },
+                {
+                    "employee": 4,
+                    "job": 1
+                },
+                {
+                    "employee": 2,
                     "job": 2
                 }
             ]

@@ -1,36 +1,36 @@
 /* AboutUs.css */
 
-/* Stil für die Hauptüberschrift (H1) */
+/* Style for the main heading (H1) */
 h1 {
   font-size: 28px;
   margin-bottom: 20px;
-  color: #007bff; /* Blaue Farbe für die Überschrift */
-  text-align: center; /* Zentriere die Überschrift */
+  color: #007bff; /* Blue color for the heading */
+  text-align: center; /* Center the heading */
 }
 
-/* Stil für die Überschrift der Abschnitte (H2) */
+/* Style for section headings (H2) */
 home-h2 {
   font-size: 24px;
   margin-top: 20px;
   margin-bottom: 10px;
-  color: #007bff; /* Blaue Farbe für Überschriften */
-  text-align: center; /* Zentriere die Überschrift */
+  color: #007bff; /* Blue color for headings */
+  text-align: center; /* Center the headings */
 }
 
-/* Style for the regular text (P) */
+/* Style for regular text (P) */
 p {
   font-size: 16px;
   line-height: 1.5;
   margin-bottom: 20px;
   color: #333; /* Dark gray color for text */
-  text-align: center; /* Zentriere den Text */
+  text-align: center; /* Center the text */
 }
 
 /* Style for bullet points in key features */
 ul {
   list-style-type: square;
-  margin-left: 20px; /* Ändere den linken Rand auf 0, um die Bullet Points in der Mitte auszurichten */
-  text-align: center; /* Zentriere den Text in der Liste */
+  margin-left: 20px; /* Adjust the left margin to center the bullet points */
+  text-align: center; /* Center the text within the list */
   list-style-position: inside;
 }
 
@@ -39,7 +39,7 @@ li {
   font-size: 16px;
   margin-bottom: 10px;
   color: #333; /* Dark gray color for text */
-  text-align: center; /* Zentriere den Text */
+  text-align: center; /* Center the text */
 }
 
 /* Style for links */

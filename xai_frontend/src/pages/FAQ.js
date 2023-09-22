@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css"; // Importiere Bootstrap-CSS
-import "./FAQ.css"; // Importiere Ihre CSS-Datei
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./FAQ.css";
 
 export default function FAQ() {
-  // FAQ-Daten mit Fragen und Antworten
+  // FAQ-Data with questions and answers
   const faqData = [
     {
       category: "AI-based shift scheduling system",

@@ -1,6 +1,6 @@
 /* FAQ.css */
 
-/* Hintergrundfarbe für ausgeklappte Elemente */
+/* Background color for unfolded elements */
 .accordion-body {
-  background-color: #b1b3b1; /* Ändern Sie die Hintergrundfarbe nach Ihren Wünschen */
+  background-color: #b1b3b1; 
 }
