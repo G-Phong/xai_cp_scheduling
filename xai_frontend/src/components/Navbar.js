@@ -38,11 +38,11 @@ function Navbar() {
             FAQ
           </Link>
         </li>
-        <li className="nav-item">
+{/*         <li className="nav-item">
           <Link to="/randomButton" className="nav-link">
             Random Button
           </Link>
-        </li>
+        </li> */}
         <li className="nav-item">
           <Link to="/about-us" className="nav-link">
             About Us

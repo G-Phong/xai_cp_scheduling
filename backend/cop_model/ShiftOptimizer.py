@@ -89,7 +89,7 @@ class ShiftOptimizer:
     """  
  
     #Konstruktor mit Standardwerten, falls keine Argumente übergeben werden
-    def __init__(self, num_employees=0, num_jobs=0, num_qualifications=0, num_days=0, num_shifts_per_day=0):
+    def __init__(self, employee_job_preference_matrix=None, num_employees=0, num_jobs=0, num_qualifications=0, num_days=0, num_shifts_per_day=0):
         """
         Initialisiert eine Instanz der ShiftOptimizer-Klasse und initialisiert Instanzvariablen
 
@@ -100,6 +100,13 @@ class ShiftOptimizer:
             num_days (int): Die Anzahl der Tage im Schichtplan.
             num_shifts_per_day (int): Die Anzahl der Schichten pro Tag.
         """
+
+        if employee_job_preference_matrix is None:
+            print("ShiftOptimizer Instanz mit Standardwerten wird initialisiert!")
+        else:
+            print("ShiftOptimizer Instanz mit MODIFIZIERTER Präferenzmatrix wird initialisiert!")
+
+
         self.num_employees = num_employees
         self.num_jobs = num_jobs
         self.num_qualifications = num_qualifications
@@ -127,12 +134,19 @@ class ShiftOptimizer:
                                                   ])
         self.x = (self.num_employees, self.num_jobs)
         self.employee_job_calculation_matrix = np.zeros(self.x, dtype=int)
-        self.employee_job_preference_matrix = np.array([[50, 20, 15],
-                                               [0, 100, 50],
-                                               [90, 25, 45],
-                                               [65, 50, 15],
-                                               [50, 50, 60]
-                                               ])
+
+        #fill with argument
+        if(employee_job_preference_matrix is None):
+
+            self.employee_job_preference_matrix = np.array([[50, 20, 15],
+                                                [0, 100, 50],
+                                                [90, 25, 45],
+                                                [65, 50, 15],
+                                                [50, 50, 60]
+                                                ])
+        else: 
+            self.employee_job_preference_matrix = employee_job_preference_matrix
+
         self.rotation_preference_per_employee = arr.array('i', [3, 3, 3, 3, 10])
 
         # each variable is assigned a range (für die Iterierung mittels Schleifen)
@@ -278,25 +292,40 @@ class ShiftOptimizer:
 
     def update_preferences(self, job1_preference, job2_preference, job3_preference):
         """
-        Aktualisiert die Job-Präferenzen im ShiftOptimizer-Objekt nur für die erste Zeile.
+        Aktualisiert die Job-Präferenzen im ShiftOptimizer-Objekt nur für die erste Zeile, gibt dann die neue Matrix zurück.
+        Ändert NICHT die Instanzvariable "employee_job_preference_matrix"!
 
         Args:
             job1_preference (int): Präferenzwert für Job 1.
             job2_preference (int): Präferenzwert für Job 2.
             job3_preference (int): Präferenzwert für Job 3.
         """
+
+        newPreferenceMatrix = self.employee_job_preference_matrix
+
+        #ACHTUNG: DAS AKTUALISIERT DIE MATRIX ABER NICHT DAS CP_MODEL!!
         # Aktualisiere nur die erste Zeile (Index 0) der Präferenzen im employee_job_preference_matrix
-        self.employee_job_preference_matrix[0, :] = [job1_preference, job2_preference, job3_preference]
+        #self.employee_job_preference_matrix[0, :] = [job1_preference, job2_preference, job3_preference]
         #self.employee_job_preference_matrix[1, :] = [job1_preference, job2_preference, job3_preference]
         #self.employee_job_preference_matrix[2, :] = [job1_preference, job2_preference, job3_preference]
         #self.employee_job_preference_matrix[3, :] = [job1_preference, job2_preference, job3_preference]
         #self.employee_job_preference_matrix[4, :] = [job1_preference, job2_preference, job3_preference]
 
-        print("looking at new preferences: ")
-        print(self.employee_job_preference_matrix)
+        newPreferenceMatrix[0, :] = [job1_preference, job2_preference, job3_preference]
 
-        print("Solving with updated preferences for the first employee!")
-        return
+        print("New matrix will returned -> Looking at new preferences: ")
+        print(newPreferenceMatrix)
+
+        return newPreferenceMatrix
+    
+    def regenerate_model(self):
+        """
+        Regeneriert das Modell mit optional aktualisierten Parametern.
+
+        """
+
+        # Rufen Sie die Methode zur Modellerstellung erneut auf -> das reicht noch nicht!!
+        self.model = cp_model.CpModel()
 
     
     def solve_shifts(self):
@@ -332,7 +361,11 @@ class ShiftOptimizer:
         # Solve() will return a solutionStatus and this will be stored into this variable "status"
         #status = self.solver.Solve(self.model, solution_printer)
 
-        status = self.solver.Solve(self.model)
+        #Regenerate Model
+        #self.regenerate_model()
+
+        #Solve
+        self.status = self.solver.Solve(self.model)
 
         #print status
         print()
@@ -355,6 +388,10 @@ class ShiftOptimizer:
         # Ausgabe in einem strukturierten Dict -> wird von dieser Fuunktion zurückgegeben
         schedule_data = {}
 
+        day_data = {"Frühschicht": [], "Spätschicht": []} #Zurücksetzen!
+
+   
+
         # Wochentage für die Ausgabe definieren
         weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"]
 
@@ -362,6 +399,7 @@ class ShiftOptimizer:
         counter_day = 1
         # Schleife über die Tage (Montag, Dienstag, ...)
         for s in self.schedule:
+           
             
             #Zuweisung von Tag und Schicht in schedule_data
             current_weekday = weekdays[counter_day-1]

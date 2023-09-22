@@ -36,7 +36,7 @@ num_days = 5 #den kann man zu Debugging-Zwecken mal variieren
 num_shifts_per_day = 2
 
 
-# Instanz von ShiftOptimizer mit globalen Parametern
+# Instanz von ShiftOptimizer mit globalen Parametern (TODO: globale Instanz???)
 COPoptimizer = ShiftOptimizer(num_employees=num_employees,
                                 num_jobs=num_jobs,
                                 num_qualifications=num_qualifications,
@@ -103,15 +103,25 @@ def solve_shifts_endpoint():
         job3_preference = request_data.get("job3Preference")  
         # Weitere Daten extrahieren, falls vorhanden
 
+        # HIER WIRD AN EIN UND DEMSELBEN GLOBALEN OBJEKT COPoptimizer gearbeitet!! SINNVOLL?
+
         # Aktualisiere die Präferenzen im ShiftOptimizer-Objekt
-        COPoptimizer.update_preferences(job1_preference, job2_preference, job3_preference)
+        tempNewPreferenceMatrix = COPoptimizer.update_preferences(job1_preference, job2_preference, job3_preference)
+
+        #Instanziiere neue temporäre Instanz (Regenration) für die neue Lösung, sonst wird immer das gleiche Model gelöst
+        tempCOPoptimizer = ShiftOptimizer(employee_job_preference_matrix = tempNewPreferenceMatrix,
+                                          num_employees=num_employees,
+                                num_jobs=num_jobs,
+                                num_qualifications=num_qualifications,
+                                num_days=num_days,
+                                num_shifts_per_day=num_shifts_per_day)
 
         # Führe die Schichtplanung mit den neuen Präferenzen durch (Ein Tupel wird zurückgegeben!)
-        schedule_data, optimal_solution_count = COPoptimizer.solve_shifts()
+        schedule_data, optimal_solution_count = tempCOPoptimizer.solve_shifts()
 
-        individual_preference_score = COPoptimizer.calculate_individual_preference_score()
+        individual_preference_score = tempCOPoptimizer.calculate_individual_preference_score()
 
-        sum_shifts_per_employee = COPoptimizer.sum_shifts_per_employee()
+        sum_shifts_per_employee = tempCOPoptimizer.sum_shifts_per_employee()
 
         # Beispiel für die Umwandlung der Dictionaries in Zeichenketten
         #sum_shifts_per_employee_str = json.dumps(sum_shifts_per_employee)
@@ -123,7 +133,6 @@ def solve_shifts_endpoint():
         # Annahme: sum_shifts_per_employee und individual_preference_score sind Dictionaries mit int-Schlüsseln und int-Werten
         sum_shifts_per_employee_str = {str(k): str(v) for k, v in sum_shifts_per_employee.items()}
         individual_preference_score_str = {str(k): str(v) for k, v in individual_preference_score.items()}
-
 
 
         # Die globalen Variablen als Teil der Antwort senden

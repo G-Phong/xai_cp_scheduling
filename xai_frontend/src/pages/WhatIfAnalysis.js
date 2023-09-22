@@ -177,65 +177,65 @@ const staticPreferences = [
 
 export default function WhatIfAnalysis() {
   // Zustandsvariable für die Liste der Präferenzen
-  const [preferencesList, setPreferencesList] = useState([100, 0, 0]);
+  const [preferencesList, setPreferencesList] = useState([0, 0, 0]);
   // Zustandsvariable für den aktuellen Wert
   const [currentValueList, setCurrentValueList] = useState([50, 20, 15]);
-  // Zustandsvariable für den aktuellen Wert
+  // Zustandsvariable für den aktuellen Wert (anfangs identisch mit staticShiftPlan)
   const [solutionData, setSolutionData] = useState({
     schedule_data: {
       Montag: {
         Frühschicht: [
           { employee: 2, job: 0 },
-          { employee: 1, job: 1 },
-          { employee: 4, job: 2 },
+          { employee: 4, job: 1 },
+          { employee: 1, job: 2 },
         ],
         Spätschicht: [
           { employee: 0, job: 0 },
           { employee: 4, job: 1 },
-          { employee: 1, job: 2 },
+          { employee: 2, job: 2 },
         ],
       },
       Dienstag: {
         Frühschicht: [
           { employee: 4, job: 0 },
-          { employee: 0, job: 1 },
+          { employee: 1, job: 1 },
           { employee: 2, job: 2 },
         ],
         Spätschicht: [
-          { employee: 0, job: 0 },
-          { employee: 4, job: 1 },
-          { employee: 2, job: 2 },
+          { employee: 2, job: 0 },
+          { employee: 0, job: 1 },
+          { employee: 4, job: 2 },
         ],
       },
       Mittwoch: {
         Frühschicht: [
           { employee: 2, job: 0 },
-          { employee: 1, job: 1 },
-          { employee: 4, job: 2 },
+          { employee: 4, job: 1 },
+          { employee: 1, job: 2 },
         ],
         Spätschicht: [
-          { employee: 2, job: 0 },
+          { employee: 3, job: 0 },
           { employee: 4, job: 1 },
           { employee: 1, job: 2 },
         ],
       },
       Donnerstag: {
         Frühschicht: [
-          { employee: 3, job: 0 },
+          { employee: 0, job: 0 },
           { employee: 4, job: 1 },
           { employee: 2, job: 2 },
         ],
         Spätschicht: [
-          { employee: 3, job: 0 },
+          { employee: 0, job: 0 },
           { employee: 1, job: 1 },
           { employee: 4, job: 2 },
         ],
       },
       Freitag: {
         Frühschicht: [
-          { employee: 0, job: 0 },
-          { employee: 4, job: 1 },
-          { employee: 1, job: 2 },
+          { employee: 3, job: 0 },
+          { employee: 1, job: 1 },
+          { employee: 4, job: 2 },
         ],
         Spätschicht: [
           { employee: 3, job: 0 },
@@ -254,7 +254,7 @@ export default function WhatIfAnalysis() {
     },
   });
 
-  //Zustandsvariable für updated Präferenzmatrix
+  //Zustandsvariable für updated Präferenzmatrix (anfangs identisch mit staticPreferences)
   const [updatedPreferenceMatrix, setUpdatedPreferenceMatrix] = useState([
     [50, 20, 15],
     [0, 100, 50],
@@ -263,89 +263,17 @@ export default function WhatIfAnalysis() {
     [50, 50, 60],
   ]);
 
+  //Zustandsvariablen
   const [sumShiftsPerEmployee, setSumShiftsPerEmployee] = useState({});
-  const [individualPreferenceScore, setIndividualPreferenceScore] = useState({});
-
-
-  // Zustand für die vorherige Lösung
-  const [previousSolutionData, setPreviousSolutionData] = useState({
-    schedule_data: {
-      Montag: {
-        Frühschicht: [
-          { employee: "default", job: 1 },
-          { employee: 2, job: 0 },
-          { employee: 4, job: 2 },
-        ],
-        Spätschicht: [
-          { employee: 0, job: 0 },
-          { employee: 1, job: 2 },
-          { employee: 4, job: 1 },
-        ],
-      },
-      Dienstag: {
-        Frühschicht: [
-          { employee: 0, job: 1 },
-          { employee: 2, job: 2 },
-          { employee: 4, job: 0 },
-        ],
-        Spätschicht: [
-          { employee: 0, job: 0 },
-          { employee: 2, job: 2 },
-          { employee: 4, job: 1 },
-        ],
-      },
-      Mittwoch: {
-        Frühschicht: [
-          { employee: 1, job: 1 },
-          { employee: 2, job: 0 },
-          { employee: 4, job: 2 },
-        ],
-        Spätschicht: [
-          { employee: 1, job: 2 },
-          { employee: 2, job: 0 },
-          { employee: 4, job: 1 },
-        ],
-      },
-      Donnerstag: {
-        Frühschicht: [
-          { employee: 2, job: 2 },
-          { employee: 3, job: 0 },
-          { employee: 4, job: 1 },
-        ],
-        Spätschicht: [
-          { employee: 1, job: 1 },
-          { employee: 3, job: 0 },
-          { employee: 4, job: 2 },
-        ],
-      },
-      Freitag: {
-        Frühschicht: [
-          { employee: 0, job: 0 },
-          { employee: 1, job: 2 },
-          { employee: 4, job: 1 },
-        ],
-        Spätschicht: [
-          { employee: 0, job: 1 },
-          { employee: 3, job: 0 },
-          { employee: 4, job: 2 },
-        ],
-      },
-    },
-    solution_count: 2,
-    statistics: {
-      num_employees: 5,
-      num_jobs: 3,
-      num_qualifications: 3,
-      num_days: 5,
-      num_shifts_per_day: 2,
-    },
-  });
+  const [individualPreferenceScore, setIndividualPreferenceScore] = useState(
+    {}
+  );
 
   // Zustandsvariable für veränderte Schichten
   const [changedShifts, setChangedShifts] = useState({
     Montag: {
       Frühschicht: [
-        { isDifferent: true, job: 0 },
+        { isDifferent: false, job: 0 },
         { isDifferent: false, job: 1 },
         { isDifferent: false, job: 2 },
       ],
@@ -365,6 +293,9 @@ export default function WhatIfAnalysis() {
 
     // Aktualisiere die aktuellen Werte
     setCurrentValueList(preferencesList);
+
+    console.log("Aktualisierte Präferenzenliste wird geschickt!");
+    console.log(preferencesList);
 
     // Sende eine POST-Anfrage an das Backend
     axios
@@ -399,6 +330,7 @@ export default function WhatIfAnalysis() {
         );
         console.log(preferencesList);
         console.log("Antwort vom Backend nach dem Solven: ");
+        console.log(response);
 
         if (solutionData == null) {
           console.log("Null Response!");
@@ -406,9 +338,6 @@ export default function WhatIfAnalysis() {
           console.log("Datentyp von solutionData:", typeof solutionData);
           console.log("Inhalt von solutionData:", solutionData);
         }
-
-        
-
       })
       .catch((error) => {
         // Handle Fehler, falls auftreten
@@ -416,11 +345,31 @@ export default function WhatIfAnalysis() {
       });
   };
 
-  // useEffect verwenden, um initial die vorherige Lösung zu setzen
-  useEffect(() => {
-    setPreviousSolutionData(solutionData);
-  }, [solutionData]);
+  // Funktion zum Aktualisieren der Präferenzen in der Liste
+  const updatePreferences = (index, value) => {
+    // Konvertiere den Wert zu einem Integer
+    const intValue = parseInt(value);
 
+    const updatedList = [...preferencesList];
+    updatedList[index] = intValue;
+    setPreferencesList(updatedList);
+
+    // Erstelle eine Kopie der aktuellen Updated Preference Matrix
+    const updatedMatrix = [...updatedPreferenceMatrix];
+
+    // Ersetze die erste Zeile der Matrix mit den aktualisierten Präferenzen
+    updatedMatrix[0] = updatedList;
+
+    // Setze die aktualisierte Matrix im Zustand
+    setUpdatedPreferenceMatrix(updatedMatrix);
+  };
+
+  /**
+   * Vergleicht zwei Schichtpläne und ermittelt, welche Schichten sich zwischen ihnen geändert haben.
+   * @param {object} oldShiftPlan - Der alte Schichtplan.
+   * @param {object} newShiftPlan - Der neue Schichtplan.
+   * @returns {object} Ein Objekt, das die gefundenen Änderungen in den Schichten pro Wochentag und Schichttyp enthält.
+   */
   function findChangedShifts(oldShiftPlan, newShiftPlan) {
     const changedShifts = {};
 
@@ -478,31 +427,14 @@ export default function WhatIfAnalysis() {
     return changedShifts;
   }
 
-  // Funktion zum Aktualisieren der Präferenzen in der Liste
-  const updatePreferences  = (index, value) => {
-    // Konvertiere den Wert zu einem Integer
-    const intValue = parseInt(value);
-
-    const updatedList = [...preferencesList];
-    updatedList[index] = intValue;
-    setPreferencesList(updatedList);
-
-    // Erstelle eine Kopie der aktuellen Updated Preference Matrix
-    const updatedMatrix = [...updatedPreferenceMatrix];
-
-    // Ersetze die erste Zeile der Matrix mit den aktualisierten Präferenzen
-    updatedMatrix[0] = updatedList;
-
-    // Setze die aktualisierte Matrix im Zustand
-    setUpdatedPreferenceMatrix(updatedMatrix);
-  };
-
   return (
     <div className="container">
       <h1>What-If-Analysis</h1>
-      <h2>Change preferences of Employee 0 here
+      <h2>
+        Change preferences of Employee 0 here
         <br />
-         (0 = no preference, 100 = full preference)</h2>
+        (0 = no preference, 100 = full preference)
+      </h2>
       <div className="row">
         {[0, 1, 2].map((index) => (
           <div className="col-md-4" key={index}>
@@ -544,9 +476,6 @@ export default function WhatIfAnalysis() {
         sumShiftsPerEmployee={sumShiftsPerEmployee} // Summe der Schichten pro Mitarbeiter
         individualPreferenceScore={individualPreferenceScore} // individuelle Präferenzpunktzahl
       />
-      {/* Übergebe die Schichtdaten an WeekView */}
     </div>
   );
-  
-
 }

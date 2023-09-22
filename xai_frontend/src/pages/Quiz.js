@@ -4,7 +4,7 @@ import Quiz from "react-quiz-component";
 export const quiz = {
   quizTitle: "AI-Based Shift Planning Quiz",
   quizSynopsis: "Test your knowledge of AI-based shift planning.",
-  nrOfQuestions: "7",
+  nrOfQuestions: "10",
   questions: [
     {
       question: "What is the primary purpose of AI-based shift planning?",
@@ -142,19 +142,83 @@ export const quiz = {
         "What-If analysis helps users understand the system better and enhances its transparency.",
       point: "10",
     },
+    {
+      question:
+        "Which elements contribute to the trustworthiness of the AI-based shift scheduling system?",
+      questionType: "text",
+      answerSelectionType: "multiple",
+      answers: [
+        "Transparency of Algorithm",
+        "Ability to Handle Large Data Sets Efficiently",
+        "Inclusion of Employee Preferences",
+        "High Computational Speed",
+      ],
+      correctAnswer: [1,3],
+      messageForCorrectAnswer:
+        "Correct! What-If analysis in the shift planning system increases system transparency for users.",
+      messageForIncorrectAnswer:
+        "Sorry, that's incorrect. What-If analysis in the shift planning system increases system transparency for users.",
+      explanation:
+        "What-If analysis helps users understand the system better and enhances its transparency.",
+      point: "10",
+    },
+    {
+      question:
+        "What are the types of constraints typically used in Constraint Optimization Problems (COPs)?",
+      questionType: "text",
+      answerSelectionType: "multiple",
+      answers: [
+        "Soft Constraints",
+        "Equational Constraints",
+        "Hard Constraints",
+        "Non-equational Constraints",
+      ],
+      correctAnswer: [1, 3],
+      messageForCorrectAnswer:
+        "Correct! What-If analysis in the shift planning system increases system transparency for users.",
+      messageForIncorrectAnswer:
+        "Sorry, that's incorrect. What-If analysis in the shift planning system increases system transparency for users.",
+      explanation:
+        "What-If analysis helps users understand the system better and enhances its transparency.",
+      point: "10",
+    },
+    {
+      question:
+        "Which of the following are key objectives of Explainable AI (XAI) in the context of shift scheduling?",
+      questionType: "text",
+      answerSelectionType: "multiple",
+      answers: [
+        "Improve Algorithm Efficiency",
+        "Increase Human Trust in the System",
+        "Enhance Transparency and Interpretability",
+        "Facilitate Easier Data Collection",
+      ],
+      correctAnswer: [1,2,3],
+      messageForCorrectAnswer:
+        "Correct! What-If analysis in the shift planning system increases system transparency for users.",
+      messageForIncorrectAnswer:
+        "Sorry, that's incorrect. What-If analysis in the shift planning system increases system transparency for users.",
+      explanation:
+        "What-If analysis helps users understand the system better and enhances its transparency.",
+      point: "10",
+    },
   ],
 };
 
 export default function MCQuiz() {
   return (
-    <div>
-      <h1>Understanding AI-based shift scheduling!</h1>
-      <Quiz
-        quiz={quiz}
-        shuffle={false}
-        showDefaultResult={true}
-        showInstantFeedback={true}
-      />
+    <div className="container">
+    <div className="row justify-content-center">
+      <div className="col-md-6 text-center">
+        <h1>Understanding AI-based shift scheduling!</h1>
+        <Quiz
+          quiz={quiz}
+          shuffle={true}
+          showDefaultResult={true}
+          showInstantFeedback={true}
+        />
+      </div>
     </div>
+  </div>
   );
 }

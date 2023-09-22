@@ -30,7 +30,7 @@ export default function App() {
             <Route path="/edugame" element={<EduGame />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/faq" element={<FAQ />} />
-            <Route path="/randomButton" element={<RandomButton />} />
+{/*             <Route path="/randomButton" element={<RandomButton />} /> */}
             <Route path="/about-us" element={<AboutUs />} />
           </Routes>
         </main>
