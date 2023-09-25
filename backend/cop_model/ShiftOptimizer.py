@@ -6,41 +6,163 @@ import time
 import json
 
 class VarArraySolutionPrinter(cp_model.CpSolverSolutionCallback):
-    """Print intermediate solutions."""
+    """
+    Custom callback class for the CP-SAT solver, tailored for collecting and structuring
+    employee shift-scheduling solutions. This class extends the CpSolverSolutionCallback
+    and overrides the on_solution_callback method to adapt the solution to a human-centric
+    format.
+
+    Attributes:
+        __variables (list): List of model variables to be monitored for solutions.
+        __num_shifts_per_day (int): The number of different shift types in one day.
+        __employee_job_preference_matrix (ndarray): A matrix representing the preference score of employees for various jobs.
+        __employees (list): A list of unique identifiers for each employee.
+        __schedule (list): A list of time intervals or shifts that need to be scheduled.
+        __jobs (list): A list of unique identifiers for each job type.
+        __solution_count (int): Keeps track of the number of solutions found.
+        __all_solutions (list): Accumulates all solutions in a structured format for easy retrieval.
+    
+    Methods:
+        on_solution_callback(): Overrides the method from CpSolverSolutionCallback to handle each new solution.
+        structure_shift_data(): Transforms the raw solution data into a human-readable structured format.
+        divisible(currentschedule, numbershifts, counter_day): Helper method to track the current day of the schedule.
+        solution_count(): Returns the number of solutions found.
+        get_all_solutions(): Returns a list of all structured solutions found.
+    """
 
     def __init__(self, variables, employee_job_preference_matrix, employees, schedule, jobs):
+        """Intiliazining the VarArraySolutionPrinter class"""
         cp_model.CpSolverSolutionCallback.__init__(self)
         self.__variables = variables
+        self.__num_shifts_per_day = 2
         self.__employee_job_preference_matrix = employee_job_preference_matrix
         self.__solution_count = 0
         self.__employees = employees
         self.__schedule = schedule
         self.__jobs = jobs
+        self.__all_solutions = []
 
     def on_solution_callback(self):
+        """This method is called, when a solution is found."""
         self.__solution_count += 1
-        print()
-        print("--------------------------------------------------------------------------------------------------------")
-        print(f"Solution {self.__solution_count}:")
-        print("--------------------------------------------------------------------------------------------------------")
-        print()
 
-        # Initialize total preference
-        total_preference = 0  
-
+        current_solution = {}
+        total_preference = 0
         for e in self.__employees:
             for s in self.__schedule:
                 for j in self.__jobs:
                     index = e * (len(self.__schedule) * len(self.__jobs)) + s * len(self.__jobs) + j
                     if self.Value(self.__variables[index]) == 1:
+                        #current_solution[(e, s, j)] = self.Value(self.__variables[index])
                         total_preference += self.__employee_job_preference_matrix[e, j]
-                        print(f"Employee {e}, Shift {s}, Job {j}: {self.Value(self.__variables[index])}")
 
-        print(f"Total Preference for this solution: {total_preference}")
+        current_solution = self.structure_shift_data()
 
+        self.__all_solutions.append({
+            'solution': current_solution,
+            'total_preference': total_preference
+        })
+
+        #print("Printing self.__all_solutions: ")
+        #print(self.__all_solutions)
+
+    def structure_shift_data(self):
+        """Brings the shift solution data into a nice and representable format"""
+
+        # Structured dictionary for schedule data
+        schedule_data = {}
+
+        day_data = {"EarlyShift": [], "LateShift": []} #set
+ 
+        # Define weekdays for the output
+        weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+
+        counter_day = 1
+
+        for s in self.__schedule:
+            current_weekday = weekdays[counter_day - 1]
+            counter_day = self.divisible(s + 1, self.__num_shifts_per_day, counter_day)
+
+            # Initialize day_data for each shift type
+            if current_weekday not in schedule_data:
+                day_data = {
+                    "EarlyShift": [],
+                    "LateShift": []
+                }
+         
+
+            shift_dict = {
+                "EarlyShift": {},
+                "LateShift": {}
+            }
+
+            for e in self.__employees:
+                for j in self.__jobs:
+                    index = e * (len(self.__schedule) * len(self.__jobs)) + s * len(self.__jobs) + j
+                    if self.Value(self.__variables[index]) == 1:
+                        shift_type = "EarlyShift" if s % 2 == 0 else "LateShift"
+                        if j not in shift_dict[shift_type]:
+                            shift_dict[shift_type][j] = []
+                        shift_dict[shift_type][j].append({"employee": e, "job": j})
+
+            # Add shifts to day_data
+            for shift_type in ["EarlyShift", "LateShift"]:
+                for job_id in sorted(shift_dict[shift_type].keys()):
+                    day_data[shift_type].extend(shift_dict[shift_type][job_id])
+
+            # Add day_data to schedule_data
+            schedule_data[current_weekday] = day_data
+
+        return schedule_data
+
+    def divisible(self, currentschedule, numbershifts, counter_day):
+        """Checks if the current shift index is divisible by the total number of shifts to update the day counter."""
+        if currentschedule % numbershifts == 0:
+            counter_day = counter_day + 1
+        return counter_day
 
     def solution_count(self):
+        """Returns number of optimal solutions found by the solver"""
         return self.__solution_count
+    
+    def get_all_solutions(self):
+        """
+        Returns a list of all collected solutions.
+
+        Each item in the list is a dictionary with the following structure:
+        
+        {
+            'solution': {
+                'Weekday': {
+                    'EarlyShift': [
+                        {'employee': employee_id_1, 'job': job_id_1},
+                        {'employee': employee_id_2, 'job': job_id_2},
+                        ...
+                    ],
+                    'LateShift': [
+                        {'employee': employee_id_1, 'job': job_id_1},
+                        {'employee': employee_id_2, 'job': job_id_2},
+                        ...
+                    ]
+                },
+                ...
+            },
+            'total_preference': total_preference_value
+        }
+
+        - 'solution': A nested dictionary that provides the scheduling information.
+            - 'Weekday': A key representing the weekday (e.g., "Monday").
+                - 'EarlyShift'/'LateShift': Keys for different types of shifts.
+                    - A list of dictionaries, each containing:
+                        - 'employee': An identifier for an employee.
+                        - 'job': An identifier for a job.
+
+        - 'total_preference': An integer representing the total preference value of the corresponding solution.
+
+        Returns:
+            list: A list of dictionaries, each containing a solution and its corresponding total preference value.
+        """
+        return self.__all_solutions
 
 
 class ShiftOptimizer:
@@ -286,70 +408,41 @@ class ShiftOptimizer:
         # Number of optimal solutions
         optimal_solution_count = self.solution_printer.solution_count()
 
+        # Get all solutions from solution printer
+        all_solutions = self.solution_printer.get_all_solutions()
+
+        # Prepare the output dictionary
+        output_data = {
+            'number_of_solutions': optimal_solution_count,
+            'solutions': [],
+            #'total_preferences': []
+        }
+
+        # Iterate through all solutions and add them to the 'solutions' list
+        for i, sol in enumerate(all_solutions):
+            # Create an ID for the solution, e.g., "solution1", "solution2", ...
+            solution_dict = {
+                'id': f"solution{i+1}",
+                'schedule': sol['solution'],  # Add the schedule to the solution
+                'total_preference': str(sol['total_preference'])  # Add the total preference to the solution
+            }
+
+            # Add the entire dictionary to the 'solutions' list
+            output_data['solutions'].append(solution_dict)
+
+        print("output data: ")
+        print(output_data)
+
+        output_file_path = "output_data.txt"
+        with open(output_file_path, 'w', encoding='utf-8') as output_file:
+            json.dump(output_data, output_file, indent=4)
+
         # Stop timing
         time_end = time.time()
         print(f"Solving took {time_end - time_start} seconds")
 
-        # Structured dictionary for schedule data
-        schedule_data = {}
-
-        day_data = {"EarlyShift": [], "LateShift": []} #set
- 
-        # Define weekdays for the output
-        weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
-
-        counter_day = 1
-
-        
-        for s in self.schedule:
-            current_weekday = weekdays[counter_day - 1]
-            counter_day = self.divisible(s + 1, self.num_shifts_per_day, counter_day)
-
-            # Initialize day_data for each shift type
-            if current_weekday not in schedule_data:
-                day_data = {
-                    "EarlyShift": [],
-                    "LateShift": []
-                }
-         
-
-            shift_dict = {
-                "EarlyShift": {},
-                "LateShift": {}
-            }
-
-            for e in self.employees:
-                for j in self.jobs:
-                    if self.solver.Value(self.shifts[(e, s, j)]) == 1:
-                        shift_type = "EarlyShift" if s % 2 == 0 else "LateShift"
-                        if j not in shift_dict[shift_type]:
-                            shift_dict[shift_type][j] = []
-                        shift_dict[shift_type][j].append({"employee": e, "job": j})
-
-            # Add shifts to day_data
-            for shift_type in ["EarlyShift", "LateShift"]:
-                for job_id in sorted(shift_dict[shift_type].keys()):
-                    day_data[shift_type].extend(shift_dict[shift_type][job_id])
-
-            # Add day_data to schedule_data
-            schedule_data[current_weekday] = day_data
-
-
-        # Output file path
-        output_file_path = "schedule_data.txt"
-
-        # Create a combined dictionary for both datasets
-        combined_data = {
-            "employee_job_preference_matrix": str(self.employee_job_preference_matrix),
-            "schedule_data": schedule_data
-        }
-
-        # Write combined data to a file in JSON format
-        with open(output_file_path, 'w', encoding='utf-8') as output_file:
-            json.dump(combined_data, output_file, indent=4)
-
         # Return a tuple containing schedule data and optimal solution count
-        return schedule_data, optimal_solution_count
+        return output_data
 
     def sum_shifts_per_employee(self):
         """
@@ -448,3 +541,57 @@ class ShiftOptimizer:
         if employee_qualification_matrix[employee, qualification] > job_required_qualification_matrix[job, qualification]:
             return 0
         return 1
+    
+    def structure_shift_data(self):
+        '''Brings shifts-variable into a nice structure'''
+
+        # Structured dictionary for schedule data
+        schedule_data = {}
+
+        day_data = {"EarlyShift": [], "LateShift": []} #set
+ 
+        # Define weekdays for the output
+        weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+
+        counter_day = 1
+
+        for s in self.schedule:
+            current_weekday = weekdays[counter_day - 1]
+            counter_day = self.divisible(s + 1, self.num_shifts_per_day, counter_day)
+
+            # Initialize day_data for each shift type
+            if current_weekday not in schedule_data:
+                day_data = {
+                    "EarlyShift": [],
+                    "LateShift": []
+                }
+         
+
+            shift_dict = {
+                "EarlyShift": {},
+                "LateShift": {}
+            }
+
+            for e in self.employees:
+                for j in self.jobs:
+                    if self.solver.Value(self.shifts[(e, s, j)]) == 1:
+                        shift_type = "EarlyShift" if s % 2 == 0 else "LateShift"
+                        if j not in shift_dict[shift_type]:
+                            shift_dict[shift_type][j] = []
+                        shift_dict[shift_type][j].append({"employee": e, "job": j})
+
+            # Add shifts to day_data
+            for shift_type in ["EarlyShift", "LateShift"]:
+                for job_id in sorted(shift_dict[shift_type].keys()):
+                    day_data[shift_type].extend(shift_dict[shift_type][job_id])
+
+            # Add day_data to schedule_data
+            schedule_data[current_weekday] = day_data
+
+        print("nicely structured")
+
+        print(schedule_data)
+
+        return schedule_data
+    
+  

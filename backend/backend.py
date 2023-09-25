@@ -71,16 +71,17 @@ def solve_shifts_with_preferences():
         num_shifts_per_day=num_shifts_per_day
     )
     
-    schedule_data, optimal_solution_count = temp_optimizer.solve_shifts()
+    output_data = temp_optimizer.solve_shifts()
 
-    logging.debug('Type of schedule_data: %s', schedule_data)
+    logging.debug('Type of schedule_data: %s', output_data)
     
     individual_preference_score = temp_optimizer.calculate_individual_preference_score()
     sum_shifts_per_employee = temp_optimizer.sum_shifts_per_employee()
 
     response_data = {
-        "schedule_data": schedule_data,        
-        "solution_count": optimal_solution_count,
+        "schedule_data": output_data.get('solutions', []),
+        "solution_count": output_data.get('number_of_solutions', 0),
+        "total_preferences": output_data.get('total_preferences', []),
         "statistics": {
             "num_employees": num_employees,
             "num_jobs": num_jobs,
@@ -90,20 +91,6 @@ def solve_shifts_with_preferences():
         "sum_shifts_per_employee": sum_shifts_per_employee,
         "individual_preference_score": individual_preference_score
         }
-    
-    """     response_data = {
-        "schedule_data": schedule_data,
-        "solution_count": optimal_solution_count,
-        "statistics": {
-            "num_employees": num_employees,
-            "num_jobs": num_jobs,
-            "num_qualifications": num_qualifications,
-            "num_days": num_days,
-            "num_shifts_per_day": num_shifts_per_day
-        },
-        "sum_shifts_per_employee": sum_shifts_per_employee,
-        "individual_preference_score": individual_preference_score
-    } """
     
     logging.debug('Response data with solution_count: %s', response_data)
 
