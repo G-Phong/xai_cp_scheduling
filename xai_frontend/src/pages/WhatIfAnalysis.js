@@ -4,158 +4,140 @@ import axios from "axios"; // JavaScript Library for HTTP-requests
 
 // static reference solution
 const staticShiftPlan = {
-  schedule_data: {
-    Monday: {
-      EarlyShift: [
-        {
-          employee: 2,
-          job: 0,
+  schedule_data: [
+    {
+      id: "solution1",
+      schedule: {
+        Monday: {
+          EarlyShift: [
+            { employee: 4, job: 0 },
+            { employee: 1, job: 1 },
+            { employee: 2, job: 2 },
+          ],
+          LateShift: [
+            { employee: 0, job: 0 },
+            { employee: 1, job: 1 },
+            { employee: 4, job: 2 },
+          ],
         },
-        {
-          employee: 4,
-          job: 1,
+        Tuesday: {
+          EarlyShift: [
+            { employee: 0, job: 0 },
+            { employee: 4, job: 1 },
+            { employee: 1, job: 2 },
+          ],
+          LateShift: [
+            { employee: 0, job: 0 },
+            { employee: 4, job: 1 },
+            { employee: 2, job: 2 },
+          ],
         },
-        {
-          employee: 1,
-          job: 2,
+        Wednesday: {
+          EarlyShift: [
+            { employee: 2, job: 0 },
+            { employee: 4, job: 1 },
+            { employee: 1, job: 2 },
+          ],
+          LateShift: [
+            { employee: 2, job: 0 },
+            { employee: 4, job: 1 },
+            { employee: 1, job: 2 },
+          ],
         },
-      ],
-      LateShift: [
-        {
-          employee: 0,
-          job: 0,
+        Thursday: {
+          EarlyShift: [
+            { employee: 2, job: 0 },
+            { employee: 0, job: 1 },
+            { employee: 4, job: 2 },
+          ],
+          LateShift: [
+            { employee: 3, job: 0 },
+            { employee: 1, job: 1 },
+            { employee: 2, job: 2 },
+          ],
         },
-        {
-          employee: 4,
-          job: 1,
+        Friday: {
+          EarlyShift: [
+            { employee: 3, job: 0 },
+            { employee: 0, job: 1 },
+            { employee: 4, job: 2 },
+          ],
+          LateShift: [
+            { employee: 3, job: 0 },
+            { employee: 0, job: 1 },
+            { employee: 4, job: 2 },
+          ],
         },
-        {
-          employee: 2,
-          job: 2,
-        },
-      ],
+      },
+      total_preference: "1750",
     },
-    Tuesday: {
-      EarlyShift: [
-        {
-          employee: 4,
-          job: 0,
+    {
+      id: "solution2",
+      schedule: {
+        Monday: {
+          EarlyShift: [
+            { employee: 2, job: 0 },
+            { employee: 1, job: 1 },
+            { employee: 4, job: 2 },
+          ],
+          LateShift: [
+            { employee: 0, job: 0 },
+            { employee: 4, job: 1 },
+            { employee: 1, job: 2 },
+          ],
         },
-        {
-          employee: 1,
-          job: 1,
+        Tuesday: {
+          EarlyShift: [
+            { employee: 4, job: 0 },
+            { employee: 0, job: 1 },
+            { employee: 2, job: 2 },
+          ],
+          LateShift: [
+            { employee: 0, job: 0 },
+            { employee: 4, job: 1 },
+            { employee: 2, job: 2 },
+          ],
         },
-        {
-          employee: 2,
-          job: 2,
+        Wednesday: {
+          EarlyShift: [
+            { employee: 2, job: 0 },
+            { employee: 1, job: 1 },
+            { employee: 4, job: 2 },
+          ],
+          LateShift: [
+            { employee: 2, job: 0 },
+            { employee: 4, job: 1 },
+            { employee: 1, job: 2 },
+          ],
         },
-      ],
-      LateShift: [
-        {
-          employee: 2,
-          job: 0,
+        Thursday: {
+          EarlyShift: [
+            { employee: 3, job: 0 },
+            { employee: 4, job: 1 },
+            { employee: 2, job: 2 },
+          ],
+          LateShift: [
+            { employee: 3, job: 0 },
+            { employee: 1, job: 1 },
+            { employee: 4, job: 2 },
+          ],
         },
-        {
-          employee: 0,
-          job: 1,
+        Friday: {
+          EarlyShift: [
+            { employee: 0, job: 0 },
+            { employee: 4, job: 1 },
+            { employee: 1, job: 2 },
+          ],
+          LateShift: [
+            { employee: 3, job: 0 },
+            { employee: 0, job: 1 },
+            { employee: 4, job: 2 },
+          ],
         },
-        {
-          employee: 4,
-          job: 2,
-        },
-      ],
+      },
+      total_preference: "1780",
     },
-    Wednesday: {
-      EarlyShift: [
-        {
-          employee: 2,
-          job: 0,
-        },
-        {
-          employee: 4,
-          job: 1,
-        },
-        {
-          employee: 1,
-          job: 2,
-        },
-      ],
-      LateShift: [
-        {
-          employee: 3,
-          job: 0,
-        },
-        {
-          employee: 4,
-          job: 1,
-        },
-        {
-          employee: 1,
-          job: 2,
-        },
-      ],
-    },
-    Thursday: {
-      EarlyShift: [
-        {
-          employee: 0,
-          job: 0,
-        },
-        {
-          employee: 4,
-          job: 1,
-        },
-        {
-          employee: 2,
-          job: 2,
-        },
-      ],
-      LateShift: [
-        {
-          employee: 0,
-          job: 0,
-        },
-        {
-          employee: 1,
-          job: 1,
-        },
-        {
-          employee: 4,
-          job: 2,
-        },
-      ],
-    },
-    Friday: {
-      EarlyShift: [
-        {
-          employee: 3,
-          job: 0,
-        },
-        {
-          employee: 1,
-          job: 1,
-        },
-        {
-          employee: 4,
-          job: 2,
-        },
-      ],
-      LateShift: [
-        {
-          employee: 3,
-          job: 0,
-        },
-        {
-          employee: 0,
-          job: 1,
-        },
-        {
-          employee: 4,
-          job: 2,
-        },
-      ],
-    },
-  },
+  ],
   solution_count: 2,
   statistics: {
     num_employees: 5,
@@ -163,6 +145,14 @@ const staticShiftPlan = {
     num_qualifications: 3,
     num_days: 5,
     num_shifts_per_day: 2,
+  },
+  sum_shifts_per_employee: { 0: "5", 1: "6", 2: "6", 3: "3", 4: "10" },
+  individual_preference_score: {
+    0: "190",
+    1: "450",
+    2: "405",
+    3: "195",
+    4: "540",
   },
 };
 
@@ -181,79 +171,10 @@ export default function WhatIfAnalysis() {
   // State variable for the current value
   const [currentValueList, setCurrentValueList] = useState([50, 20, 15]);
   // State variable for the current value (initially identical to staticShiftPlan)
-  const [solutionData, setSolutionData] = useState({
-    schedule_data: {
-      Monday: {
-        EarlyShift: [
-          { employee: 2, job: 0 },
-          { employee: 4, job: 1 },
-          { employee: 1, job: 2 },
-        ],
-        LateShift: [
-          { employee: 0, job: 0 },
-          { employee: 4, job: 1 },
-          { employee: 2, job: 2 },
-        ],
-      },
-      Tuesday: {
-        EarlyShift: [
-          { employee: 4, job: 0 },
-          { employee: 1, job: 1 },
-          { employee: 2, job: 2 },
-        ],
-        LateShift: [
-          { employee: 2, job: 0 },
-          { employee: 0, job: 1 },
-          { employee: 4, job: 2 },
-        ],
-      },
-      Wednesday: {
-        EarlyShift: [
-          { employee: 2, job: 0 },
-          { employee: 4, job: 1 },
-          { employee: 1, job: 2 },
-        ],
-        LateShift: [
-          { employee: 3, job: 0 },
-          { employee: 4, job: 1 },
-          { employee: 1, job: 2 },
-        ],
-      },
-      Thursday: {
-        EarlyShift: [
-          { employee: 0, job: 0 },
-          { employee: 4, job: 1 },
-          { employee: 2, job: 2 },
-        ],
-        LateShift: [
-          { employee: 0, job: 0 },
-          { employee: 1, job: 1 },
-          { employee: 4, job: 2 },
-        ],
-      },
-      Friday: {
-        EarlyShift: [
-          { employee: 3, job: 0 },
-          { employee: 1, job: 1 },
-          { employee: 4, job: 2 },
-        ],
-        LateShift: [
-          { employee: 3, job: 0 },
-          { employee: 0, job: 1 },
-          { employee: 4, job: 2 },
-        ],
-      },
-    },
-    solution_count: 5,
-    statistics: {
-      num_employees: 5,
-      num_jobs: 3,
-      num_qualifications: 3,
-      num_days: 5,
-      num_shifts_per_day: 2,
-    },
-  });
+  const [solutionData, setSolutionData] = useState(staticShiftPlan);
 
+  // State variable
+  const [solutionCount, setSolutionCount] = useState(0);
   // State variable (standard)
   const [updatedPreferenceMatrix, setUpdatedPreferenceMatrix] = useState([
     [50, 20, 15],
@@ -262,13 +183,11 @@ export default function WhatIfAnalysis() {
     [65, 50, 15],
     [50, 50, 60],
   ]);
-
   // State variables
   const [sumShiftsPerEmployee, setSumShiftsPerEmployee] = useState({});
   const [individualPreferenceScore, setIndividualPreferenceScore] = useState(
     {}
   );
-
   // State variable for changed shifts
   const [changedShifts, setChangedShifts] = useState({
     Monday: {
@@ -284,13 +203,12 @@ export default function WhatIfAnalysis() {
       ],
     },
   });
+  // State variable
+  const [currentSolutionId, setCurrentSolutionId] = useState(0);
 
   // Function to solve the shift plan with new preferences
   const solveWithPreferences = () => {
-    // Insert code here to recalculate the shift plan
     // Use preferencesList to access the new preferences
-    // Assumption: You receive the new preference values in preferencesList
-
     // Update the current values
     setCurrentValueList(preferencesList);
 
@@ -307,8 +225,8 @@ export default function WhatIfAnalysis() {
       })
       .then((response) => {
         // Process the response from the backend
-        const solutionData = response.data; // Caution: Local variable!
         setSolutionData(response.data);
+        setSolutionCount(response.data.solution_count);
 
         console.log("POST Response Schedule");
         console.log(solutionData);
@@ -318,17 +236,13 @@ export default function WhatIfAnalysis() {
         setIndividualPreferenceScore(solutionData.individual_preference_score);
 
         // Compare the new solution with the previous one and mark the differences
-        const changedShifts = findChangedShifts(staticShiftPlan, solutionData);
+        console.log("Listenzugriff")
+        console.log(solutionData.schedule_data[0].schedule)
+        const changedShifts = findChangedShifts(staticShiftPlan.schedule_data[0].schedule, solutionData.schedule_data[0].schedule);
         console.log("After changed function:");
         console.log(changedShifts);
         setChangedShifts(changedShifts);
 
-        // Update your UI with the results
-        // Example: setSchedule(solutionData);
-        console.log("POST request sent! Here are the updated preferences:\n");
-        console.log(preferencesList);
-        console.log("Backend response after solving:");
-        console.log(response);
 
         if (solutionData == null) {
           console.log("Null Response!");
@@ -336,6 +250,17 @@ export default function WhatIfAnalysis() {
           console.log("Data type of solutionData:", typeof solutionData);
           console.log("Contents of solutionData:", solutionData);
         }
+
+        //DEBUG PRINT
+        console.log("DEBUG PRINT");
+        console.log(solutionData);
+        console.log(changedShifts);
+        console.log(staticShiftPlan);
+        console.log(staticPreferences);
+        console.log(updatedPreferenceMatrix);
+        console.log(sumShiftsPerEmployee);
+        console.log(individualPreferenceScore);
+
       })
       .catch((error) => {
         // Handle errors if they occur
@@ -373,23 +298,23 @@ export default function WhatIfAnalysis() {
 
     // Check if the input parameters have the required structure
     if (
-      oldShiftPlan.schedule_data &&
-      newShiftPlan.schedule_data &&
-      typeof oldShiftPlan.schedule_data === "object" &&
-      typeof newShiftPlan.schedule_data === "object"
+      oldShiftPlan &&
+      newShiftPlan &&
+      typeof oldShiftPlan === "object" &&
+      typeof newShiftPlan === "object"
     ) {
       // Iterate through weekdays (Monday to Friday)
-      const weekdays = Object.keys(oldShiftPlan.schedule_data);
+      const weekdays = Object.keys(oldShiftPlan);
       for (const weekday of weekdays) {
         changedShifts[weekday] = {};
 
         // Iterate through shift types (MorningShift and EveningShift)
-        const shiftTypes = Object.keys(oldShiftPlan.schedule_data[weekday]);
+        const shiftTypes = Object.keys(oldShiftPlan[weekday]);
         for (const shiftType of shiftTypes) {
           changedShifts[weekday][shiftType] = [];
 
-          const oldShifts = oldShiftPlan.schedule_data[weekday][shiftType];
-          const newShifts = newShiftPlan.schedule_data[weekday][shiftType];
+          const oldShifts = oldShiftPlan[weekday][shiftType];
+          const newShifts = newShiftPlan[weekday][shiftType];
 
           // Compare shifts in oldShifts and newShifts
           for (let i = 0; i < newShifts.length; i++) {
@@ -419,11 +344,16 @@ export default function WhatIfAnalysis() {
         }
       }
     }
+    else{console.log("ELSE BLOCK")}
     // Debug output of the found changes
     console.log("changedShifts:", changedShifts);
 
     return changedShifts;
   }
+
+  const toggleSolution = () => {
+    setCurrentSolutionId((prevId) => (prevId + 1) % solutionCount);
+  };
 
   return (
     <div className="container">
