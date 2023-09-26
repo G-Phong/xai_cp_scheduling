@@ -1,4 +1,94 @@
 .highlighted-cell {
-    background-color: yellow;
-  }
-  
+  background-color: yellow;
+}
+
+.modern-toggle-button {
+  position: relative;
+  width: 60px;
+  height: 34px;
+}
+
+.modern-toggle-button input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-button-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle-button-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+input:checked + .toggle-button-slider {
+  background-color: #2196f3;
+}
+
+input:checked + .toggle-button-slider:before {
+  transform: translateX(26px);
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.btn-custom-yellow {
+  background-color: yellow;
+  color: black;
+}
+
+/* Hover Zustand, wenn Button aktiv */
+.btn-custom-yellow:hover {
+  background-color: rgb(207, 207, 207);
+  color: black;
+}
+
+/* Custom Weiß-Button */
+.btn-custom-white {
+  background-color: rgb(207, 207, 207);
+  color: black;
+}
+
+/* Hover Zustand, wenn Button inaktiv */
+.btn-custom-white:hover {
+  background-color: yellow;
+  color: black;
+}
+
+/* Beschränkt die Breite des Buttons und zentriert den Text */
+.btn-sm.custom-width {
+  width: 30px;  /* oder die Breite, die Sie bevorzugen */
+  text-align: center;
+}
+
+/* Fügt oberen Abstand zur Button-Gruppe hinzu */
+.btn-group {
+  margin-bottom: 20px; /* oder den Abstand, den Sie bevorzugen */
+}
+
+

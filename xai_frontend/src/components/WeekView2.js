@@ -10,26 +10,32 @@ export default function WeekView2({
   sumShiftsPerEmployee,
   individualPreferenceScore,
 }) {
-  // State hook for highlighted shifts
-  const [highlightedShifts, setHighlightedShifts] = useState({
-    Monday: {
-      EarlyShift: [
-        { isDifferent: true, job: 0 },
-        { isDifferent: false, job: 1 },
-        { isDifferent: false, job: 2 },
-      ],
-      LateShift: [
-        { isDifferent: false, job: 0 },
-        { isDifferent: false, job: 1 },
-        { isDifferent: false, job: 2 },
-      ],
-    },
-  });
+  const [currentStaticSolution, setCurrentStaticSolution] = useState("0");
+
+  const [shouldCompare, setShouldCompare] = useState(false);
+
+  const [activeSolutionIndex, setActiveSolutionIndex] = useState(0);
+
+  const [numberDifferences, setNumberDifferences] = useState(0);
+
+  const maxSolutions = shiftData.solution_count;
+
+  const toggleSolution = () => {
+    if (currentStaticSolution === 0) {
+      setCurrentStaticSolution(1);
+    } else {
+      setCurrentStaticSolution(0);
+    }
+  };
+
+  const toggleCompare = () => {
+    setShouldCompare(!shouldCompare);
+  };
 
   useEffect(() => {
-    // Reset the state for highlighted shifts when changedShifts change
-    setHighlightedShifts(changedShifts);
-  }, [changedShifts]);
+    const newNumberDifferences = getNumberDifferences();
+    setNumberDifferences(newNumberDifferences);
+  }, [activeSolutionIndex, changedShifts]);
 
   // Extract weekdays from schedule_data
   const weekdays = Object.keys(shiftData.schedule_data[1].schedule);
@@ -43,6 +49,48 @@ export default function WeekView2({
     1: "Sorting",
     2: "Picking",
   };
+
+  useEffect(() => {
+    const numberOfDifferences = compareSchedules(
+      staticShiftData.schedule_data[currentStaticSolution].schedule,
+      shiftData.schedule_data[activeSolutionIndex].schedule
+    );
+    // Verwendung von numberOfDifferences, z. B. Zustandsaktualisierung oder Anzeige im UI
+    setNumberDifferences(numberOfDifferences);
+  }, [currentStaticSolution, activeSolutionIndex, staticShiftData, shiftData]);
+
+  // Diese Funktion vergleicht die beiden Schichtpläne und zählt die Anzahl der unterschiedlichen Zellen
+  function compareSchedules(staticSchedule, whatIfSchedule) {
+    // Initialisieren des Zählers für die Anzahl der Unterschiede
+    let differenceCounter = 0;
+
+    // Überprüfen der Eingabeparameter
+    if (!staticSchedule || !whatIfSchedule) {
+      console.warn("Einer der Schichtpläne ist null oder undefined.");
+      return differenceCounter;
+    }
+
+    // Über die Wochentage iterieren
+    const weekdays = Object.keys(staticSchedule);
+    for (const weekday of weekdays) {
+      // Über die Schichttypen iterieren
+      const shiftTypes = Object.keys(staticSchedule[weekday]);
+      for (const shiftType of shiftTypes) {
+        const staticShifts = staticSchedule[weekday][shiftType];
+        const whatIfShifts = whatIfSchedule[weekday][shiftType];
+
+        // Über die Schichten iterieren und die Mitarbeiter-IDs vergleichen
+        for (let i = 0; i < staticShifts.length; i++) {
+          if (staticShifts[i].employee !== whatIfShifts[i].employee) {
+            differenceCounter++;
+          }
+        }
+      }
+    }
+
+    // Anzahl der unterschiedlichen Zellen zurückgeben
+    return differenceCounter;
+  }
 
   function getNumberDifferences(changedShifts) {
     let diffCounter = 0;
@@ -179,12 +227,35 @@ export default function WeekView2({
           </div>
 
           <h2>
-            "What-If" week schedule Optimal Solutions:{" "}
-            {shiftData.solution_count}
+            "What-If" week schedule (Total preference:{" "}
+            {shiftData.schedule_data[activeSolutionIndex].total_preference}) -
+            Optimal Solutions: {shiftData.solution_count}
             <br />
-            Your updated preferences would change{" "}
-            {getNumberDifferences(changedShifts)} shifts!
+            You are now viewing Solution Nr. {activeSolutionIndex + 1}.
           </h2>
+
+          <div className="btn-group" role="group">
+            <button
+              className="btn btn-primary btn-sm custom-width"
+              onClick={() =>
+                setActiveSolutionIndex(Math.max(0, activeSolutionIndex - 1))
+              }
+              disabled={activeSolutionIndex === 0}
+            >
+              Previous Solution
+            </button>
+            <button
+              className="btn btn-primary btn-sm custom-width"
+              onClick={() =>
+                setActiveSolutionIndex(
+                  Math.min(maxSolutions - 1, activeSolutionIndex + 1)
+                )
+              }
+              disabled={activeSolutionIndex === maxSolutions - 1}
+            >
+              Next Solution
+            </button>
+          </div>
 
           <table>
             <thead>
@@ -213,14 +284,14 @@ export default function WeekView2({
 
                   {weekdays.map((weekday) => (
                     <td key={weekday}>
-                      {shiftData.schedule_data[0].schedule[weekday][
-                        shiftType
-                      ].map((shift, index) => {
+                      {shiftData.schedule_data[activeSolutionIndex].schedule[
+                        weekday
+                      ][shiftType].map((shift, index) => {
                         const isHighlighted =
+                          shouldCompare &&
                           shift.employee !==
-                          staticShiftData.schedule_data[0].schedule[weekday][
-                            shiftType
-                          ][index].employee;
+                            staticShiftData.schedule_data[currentStaticSolution]
+                              .schedule[weekday][shiftType][index].employee;
 
                         return (
                           <div
@@ -242,64 +313,114 @@ export default function WeekView2({
             </tbody>
           </table>
 
-
           {/* Display the static shift schedule */}
-      <h2>Original shift schedule</h2>
-      {staticShiftData && (
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th>Shift type</th>
-                <th>Job description</th>
-                {weekdays.map((weekday) => (
-                  <th key={weekday}>{weekday}</th>
-                ))}
-              </tr>
-            </thead>
+          <h2>
+            Original shift schedule (Total preference:{" "}
+            {
+              staticShiftData.schedule_data[currentStaticSolution]
+                .total_preference
+            }
+            ) - Optimal Solutions: 2 <br />
+            You are now viewing Solution Nr. {currentStaticSolution + 1}.
+          </h2>
 
-            <tbody>
-              {shiftTypes.map((shiftType) => (
-                <tr key={shiftType}>
-                  <td>{shiftType}</td>
-                  <td>
-                    {Object.keys(jobDescriptions).map((jobType) => (
-                      <div key={jobType} className={`cell static-cell`}>
-                        <div className="subcell">
-                          {"Job " + jobType + ": " + jobDescriptions[jobType]}
-                        </div>
-                      </div>
+          <div className="center-container">
+            <span>Toggle between both solutions</span>
+            <label className="modern-toggle-button">
+              <input type="checkbox" onClick={toggleSolution} />
+              <span className="toggle-button-slider">
+                <span className="toggle-button-number" style={{ left: "0" }}>
+                  1
+                </span>
+                <span className="toggle-button-number" style={{ right: "0" }}>
+                  2
+                </span>
+              </span>
+            </label>
+
+            {/*  Compare-Button */}
+            <div style={{ padding: "10px" }}>
+              <button
+                className={`btn ${
+                  shouldCompare ? "btn-custom-yellow" : "btn-custom-white"
+                }`}
+                onClick={toggleCompare}
+              >
+                Compare
+              </button>
+            </div>
+          </div>
+
+          {staticShiftData && (
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Shift type</th>
+                    <th>Job description</th>
+                    {weekdays.map((weekday) => (
+                      <th key={weekday}>{weekday}</th>
                     ))}
-                  </td>
+                  </tr>
+                </thead>
 
-                  {weekdays.map((weekday) => (
-                    <td key={weekday}>
-                    {staticShiftData.schedule_data[0].schedule[weekday][shiftType].map((shift, index) => {
-                      const isHighlighted =
-                        shiftData.schedule_data[0].schedule[weekday][shiftType][index].employee !==
-                        staticShiftData.schedule_data[0].schedule[weekday][shiftType][index].employee;
-    
-                      return (
-                        <div
-                          key={index}
-                          className={`cell ${isHighlighted ? "highlighted-cell" : ""}`}
-                        >
-                          <div className="subcell">
-                            {" Employee-ID: " + shift.employee}
-                              </div>
+                <tbody>
+                  {shiftTypes.map((shiftType) => (
+                    <tr key={shiftType}>
+                      <td>{shiftType}</td>
+                      <td>
+                        {Object.keys(jobDescriptions).map((jobType) => (
+                          <div key={jobType} className={`cell static-cell`}>
+                            <div className="subcell">
+                              {"Job " +
+                                jobType +
+                                ": " +
+                                jobDescriptions[jobType]}
                             </div>
-                          );
-                        }
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+                          </div>
+                        ))}
+                      </td>
 
+                      {weekdays.map((weekday) => (
+                        <td key={weekday}>
+                          {staticShiftData.schedule_data[
+                            currentStaticSolution
+                          ].schedule[weekday][shiftType].map((shift, index) => {
+                            const isHighlighted =
+                              shouldCompare &&
+                              shiftData.schedule_data[activeSolutionIndex]
+                                .schedule[weekday][shiftType][index]
+                                .employee !==
+                                staticShiftData.schedule_data[
+                                  currentStaticSolution
+                                ].schedule[weekday][shiftType][index].employee;
+
+                            return (
+                              <div
+                                key={index}
+                                className={`cell ${
+                                  isHighlighted ? "highlighted-cell" : ""
+                                }`}
+                              >
+                                <div className="subcell">
+                                  {" Employee-ID: " + shift.employee}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          <h2>
+            <br />
+            Your updated preferences would change {numberDifferences} shifts!
+          </h2>
           {/* Display additional shift plan data */}
           <div className="row">
             <div className="col-md-4">
