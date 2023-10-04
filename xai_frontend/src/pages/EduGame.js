@@ -1,4 +1,4 @@
-import React, { useState, useEffect,  } from "react";
+import React, { useState, useEffect } from "react";
 import "./EduGame.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -11,13 +11,54 @@ const jobDescriptions = {
   2: "Picking",
 };
 
-const staticShiftData = {
+let staticShiftData = {
   Monday: { DayShift: [{}, {}, {}] },
   Tuesday: { DayShift: [{}, {}, {}] },
   Wednesday: { DayShift: [{}, {}, {}] },
   Thursday: { DayShift: [{}, {}, {}] },
   Friday: { DayShift: [{}, {}, {}] },
 };
+
+const optimalShiftData1 = {
+    Monday: {
+      DayShift: [
+        { employeeID: "2", name: "Alice" },
+        { employeeID: "3", name: "Bob" },
+        { employeeID: "5", name: "Franck" },
+      ],
+    },
+    Tuesday: {
+      DayShift: [
+        { employeeID: "2", name: "Alice" },
+        { employeeID: "3", name: "Bob" },
+        { employeeID: "5", name: "Franck" },
+      ],
+    },
+    Wednesday: {
+      DayShift: [
+        { employeeID: "1", name: "John" },
+        { employeeID: "3", name: "Bob" },
+        { employeeID: "5", name: "Franck" },
+      ],
+    },
+    Thursday: {
+      DayShift: [
+        { employeeID: "2", name: "Alice" },
+        { employeeID: "3", name: "Bob" },
+        { employeeID: "5", name: "Franck" },
+      ],
+    },
+    Friday: {
+      DayShift: [
+        { employeeID: "1", name: "John" },
+        { employeeID: "4", name: "Emily" },
+        { employeeID: "5", name: "Franck" },
+      ],
+    },
+  };
+  
+
+staticShiftData = optimalShiftData1;
 
 // Problem data
 const maxShifts = { 1: 5, 2: 5, 3: 5, 4: 5, 5: 5 };
@@ -31,15 +72,6 @@ const availability = {
   Friday: { DayShift: { 1: 1, 2: 0, 3: 0, 4: 1, 5: 1 } },
 };
 
-// Qualification and job preferences
-const qualification = {
-  1: { 0: 1, 1: 1, 2: 2 },
-  2: { 0: 2, 1: 1, 2: 1 },
-  3: { 0: 3, 1: 1, 2: 2 },
-  4: { 0: 2, 1: 3, 2: 3 },
-  5: { 0: 2, 1: 1, 2: 2 },
-};
-
 const jobPreference = {
   1: { 0: 50, 1: 20, 2: 15 },
   2: { 0: 0, 1: 100, 2: 50 },
@@ -47,15 +79,6 @@ const jobPreference = {
   4: { 0: 65, 1: 50, 2: 15 },
   5: { 0: 50, 1: 50, 2: 60 },
 };
-
-// Qualification requirements (still as a matrix, context is unclear)
-const requiredQualification = [
-  [3, 3, 3],
-  [2, 1, 2],
-  [3, 2, 2],
-];
-
-
 
 export default function EduGame() {
   const [scheduleData, setScheduleData] = useState(staticShiftData);
@@ -70,124 +93,120 @@ export default function EduGame() {
   const [tableStatus, setTableStatus] = useState("UNSOLVED");
   const [remainingCells, setRemainingCells] = useState(0);
   const [totalPreference, setTotalPreference] = useState(0);
-  const [allConstraintsStatus, setAllConstraintsStatus] = useState(
-   {
-      Monday: {
-        DayShift: {
-          0: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
-          1: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
-          2: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
+  const [allConstraintsStatus, setAllConstraintsStatus] = useState({
+    Monday: {
+      DayShift: {
+        0: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
+        },
+        1: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
+        },
+        2: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
         },
       },
-      Tuesday: {
-        DayShift: {
-          0: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
-          1: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
-          2: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
+    },
+    Tuesday: {
+      DayShift: {
+        0: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
+        },
+        1: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
+        },
+        2: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
         },
       },
-      Wednesday: {
-        DayShift: {
-          0: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
-          1: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
-          2: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
+    },
+    Wednesday: {
+      DayShift: {
+        0: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
+        },
+        1: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
+        },
+        2: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
         },
       },
-      Thursday: {
-        DayShift: {
-          0: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
-          1: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
-          2: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
+    },
+    Thursday: {
+      DayShift: {
+        0: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
+        },
+        1: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
+        },
+        2: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
         },
       },
-      Friday: {
-        DayShift: {
-          0: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
-          1: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
-          2: {
-            constraint1Violated: false,
-            constraint3Violated: false,
-            constraint4Violated: false,
-            constraint5Violated: false,
-          },
+    },
+    Friday: {
+      DayShift: {
+        0: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
+        },
+        1: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
+        },
+        2: {
+          constraint1Violated: false,
+          constraint3Violated: false,
+          constraint4Violated: false,
+          constraint5Violated: false,
         },
       },
-    }
-    
-    
-  );
+    },
+  });
 
-  //Constraints verletzt? false = unverletzt, grün | true = verletzt, rot
+  // Constraints violated? false = not violated, green | true = violated, red
   const [constraint1Violated, setConstraint1] = useState(false); //No employee may work more than 1 shift per day.
   const [constraint2Violated, setConstraint2] = useState(true); //A job is to be done by exactly 1 employee.
   const [constraint3Violated, setConstraint3] = useState(true); //Min. and max. working times (number of shifts) must be complied with!
@@ -211,9 +230,8 @@ export default function EduGame() {
     setConstraint5(constraintFlags.constraint5Violated);
   };
 
-  //TODO
   const checkHardConstraints = (updatedScheduleData) => {
-    let allConstraintsStatus = {}; // Hier werden wir detaillierte Informationen speichern
+    let allConstraintsStatus = {};
 
     let constraintStatusReturn = {
       constraint1Violated: false,
@@ -233,23 +251,20 @@ export default function EduGame() {
           //Dictionary to be returned from the function
           const constraintStatus = {
             constraint1Violated: false,
-            //constraint2Violated: false,
+            constraint2Violated: false,
             constraint3Violated: false,
-            constraint4Violated: true,
             constraint5Violated: false,
           };
 
           if (employee) {
-            // Überprüfung von Constraint 3 - außerhalb der Schleife
+            //  Checking Constraint 3
             if (!checkConstraint3(updatedScheduleData)) {
               console.log("IN CHECKCONSTRAINT3 checkHardConstraints()");
               constraintStatus.constraint3Violated = true;
               constraintStatusReturn.constraint3Violated = true;
             }
 
-            // Überprüfung von Constraint 4
-
-            // Überprüfung von Constraint 5
+            // Checking Constraint 5
             if (!isEmployeeAvailable(employee, day)) {
               constraintStatus.constraint5Violated = true;
               constraintStatusReturn.constraint5Violated = true;
@@ -260,24 +275,18 @@ export default function EduGame() {
       });
     });
 
-    // Überprüfung von Constraint 1
+    // Checking Constraint 1 - outside the loop
     if (!checkConstraint1(updatedScheduleData)) {
       console.log("IN CHECKCONSTRAINT1 checkHardConstraints()");
       constraintStatusReturn.constraint1Violated = true;
       console.log(constraintStatusReturn);
     }
 
-    // Überprüfung von Constraint 2 - außerhalb der Schleife
+    // Checking Constraint 2 - outside the loop
     if (!checkConstraint2(updatedScheduleData)) {
       console.log("IN CHECKCONSTRAINT2 checkHardConstraints()");
       constraintStatusReturn.constraint2Violated = true;
     }
-
-    /*     // Überprüfung von Constraint 3 - außerhalb der Schleife
-    if (!checkConstraint3(updatedScheduleData)) {
-      console.log("IN CHECKCONSTRAINT3 checkHardConstraints()");
-      constraintStatusReturn.constraint3Violated = true;
-    } */
 
     console.log("allConstraintsStatus checkHardConstraints()");
     console.log(allConstraintsStatus);
@@ -285,15 +294,9 @@ export default function EduGame() {
     return constraintStatusReturn;
   };
 
-  /*    // Überwachung von Änderungen in scheduleData
-    useEffect(() => {
-      const updatedConstraintsStatus = checkHardConstraints(scheduleData);
-      setAllConstraintsStatus(updatedConstraintsStatus);
-    }, [scheduleData, checkHardConstraints]); // Abhängigkeitsarray */
-
   const isEmployeeAvailable = (employee, day) => {
-    // Verfügbarkeitsdaten sollten in einem Zustand oder einer anderen Datenstruktur gespeichert sein.
-    // Zugriff auf die Verfügbarkeitsdaten für den betreffenden Mitarbeiter und Tag.
+    // Availability data should be stored in a state or another data structure.
+    // Access availability data for the specific employee and day.
     const availabilityData = availability[day]["DayShift"][employee.employeeID];
     if (availabilityData === 1) {
       return true;
@@ -304,7 +307,7 @@ export default function EduGame() {
 
   const checkConstraint1 = (updatedScheduleData) => {
     const employeeJobCounts = {};
-    let constraintViolated = false; // Flag zum Überwachen des Verletzungsstatus
+    let constraintViolated = false; // Flag to monitor violation status
 
     Object.keys(updatedScheduleData).some((day) => {
       return Object.keys(updatedScheduleData[day]).some((shiftType) => {
@@ -321,7 +324,7 @@ export default function EduGame() {
 
             if (employeeJobCounts[day][employee.name] > 1) {
               constraintViolated = true;
-              return true; // Die .some() Methode wird beendet, wenn `true` zurückgegeben wird
+              return true; // The .some() method will exit when `true` is returned
             }
           }
           return false;
@@ -329,7 +332,7 @@ export default function EduGame() {
       });
     });
 
-    return !constraintViolated; // Rückgabe des inversen Flags, da die Frage ist, ob der Constraint NICHT verletzt ist
+    return !constraintViolated; // Return the inverse of the flag, as the question is whether the constraint is NOT violated
   };
 
   //check if schedule is complete
@@ -352,8 +355,8 @@ export default function EduGame() {
   };
 
   const checkConstraint3 = (updatedScheduleData) => {
-    // Objekt zum Speichern der Anzahl der Schichten je Mitarbeiter
-    // Initialisieren der Mitarbeiter-IDs von 1 bis 5 mit 0
+    // Object to store the number of shifts per employee
+    // Initializing employee IDs from 1 to 5 with 0
     const employeeShiftCounts = {
       1: 0,
       2: 0,
@@ -363,7 +366,7 @@ export default function EduGame() {
     };
     let constraintViolated = false;
 
-    // Durchlaufen aller Tage und Schichten, um die Anzahl der Schichten für jeden Mitarbeiter zu zählen
+    // Iterate through all days and shifts to count the number of shifts for each employee
     Object.values(updatedScheduleData).forEach((day) => {
       Object.values(day).forEach((shift) => {
         shift.forEach((cell) => {
@@ -387,7 +390,7 @@ export default function EduGame() {
     console.log("maxShifts");
     console.log(maxShifts);
 
-    // Überprüfung der minimalen und maximalen Schichtbeschränkungen für jeden Mitarbeiter
+    // Check the minimum and maximum shift constraints for each employee
     Object.keys(employeeShiftCounts).forEach((employeeId) => {
       const count = employeeShiftCounts[employeeId];
       const min = minShifts[employeeId];
@@ -407,21 +410,18 @@ export default function EduGame() {
     const employee = JSON.parse(event.dataTransfer.getData("employee"));
     const updatedScheduleData = { ...scheduleData };
     updatedScheduleData[day][shiftType][subIndex].employee = employee;
-    setScheduleData(updatedScheduleData); //Erst aktualisieren!
+    setScheduleData(updatedScheduleData);
 
-    // Überprüfung der Hard Constraints
-    const constraintsStatus = checkHardConstraints(scheduleData);
+    // Check Hard Constraints and get the result once
+    const constraintsStatus = checkHardConstraints(updatedScheduleData);
 
-    // Zugriff auf die Präferenzpunkte aus der jobPreference-Matrix
     const employeeID = parseInt(employee.employeeID);
-    const preferencePoints = jobPreference[employeeID]
-      ? jobPreference[employeeID][subIndex]
-      : 0;
+    const preferencePoints = jobPreference[employeeID]?.[subIndex] || 0; // Use optional chaining
 
-    // Präferenzpunkte aktualisieren
+    // Update preference points
     setTotalPreference((prev) => prev + preferencePoints);
 
-    // Constraints nach Prüfung aktualisieren
+    // Update Constraints
     setConstraint1(constraintsStatus.constraint1Violated);
     setConstraint2(constraintsStatus.constraint2Violated);
     setConstraint3(constraintsStatus.constraint3Violated);
@@ -431,34 +431,30 @@ export default function EduGame() {
 
   const handleRemoveFromShift = (day, shiftType, subIndex) => {
     const updatedScheduleData = { ...scheduleData };
-
-    // Speichere den entfernten Mitarbeiter für spätere Verwendung
     const removedEmployee =
       updatedScheduleData[day][shiftType][subIndex].employee;
 
-    // Entferne den Mitarbeiter aus dem Zeitplan
+    // Remove the employee from the schedule
     delete updatedScheduleData[day][shiftType][subIndex].employee;
     setScheduleData(updatedScheduleData);
 
-    // Zugriff auf die Präferenzpunkte aus der jobPreference-Matrix
     if (removedEmployee) {
-      const employeeID = parseInt(removedEmployee.employeeID); // Angenommen, employeeID ist ein String und muss in einen Integer umgewandelt werden
-      const preferencePointsToSubtract = jobPreference[employeeID]
-        ? jobPreference[employeeID][subIndex]
-        : 0; // Standardmäßig 0, wenn keine Präferenzpunkte vorhanden sind
+      const employeeID = parseInt(removedEmployee.employeeID);
+      const preferencePointsToSubtract =
+        jobPreference[employeeID]?.[subIndex] || 0;
 
-      changeConstraintBoxColors(checkHardConstraints(scheduleData)); //Constraint-boxes farblich updaten!
+      // Update constraint box colors
+      changeConstraintBoxColors(checkHardConstraints(updatedScheduleData));
 
-      // Subtrahiere die Präferenzpunkte
+      // Subtract preference points
       setTotalPreference((prev) => prev - preferencePointsToSubtract);
     }
   };
 
-  // Überprüfung des Status der Tabelle
   useEffect(() => {
     let remaining = 0;
 
-    // Überprüfung der verbleibenden Zellen
+    // Calculate remaining cells
     Object.values(scheduleData).forEach((day) => {
       Object.values(day).forEach((shift) => {
         remaining += shift.filter(
@@ -467,18 +463,17 @@ export default function EduGame() {
       });
     });
 
-    // Überprüfung der Constraints
-    const allConstraintsMet = !(
-      constraint1Violated ||
-      constraint2Violated ||
-      constraint3Violated ||
-      constraint4Violated ||
-      constraint5Violated
-    );
+    // Check if all constraints are met
+    const allConstraintsMet =
+      !constraint1Violated &&
+      !constraint2Violated &&
+      !constraint3Violated &&
+      !constraint4Violated &&
+      !constraint5Violated;
 
     setRemainingCells(remaining);
 
-    // Aktualisierung des Tischstatus
+    // Update table status
     setTableStatus(
       remaining === 0 && allConstraintsMet ? "SOLVED" : "UNSOLVED"
     );
@@ -493,14 +488,13 @@ export default function EduGame() {
 
   return (
     <div>
-      <h1>EduGame with HTLM5 Drag and Drop API</h1>
+      <h1>EDUCATIONAL DRAG-AND-DROP GAME</h1>
 
-      <h3>Scheduling Data:</h3>
-
+      <h2>Employee Shift Constraints</h2>
       <div className="container">
         <div className="row">
           <div className="col-md-4">
-            <h4>Minimum and maximum working times (number of shifts)</h4>
+            <h3>Minimum and Maximum Shifts Allowed</h3>
             <table className="table table-sm table-info">
               <thead>
                 <tr>
@@ -521,38 +515,8 @@ export default function EduGame() {
             </table>
           </div>
 
-          {/*           <div className="col-md-4">
-            <h4>Qualification</h4>
-            <table className="table table-sm table-info">
-              <thead>
-                <tr>
-                  <th>Employee (Skill-Level 1-3)</th>
-                  <th>Skill-Level for Job 1</th>
-                  <th>Skill-Level for Job 2</th>
-                  <th>Skill-Level for Job 3</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.keys(qualification).map((employeeID, rowIndex) => {
-                  const employee = employees.find(
-                    (emp) => emp.employeeID === employeeID
-                  );
-                  return (
-                    <tr key={rowIndex}>
-                      <td>{employee ? employee.name : employeeID}</td>
-                      {Object.values(qualification[employeeID]).map(
-                        (qual, cellIndex) => (
-                          <td key={cellIndex}>{qual}</td>
-                        )
-                      )}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div> */}
-          <div className="col-md-2">
-            <h4>Job Preferences</h4>
+          <div className="col-md-4">
+            <h2>Employee Job Preferences</h2>
             <table className="table table-sm table-info">
               <thead>
                 <tr>
@@ -585,7 +549,7 @@ export default function EduGame() {
 
         <div className="row">
           <div className="col">
-            <h4>Availability</h4>
+            <h3>Employee Availability</h3>
             <table className="table table-sm table-info">
               <thead>
                 <tr>
@@ -605,9 +569,9 @@ export default function EduGame() {
                               (emp) => emp.employeeID === employeeID
                             );
                             const availabilityText =
-                              isAvailable === 1 ? "available" : "not available";
+                              isAvailable === 1 ? "Available" : "Not Available";
                             const cellColor =
-                              isAvailable === 1 ? "lightgreen" : "orange"; // Bedingte Zuweisung der Farbe
+                              isAvailable === 1 ? "lightgreen" : "orange";
                             return (
                               <div
                                 key={employeeID}
@@ -615,7 +579,7 @@ export default function EduGame() {
                                 style={{
                                   border: "1px solid black",
                                   color: "black",
-                                  backgroundColor: cellColor, // Hinzugefügt hier
+                                  backgroundColor: cellColor,
                                 }}
                               >
                                 {employee
@@ -635,12 +599,21 @@ export default function EduGame() {
         </div>
       </div>
 
-      <h4>
-        Drag and drop the employees into the shift placeholders to assign them a
-        shift.
-        <br></br>
-        Assign all cells properly in order to solve the game!
-      </h4>
+      <div className="row">
+        <div className="col text-center">
+          {" "}
+          {/* Center align the content */}
+          <h2>
+            Assign Employees to Shifts
+            <p>
+              Drag and drop employees into the shift placeholders to assign them
+              a shift.
+              <br />
+              Ensure all cells are properly assigned to solve the game!
+            </p>
+          </h2>
+        </div>
+      </div>
 
       <div className="employee-box">
         {employees.map((employee) => (
@@ -656,214 +629,137 @@ export default function EduGame() {
       </div>
 
       <table className="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>Job-Description</th>
-            {weekdays.map((weekday) => (
-              <th key={weekday}>{weekday}</th>
-            ))}
-          </tr>
-        </thead>
-
-        {/*      <tbody>
-          {shiftTypes.map((shiftType) => (
-            <tr key={shiftType}>
-              <td>
-                {Object.values(jobDescriptions).map((job, index) => (
-                  <div
-                    key={index}
-                    className="subcell bg-light p-2 rounded mb-1"
-                  >
-                    {"Job " + (index + 1) + ":\n" + job}
-                  </div>
-                ))}
-              </td>
-              {weekdays.map((weekday) => (
-                <td key={weekday}>
-                  {scheduleData[weekday][shiftType].map(
-                    (subShift, subIndex) => (
-                      <div
-                        key={subIndex}
-                        className="subcell bg-light p-2 rounded mb-1"
-                        onDragOver={(e) => handleDragOver(e)}
-                        onDrop={(e) =>
-                          handleDrop(e, weekday, shiftType, subIndex)
-                        }
-                      >
-                        {subShift.employee && `E: ${subShift.employee.name}`}
-                        <button
-                          className="btn btn-sm btn-info"
-                          onClick={() =>
-                            handleRemoveFromShift(weekday, shiftType, subIndex)
-                          }
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    )
-                  )}
-                </td>
-              ))}
-            </tr>
+  <thead>
+    <tr>
+      <th>Job-Description</th>
+      {weekdays.map((weekday) => (
+        <th key={weekday}>{weekday}</th>
+      ))}
+    </tr>
+  </thead>
+  <tbody>
+    {shiftTypes.map((shiftType) => (
+      <tr key={shiftType}>
+        <td>
+          {Object.values(jobDescriptions).map((job, index) => (
+            <div key={index} className="subcell bg-light p-2 rounded mb-1">
+              {"Job " + (index + 1) + ":\n" + job}
+            </div>
           ))}
-        </tbody> */}
+        </td>
+        {weekdays.map((weekday) => (
+          <td key={weekday}>
+            {scheduleData[weekday][shiftType].map((subShift, subIndex) => {
+              const constraintStatus = allConstraintsStatus[weekday];
+              const isViolated =
+                constraintStatus["DayShift"][subIndex]["constraint5Violated"];
+              const className = isViolated
+                ? "bg-danger p-2 rounded mb-1"
+                : "bg-light p-2 rounded mb-1";
 
-        
-        {shiftTypes.map((shiftType) => (
-          <tr key={shiftType}>
-            <td>
-              {Object.values(jobDescriptions).map((job, index) => (
-                <div key={index} className="subcell bg-light p-2 rounded mb-1">
-                  {"Job " + (index + 1) + ":\n" + job}
+              return (
+                <div
+                  key={subIndex}
+                  className={className}
+                  onDragOver={(e) => handleDragOver(e)}
+                  onDrop={(e) =>
+                    handleDrop(e, weekday, shiftType, subIndex)
+                  }
+                >
+                  {subShift.employee && `E: ${subShift.employee.name}`}
+                  <button
+                    className="btn btn-sm btn-info"
+                    onClick={() =>
+                      handleRemoveFromShift(weekday, shiftType, subIndex)
+                    }
+                  >
+                    Remove
+                  </button>
                 </div>
-              ))}
-            </td>
-            {weekdays.map((weekday) => (
-              <td key={weekday}>
-                {scheduleData[weekday][shiftType].map((subShift, subIndex) => {
-                  const constraintStatus = allConstraintsStatus[weekday];
-                  const isViolated =
-                    constraintStatus["DayShift"][subIndex][
-                      "constraint5Violated"
-                    ]; // Beispiel für Constraint 5
-                  /*          console.log("isViolated");
-          console.log(isViolated);
-          console.log("constraintStatus[DayShift][subIndex][constraint5Violated]");
-          console.log(constraintStatus["DayShift"][subIndex][constraint5Violated]); */
-                  const className = isViolated
-                    ? "bg-danger p-2 rounded mb-1"
-                    : "bg-light p-2 rounded mb-1";
-
-                  return (
-                    <div
-                      key={subIndex}
-                      className={className} // Dynamische Klasse basierend auf dem Constraint-Status
-                      onDragOver={(e) => handleDragOver(e)}
-                      onDrop={(e) =>
-                        handleDrop(e, weekday, shiftType, subIndex)
-                      }
-                    >
-                      {subShift.employee && `E: ${subShift.employee.name}`}
-                      <button
-                        className="btn btn-sm btn-info"
-                        onClick={() =>
-                          handleRemoveFromShift(weekday, shiftType, subIndex)
-                        }
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  );
-                })}
-              </td>
-            ))}
-          </tr>
+              );
+            })}
+          </td>
         ))}
-      </table>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6">
-            <div
-              className={`alert ${
-                tableStatus === "SOLVED" ? "alert-success" : "alert-danger"
-              } mb-4`}
-              role="alert"
-            >
-              <strong>Status: </strong>
-              {tableStatus}
-            </div>
-            <small className="text-muted">
-              {remainingCells} Cell(s) to be filled
-            </small>
-          </div>
-          <div className="col-md-6 text-right">
-            <div className="alert alert-info" role="alert">
-              <strong>Total Preference: </strong> {totalPreference}
-            </div>
-          </div>
-        </div>
+
+<div className="container">
+  <div className="row">
+    <div className="col-md-6">
+      <div
+        className={`alert ${tableStatus === "SOLVED" ? "alert-success" : "alert-danger"
+        } mb-4`}
+        role="alert"
+      >
+        <strong>Status: </strong>
+        {tableStatus}
       </div>
-
-      <div className="container mt-4">
-        <div className="row">
-          <div className="col-md-4">
-            <div
-              className={`alert ${
-                constraint1Violated ? "alert-danger" : "alert-success"
-              }`}
-              role="alert"
-            >
-              <strong>Hard Constraint 1:</strong>
-              <br></br>
-              No employee may work more than 1 shift per day.
-            </div>
-          </div>
-
-          <div className="col-md-4">
-            <div
-              className={`alert ${
-                constraint2Violated ? "alert-danger" : "alert-success"
-              }`}
-              role="alert"
-            >
-              <strong>Hard Constraint 2:</strong>
-              <br></br>A job is to be done by exactly 1 employee.
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div
-              className={`alert ${
-                constraint3Violated ? "alert-danger" : "alert-success"
-              }`}
-              role="alert"
-            >
-              <strong>Hard Constraint 3:</strong>
-              <br></br>
-              Min. and max. working times (number of shifts) must be complied
-              with!
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          {/* <div className="col-md-4">
-            <div
-              className={`alert ${
-                constraint4Violated ? "alert-danger" : "alert-success"
-              }`}
-              role="alert"
-            >
-              <strong>Hard Constraint 4:</strong>
-              <br></br>
-              An employee must meet the qualifications for a job.
-            </div>
-          </div> */}
-          <div className="col-md-4">
-            <div
-              className={`alert ${
-                constraint5Violated ? "alert-danger" : "alert-success"
-              }`}
-              role="alert"
-            >
-              <strong>Hard Constraint 5:</strong>
-              <br></br>
-              Availabilities of an employee must be respected.
-            </div>
-          </div>
-          {/*           <div className="col-md-4">
-            <div
-              className={`alert ${
-                constraint6 ? "alert-danger" : "alert-success"
-              }`}
-              role="alert"
-            >
-              <strong>Hard Constraint 6:</strong>
-              <br></br>
-              Rotate shifts between employees
-            </div>
-          </div> */}
-        </div>
+      <small className="text-muted">
+        {remainingCells} Cell(s) to be filled
+      </small>
+    </div>
+    <div className="col-md-6 text-right">
+      <div className="alert alert-info" role="alert">
+        <strong>Total Preference: </strong> {totalPreference}
       </div>
-    </div> /* end div */
+    </div>
+  </div>
+</div>
+
+<div className="container mt-4">
+  <div className="row justify-content-center">
+    <div className="col-md-3">
+      <div
+        className={`alert ${constraint1Violated ? "alert-danger" : "alert-success"
+        }`}
+        role="alert"
+      >
+        <strong>Hard Constraint 1:</strong>
+        <br />
+        No employee may work more than 1 shift per day.
+      </div>
+    </div>
+
+    <div className="col-md-3">
+      <div
+        className={`alert ${constraint2Violated ? "alert-danger" : "alert-success"
+        }`}
+        role="alert"
+      >
+        <strong>Hard Constraint 2:</strong>
+        <br />
+        A job is to be done by exactly 1 employee.
+      </div>
+    </div>
+    <div className="col-md-3">
+      <div
+        className={`alert ${constraint3Violated ? "alert-danger" : "alert-success"
+        }`}
+        role="alert"
+      >
+        <strong>Hard Constraint 3:</strong>
+        <br />
+        Min. and max. working times (number of shifts) must be complied with!
+      </div>
+    </div>
+    <div className="col-md-3">
+      <div
+        className={`alert ${constraint5Violated ? "alert-danger" : "alert-success"
+        }`}
+        role="alert"
+      >
+        <strong>Hard Constraint 5:</strong>
+        <br />
+        Availabilities of an employee must be respected.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
   );
 }

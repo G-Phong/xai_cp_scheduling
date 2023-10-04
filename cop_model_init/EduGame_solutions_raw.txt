@@ -1,0 +1,118 @@
+This data was generated from EduGame_solution.py.
+
+_______________________________________________________
+
+
+Employee John is available for shift: Tuesday        
+Employee John is available for shift: Wednesday      
+Employee John is available for shift: Thursday       
+Employee John is available for shift: Friday
+Employee Alice is available for shift: Monday        
+Employee Alice is available for shift: Tuesday       
+Employee Alice is available for shift: Thursday      
+Employee Bob is available for shift: Monday
+Employee Bob is available for shift: Tuesday
+Employee Bob is available for shift: Wednesday       
+Employee Bob is available for shift: Thursday        
+Employee Emily is available for shift: Friday        
+Employee Franck is available for shift: Monday       
+Employee Franck is available for shift: Tuesday      
+Employee Franck is available for shift: Wednesday    
+Employee Franck is available for shift: Thursday     
+Employee Franck is available for shift: Friday      
+
+ID1: John
+ID2: Alice
+ID3: Bob
+ID4: Emily
+ID5: Franck
+
+Number of solutions found: 3 
+
+
+Lösung 0 :
+Day 0 Shift 1
+Employee Alice works on job 1
+Employee Bob works on job 0
+Employee Franck works on job 2
+
+Day 1 Shift 2
+Employee John works on job 0
+Employee Alice works on job 1
+Employee Franck works on job 2
+
+Day 2 Shift 3
+Employee John works on job 1
+Employee Bob works on job 0
+Employee Franck works on job 2
+
+Day 3 Shift 4
+Employee Alice works on job 1
+Employee Bob works on job 0
+Employee Franck works on job 2
+
+Day 4 Shift 5
+Employee John works on job 1
+Employee Emily works on job 0
+Employee Franck works on job 2
+
+Total Preference for Solution 0: 1025
+_____________________________________________________________    
+
+Lösung 1 :
+Day 0 Shift 1
+Employee Alice works on job 1
+Employee Bob works on job 0
+Employee Franck works on job 2
+
+Day 1 Shift 2
+Employee Alice works on job 1
+Employee Bob works on job 0
+Employee Franck works on job 2
+
+Day 2 Shift 3
+Employee John works on job 1
+Employee Bob works on job 0
+Employee Franck works on job 2
+
+Day 3 Shift 4
+Employee Alice works on job 1
+Employee Bob works on job 0
+Employee Franck works on job 2
+
+Day 4 Shift 5
+Employee John works on job 1
+Employee Emily works on job 0
+Employee Franck works on job 2
+
+Total Preference for Solution 1: 1065
+_____________________________________________________________    
+
+Lösung 2 :
+Day 0 Shift 1
+Employee Alice works on job 1
+Employee Bob works on job 0
+Employee Franck works on job 2
+
+Day 1 Shift 2
+Employee Alice works on job 1
+Employee Bob works on job 0
+Employee Franck works on job 2
+
+Day 2 Shift 3
+Employee John works on job 1
+Employee Bob works on job 0
+Employee Franck works on job 2
+
+Day 3 Shift 4
+Employee Alice works on job 1
+Employee Bob works on job 0
+Employee Franck works on job 2
+
+Day 4 Shift 5
+Employee John works on job 0
+Employee Emily works on job 1
+Employee Franck works on job 2
+
+Total Preference for Solution 2: 1080
+_____________________________________________________________    
