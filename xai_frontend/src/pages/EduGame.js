@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./EduGame.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  optimalShiftData1,
+  optimalShiftData2,
+  optimalShiftData3,
+  totalPreference1,
+  totalPreference2,
+  totalPreference3,
+} from "./EduGame_Solutions.js";
 
 const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const shiftTypes = ["DayShift"]; // To simplify EduGame, we use only one shift type
@@ -11,54 +19,13 @@ const jobDescriptions = {
   2: "Picking",
 };
 
-let staticShiftData = {
+const staticShiftData = {
   Monday: { DayShift: [{}, {}, {}] },
   Tuesday: { DayShift: [{}, {}, {}] },
   Wednesday: { DayShift: [{}, {}, {}] },
   Thursday: { DayShift: [{}, {}, {}] },
   Friday: { DayShift: [{}, {}, {}] },
 };
-
-const optimalShiftData1 = {
-    Monday: {
-      DayShift: [
-        { employeeID: "2", name: "Alice" },
-        { employeeID: "3", name: "Bob" },
-        { employeeID: "5", name: "Franck" },
-      ],
-    },
-    Tuesday: {
-      DayShift: [
-        { employeeID: "2", name: "Alice" },
-        { employeeID: "3", name: "Bob" },
-        { employeeID: "5", name: "Franck" },
-      ],
-    },
-    Wednesday: {
-      DayShift: [
-        { employeeID: "1", name: "John" },
-        { employeeID: "3", name: "Bob" },
-        { employeeID: "5", name: "Franck" },
-      ],
-    },
-    Thursday: {
-      DayShift: [
-        { employeeID: "2", name: "Alice" },
-        { employeeID: "3", name: "Bob" },
-        { employeeID: "5", name: "Franck" },
-      ],
-    },
-    Friday: {
-      DayShift: [
-        { employeeID: "1", name: "John" },
-        { employeeID: "4", name: "Emily" },
-        { employeeID: "5", name: "Franck" },
-      ],
-    },
-  };
-  
-
-staticShiftData = optimalShiftData1;
 
 // Problem data
 const maxShifts = { 1: 5, 2: 5, 3: 5, 4: 5, 5: 5 };
@@ -205,6 +172,12 @@ export default function EduGame() {
       },
     },
   });
+  const [currentData, setCurrentData] = useState(optimalShiftData1);
+  const [currentTotalPreference, setCurrentTotalPreference] =
+    useState(totalPreference1);
+
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [activeSolution, setActiveSolution] = useState(null);
 
   // Constraints violated? false = not violated, green | true = violated, red
   const [constraint1Violated, setConstraint1] = useState(false); //No employee may work more than 1 shift per day.
@@ -486,6 +459,23 @@ export default function EduGame() {
     constraint5Violated,
   ]);
 
+  useEffect(() => {
+    if (tableStatus === "SOLVED") {
+      setIsExpanded(true);
+    }
+  }, [tableStatus]);
+
+  const showSolution = (optimalShiftData, totalPreferenceValue) => {
+    if (tableStatus === "UNSOLVED") {
+      alert(
+        "Solve the game first, then have a look at the AI-generated solutions!"
+      );
+      return;
+    }
+    setCurrentData(optimalShiftData);
+    setCurrentTotalPreference(totalPreferenceValue);
+  };
+
   return (
     <div>
       <h1>EDUCATIONAL DRAG-AND-DROP GAME</h1>
@@ -629,137 +619,272 @@ export default function EduGame() {
       </div>
 
       <table className="table table-bordered table-striped">
-  <thead>
-    <tr>
-      <th>Job-Description</th>
-      {weekdays.map((weekday) => (
-        <th key={weekday}>{weekday}</th>
-      ))}
-    </tr>
-  </thead>
-  <tbody>
-    {shiftTypes.map((shiftType) => (
-      <tr key={shiftType}>
-        <td>
-          {Object.values(jobDescriptions).map((job, index) => (
-            <div key={index} className="subcell bg-light p-2 rounded mb-1">
-              {"Job " + (index + 1) + ":\n" + job}
-            </div>
-          ))}
-        </td>
-        {weekdays.map((weekday) => (
-          <td key={weekday}>
-            {scheduleData[weekday][shiftType].map((subShift, subIndex) => {
-              const constraintStatus = allConstraintsStatus[weekday];
-              const isViolated =
-                constraintStatus["DayShift"][subIndex]["constraint5Violated"];
-              const className = isViolated
-                ? "bg-danger p-2 rounded mb-1"
-                : "bg-light p-2 rounded mb-1";
-
-              return (
-                <div
-                  key={subIndex}
-                  className={className}
-                  onDragOver={(e) => handleDragOver(e)}
-                  onDrop={(e) =>
-                    handleDrop(e, weekday, shiftType, subIndex)
-                  }
-                >
-                  {subShift.employee && `E: ${subShift.employee.name}`}
-                  <button
-                    className="btn btn-sm btn-info"
-                    onClick={() =>
-                      handleRemoveFromShift(weekday, shiftType, subIndex)
-                    }
+        <thead>
+          <tr>
+            <th>Job-Description</th>
+            {weekdays.map((weekday) => (
+              <th key={weekday}>{weekday}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {shiftTypes.map((shiftType) => (
+            <tr key={shiftType}>
+              <td>
+                {Object.values(jobDescriptions).map((job, index) => (
+                  <div
+                    key={index}
+                    className="subcell bg-light p-2 rounded mb-1"
                   >
-                    Remove
-                  </button>
+                    {"Job " + (index + 1) + ":\n" + job}
+                  </div>
+                ))}
+              </td>
+              {weekdays.map((weekday) => (
+                <td key={weekday}>
+                  {scheduleData[weekday][shiftType].map(
+                    (subShift, subIndex) => {
+                      const constraintStatus = allConstraintsStatus[weekday];
+                      const isViolated =
+                        constraintStatus["DayShift"][subIndex][
+                          "constraint5Violated"
+                        ];
+                      const className = isViolated
+                        ? "bg-danger p-2 rounded mb-1"
+                        : "bg-light p-2 rounded mb-1";
+
+                      return (
+                        <div
+                          key={subIndex}
+                          className={className}
+                          onDragOver={(e) => handleDragOver(e)}
+                          onDrop={(e) =>
+                            handleDrop(e, weekday, shiftType, subIndex)
+                          }
+                        >
+                          {subShift.employee && `E: ${subShift.employee.name}`}
+                          <button
+                            className="btn btn-sm btn-info"
+                            onClick={() =>
+                              handleRemoveFromShift(
+                                weekday,
+                                shiftType,
+                                subIndex
+                              )
+                            }
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      );
+                    }
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="container">
+        <div className="row mb">
+          <div className="col-12">
+            <div
+              className={`alert ${
+                tableStatus === "SOLVED" ? "alert-success" : "alert-danger"
+              }`}
+              role="alert"
+            >
+              <strong>Status: </strong>
+              {tableStatus}
+            </div>
+            <small className="text-muted">
+              {remainingCells} Cell(s) to be filled
+            </small>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12 text-right">
+            <div className="alert alert-info" role="alert">
+              <strong>Total Preference: </strong> {totalPreference}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mt-4">
+        <div className="row justify-content-center">
+          <div className="col-md-3">
+            <div
+              className={`alert ${
+                constraint1Violated ? "alert-danger" : "alert-success"
+              }`}
+              role="alert"
+            >
+              <strong>Hard Constraint 1:</strong>
+              <br />
+              No employee may work more than 1 shift per day.
+            </div>
+          </div>
+
+          <div className="col-md-3">
+            <div
+              className={`alert ${
+                constraint2Violated ? "alert-danger" : "alert-success"
+              }`}
+              role="alert"
+            >
+              <strong>Hard Constraint 2:</strong>
+              <br />A job is to be done by exactly 1 employee.
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div
+              className={`alert ${
+                constraint3Violated ? "alert-danger" : "alert-success"
+              }`}
+              role="alert"
+            >
+              <strong>Hard Constraint 3:</strong>
+              <br />
+              Min. and max. working times (number of shifts) must be complied
+              with!
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div
+              className={`alert ${
+                constraint5Violated ? "alert-danger" : "alert-success"
+              }`}
+              role="alert"
+            >
+              <strong>Hard Constraint 5:</strong>
+              <br />
+              Availabilities of an employee must be respected.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="row justify-content-center mt-4">
+        <div className="col-auto">
+          <button
+            className={`btn ${
+              currentData !== optimalShiftData1
+                ? "btn-outline-dark"
+                : "btn-primary"
+            }`}
+            onClick={() => showSolution(optimalShiftData1, totalPreference1)}
+          >
+            AI solution 1
+          </button>
+        </div>
+        <div className="col-auto">
+          <button
+            className={`btn ${
+              currentData !== optimalShiftData2
+                ? "btn-outline-dark"
+                : "btn-primary"
+            }`}
+            onClick={() => showSolution(optimalShiftData2, totalPreference2)}
+          >
+            AI solution 2
+          </button>
+        </div>
+        <div className="col-auto">
+          <button
+            className={`btn ${
+              currentData !== optimalShiftData3
+                ? "btn-outline-dark"
+                : "btn-primary"
+            }`}
+            onClick={() => showSolution(optimalShiftData3, totalPreference3)}
+          >
+            AI solution 3
+          </button>
+        </div>
+      </div>
+
+      {/* Ausklappbarer Container */}
+      {isExpanded && (
+        <div className="expandable-container">
+          <br></br>
+          <h1>
+            Congratulations! You solved the puzzle. Now click through the
+            AI-generated solutions to compare.
+          </h1>
+
+          <div>
+            <table className="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Job-Description</th>
+                  {weekdays.map((weekday) => (
+                    <th key={weekday}>{weekday}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {shiftTypes.map((shiftType) => (
+                  <tr key={shiftType}>
+                    <td>
+                      {Object.values(jobDescriptions).map((job, index) => (
+                        <div
+                          key={index}
+                          className="subcell bg-light p-2 rounded mb-1"
+                        >
+                          {"Job " + (index + 1) + ":\n" + job}
+                        </div>
+                      ))}
+                    </td>
+                    {weekdays.map((weekday) => (
+                      <td key={weekday}>
+                        {currentData[weekday][shiftType].map(
+                          (subShift, subIndex) => {
+                            const className = "bg-light p-2 rounded mb-1";
+
+                            return (
+                              <div key={subIndex} className={className}>
+                                {subShift && `E: ${subShift.name}`}
+                              </div>
+                            );
+                          }
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div className="container">
+              <div className="row mb">
+                <div className="col-12">
+                  <div
+                    className={`alert ${
+                      tableStatus === "SOLVED"
+                        ? "alert-success"
+                        : "alert-danger"
+                    }`}
+                    role="alert"
+                  >
+                    <strong>Status: </strong>
+                    {tableStatus}
+                  </div>
                 </div>
-              );
-            })}
-          </td>
-        ))}
-      </tr>
-    ))}
-  </tbody>
-</table>
-
-
-<div className="container">
-  <div className="row">
-    <div className="col-md-6">
-      <div
-        className={`alert ${tableStatus === "SOLVED" ? "alert-success" : "alert-danger"
-        } mb-4`}
-        role="alert"
-      >
-        <strong>Status: </strong>
-        {tableStatus}
-      </div>
-      <small className="text-muted">
-        {remainingCells} Cell(s) to be filled
-      </small>
+              </div>
+              <div className="row">
+                <div className="col-12 text-right">
+                  <div className="alert alert-info" role="alert">
+                    <strong>Total Preference: </strong> {currentTotalPreference}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-    <div className="col-md-6 text-right">
-      <div className="alert alert-info" role="alert">
-        <strong>Total Preference: </strong> {totalPreference}
-      </div>
-    </div>
-  </div>
-</div>
-
-<div className="container mt-4">
-  <div className="row justify-content-center">
-    <div className="col-md-3">
-      <div
-        className={`alert ${constraint1Violated ? "alert-danger" : "alert-success"
-        }`}
-        role="alert"
-      >
-        <strong>Hard Constraint 1:</strong>
-        <br />
-        No employee may work more than 1 shift per day.
-      </div>
-    </div>
-
-    <div className="col-md-3">
-      <div
-        className={`alert ${constraint2Violated ? "alert-danger" : "alert-success"
-        }`}
-        role="alert"
-      >
-        <strong>Hard Constraint 2:</strong>
-        <br />
-        A job is to be done by exactly 1 employee.
-      </div>
-    </div>
-    <div className="col-md-3">
-      <div
-        className={`alert ${constraint3Violated ? "alert-danger" : "alert-success"
-        }`}
-        role="alert"
-      >
-        <strong>Hard Constraint 3:</strong>
-        <br />
-        Min. and max. working times (number of shifts) must be complied with!
-      </div>
-    </div>
-    <div className="col-md-3">
-      <div
-        className={`alert ${constraint5Violated ? "alert-danger" : "alert-success"
-        }`}
-        role="alert"
-      >
-        <strong>Hard Constraint 5:</strong>
-        <br />
-        Availabilities of an employee must be respected.
-      </div>
-    </div>
-  </div>
-</div>
-
-
-</div>
   );
 }

@@ -1,5 +1,6 @@
 //total preference 1025
-const optimalShiftData1 = {
+export const totalPreference1 = 1025;
+export const optimalShiftData1 = {
   Monday: {
     DayShift: [
       { employeeID: "3", name: "Bob" },
@@ -38,7 +39,8 @@ const optimalShiftData1 = {
 };
 
 //total preference 1065
-const optimalShiftData2 = {
+export const totalPreference2 = 1065;
+export const optimalShiftData2 = {
   Monday: {
     DayShift: [
       { employeeID: "3", name: "Bob" },
@@ -77,7 +79,8 @@ const optimalShiftData2 = {
 };
 
 //total preference 1080
-const optimalShiftData3 = {
+export const totalPreference3 = 1080;
+export const optimalShiftData3 = {
   Monday: {
     DayShift: [
       { employeeID: "3", name: "Bob" },
