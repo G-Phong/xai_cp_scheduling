@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect,  } from "react";
 import "./EduGame.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-const shiftTypes = ["DayShift"]; //to simplify the EduGame, we just use one single shift
+const shiftTypes = ["DayShift"]; // To simplify EduGame, we use only one shift type
 
 const jobDescriptions = {
   0: "Forklift",
@@ -19,8 +19,7 @@ const staticShiftData = {
   Friday: { DayShift: [{}, {}, {}] },
 };
 
-//Problem data
-// Max Shifts und Min Shifts
+// Problem data
 const maxShifts = { 1: 5, 2: 5, 3: 5, 4: 5, 5: 5 };
 const minShifts = { 1: 2, 2: 1, 3: 2, 4: 1, 5: 1 };
 
@@ -32,7 +31,7 @@ const availability = {
   Friday: { DayShift: { 1: 1, 2: 0, 3: 0, 4: 1, 5: 1 } },
 };
 
-// Qualifikation und Job-Präferenzen
+// Qualification and job preferences
 const qualification = {
   1: { 0: 1, 1: 1, 2: 2 },
   2: { 0: 2, 1: 1, 2: 1 },
@@ -49,12 +48,14 @@ const jobPreference = {
   5: { 0: 50, 1: 50, 2: 60 },
 };
 
-// Anforderungen für Qualifikation (noch als Matrix, da der Kontext unklar ist)
+// Qualification requirements (still as a matrix, context is unclear)
 const requiredQualification = [
   [3, 3, 3],
   [2, 1, 2],
   [3, 2, 2],
 ];
+
+
 
 export default function EduGame() {
   const [scheduleData, setScheduleData] = useState(staticShiftData);
@@ -69,7 +70,122 @@ export default function EduGame() {
   const [tableStatus, setTableStatus] = useState("UNSOLVED");
   const [remainingCells, setRemainingCells] = useState(0);
   const [totalPreference, setTotalPreference] = useState(0);
-  const [allConstraintsStatus, setAllConstraintsStatus] = useState({});
+  const [allConstraintsStatus, setAllConstraintsStatus] = useState(
+   {
+      Monday: {
+        DayShift: {
+          0: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+          1: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+          2: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+        },
+      },
+      Tuesday: {
+        DayShift: {
+          0: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+          1: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+          2: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+        },
+      },
+      Wednesday: {
+        DayShift: {
+          0: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+          1: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+          2: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+        },
+      },
+      Thursday: {
+        DayShift: {
+          0: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+          1: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+          2: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+        },
+      },
+      Friday: {
+        DayShift: {
+          0: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+          1: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+          2: {
+            constraint1Violated: false,
+            constraint3Violated: false,
+            constraint4Violated: false,
+            constraint5Violated: false,
+          },
+        },
+      },
+    }
+    
+    
+  );
 
   //Constraints verletzt? false = unverletzt, grün | true = verletzt, rot
   const [constraint1Violated, setConstraint1] = useState(false); //No employee may work more than 1 shift per day.
@@ -102,7 +218,7 @@ export default function EduGame() {
     let constraintStatusReturn = {
       constraint1Violated: false,
       constraint2Violated: false,
-      constraint3Violated: true,
+      constraint3Violated: false,
       constraint4Violated: false,
       constraint5Violated: false,
     };
@@ -113,24 +229,23 @@ export default function EduGame() {
         allConstraintsStatus[day][shiftType] = [];
         updatedScheduleData[day][shiftType].forEach((shift, subIndex) => {
           const employee = shift.employee;
+
+          //Dictionary to be returned from the function
           const constraintStatus = {
-            constraint1Violated: true,
-            constraint2Violated: false,
-            constraint3Violated: true,
+            constraint1Violated: false,
+            //constraint2Violated: false,
+            constraint3Violated: false,
             constraint4Violated: true,
             constraint5Violated: false,
           };
 
           if (employee) {
-            // Überprüfung von Constraint 1
-
-            /*           // Überprüfung von Constraint 2
-          if (!checkConstraint2(updatedScheduleData)) {
-            constraintStatus.constraint2Violated = true;
-            constraintStatusReturn.constraint2Violated = true;
-          } */
-
-            // Überprüfung von Constraint 3
+            // Überprüfung von Constraint 3 - außerhalb der Schleife
+            if (!checkConstraint3(updatedScheduleData)) {
+              console.log("IN CHECKCONSTRAINT3 checkHardConstraints()");
+              constraintStatus.constraint3Violated = true;
+              constraintStatusReturn.constraint3Violated = true;
+            }
 
             // Überprüfung von Constraint 4
 
@@ -145,13 +260,26 @@ export default function EduGame() {
       });
     });
 
+    // Überprüfung von Constraint 1
+    if (!checkConstraint1(updatedScheduleData)) {
+      console.log("IN CHECKCONSTRAINT1 checkHardConstraints()");
+      constraintStatusReturn.constraint1Violated = true;
+      console.log(constraintStatusReturn);
+    }
+
     // Überprüfung von Constraint 2 - außerhalb der Schleife
     if (!checkConstraint2(updatedScheduleData)) {
       console.log("IN CHECKCONSTRAINT2 checkHardConstraints()");
       constraintStatusReturn.constraint2Violated = true;
     }
 
-    console.log("allConstraintsStatus");
+    /*     // Überprüfung von Constraint 3 - außerhalb der Schleife
+    if (!checkConstraint3(updatedScheduleData)) {
+      console.log("IN CHECKCONSTRAINT3 checkHardConstraints()");
+      constraintStatusReturn.constraint3Violated = true;
+    } */
+
+    console.log("allConstraintsStatus checkHardConstraints()");
     console.log(allConstraintsStatus);
     setAllConstraintsStatus(allConstraintsStatus);
     return constraintStatusReturn;
@@ -174,6 +302,36 @@ export default function EduGame() {
     }
   };
 
+  const checkConstraint1 = (updatedScheduleData) => {
+    const employeeJobCounts = {};
+    let constraintViolated = false; // Flag zum Überwachen des Verletzungsstatus
+
+    Object.keys(updatedScheduleData).some((day) => {
+      return Object.keys(updatedScheduleData[day]).some((shiftType) => {
+        return updatedScheduleData[day][shiftType].some((shift) => {
+          const employee = shift.employee;
+          if (employee) {
+            if (!employeeJobCounts[day]) {
+              employeeJobCounts[day] = {};
+            }
+            if (!employeeJobCounts[day][employee.name]) {
+              employeeJobCounts[day][employee.name] = 0;
+            }
+            employeeJobCounts[day][employee.name] += 1;
+
+            if (employeeJobCounts[day][employee.name] > 1) {
+              constraintViolated = true;
+              return true; // Die .some() Methode wird beendet, wenn `true` zurückgegeben wird
+            }
+          }
+          return false;
+        });
+      });
+    });
+
+    return !constraintViolated; // Rückgabe des inversen Flags, da die Frage ist, ob der Constraint NICHT verletzt ist
+  };
+
   //check if schedule is complete
   const checkConstraint2 = (updatedScheduleData) => {
     for (const day in updatedScheduleData) {
@@ -191,6 +349,57 @@ export default function EduGame() {
       }
     }
     return true; // Alle Jobs haben genau einen Mitarbeiter
+  };
+
+  const checkConstraint3 = (updatedScheduleData) => {
+    // Objekt zum Speichern der Anzahl der Schichten je Mitarbeiter
+    // Initialisieren der Mitarbeiter-IDs von 1 bis 5 mit 0
+    const employeeShiftCounts = {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+    };
+    let constraintViolated = false;
+
+    // Durchlaufen aller Tage und Schichten, um die Anzahl der Schichten für jeden Mitarbeiter zu zählen
+    Object.values(updatedScheduleData).forEach((day) => {
+      Object.values(day).forEach((shift) => {
+        shift.forEach((cell) => {
+          const employee = cell.employee;
+          if (employee) {
+            if (!employeeShiftCounts[employee.employeeID]) {
+              employeeShiftCounts[employee.employeeID] = 0;
+            }
+            employeeShiftCounts[employee.employeeID] += 1;
+          }
+        });
+      });
+    });
+
+    console.log("employeeShiftCounts");
+    console.log(employeeShiftCounts);
+
+    console.log("minShifts");
+    console.log(minShifts);
+
+    console.log("maxShifts");
+    console.log(maxShifts);
+
+    // Überprüfung der minimalen und maximalen Schichtbeschränkungen für jeden Mitarbeiter
+    Object.keys(employeeShiftCounts).forEach((employeeId) => {
+      const count = employeeShiftCounts[employeeId];
+      const min = minShifts[employeeId];
+      const max = maxShifts[employeeId];
+
+      if (count < min || count > max) {
+        constraintViolated = true;
+        console.log("constraint 3 violated!!");
+      }
+    });
+
+    return !constraintViolated;
   };
 
   const handleDrop = (event, day, shiftType, subIndex) => {
@@ -499,7 +708,7 @@ export default function EduGame() {
           ))}
         </tbody> */}
 
-        {/* Stellen Sie sicher, dass allConstraintsStatus vorher berechnet wurde */}
+        
         {shiftTypes.map((shiftType) => (
           <tr key={shiftType}>
             <td>
