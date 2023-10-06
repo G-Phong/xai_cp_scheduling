@@ -1,11 +1,12 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 import random
 import logging
 from cop_model.ShiftOptimizer import ShiftOptimizer
+import os
 
 # Initialize Flask app and configure logging
-app = Flask(__name__)
+app = Flask(__name__, static_folder='xai_frontend/build')
 logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
 # Disable alphabetical sorting of dictionary keys for jsonify
@@ -30,9 +31,18 @@ COP_optimizer = ShiftOptimizer(
     num_shifts_per_day=num_shifts_per_day
 )
 
-@app.route('/', methods=['GET'])
+@app.route('/', defaults={"path": ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
+
+
+""" @app.route('/', methods=['GET'])
 def root_endpoint():
-    return jsonify(None)
+    return jsonify(None) """
 
 @app.route('/schedule', methods=['GET'])
 def get_schedule():
