@@ -24,6 +24,7 @@ export default function App() {
 
         <main role="main" className="col-md-10 ml-sm-auto px-4 main-content">
           <Routes>
+          <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/what-if" element={<WhatIfAnalysis />} />

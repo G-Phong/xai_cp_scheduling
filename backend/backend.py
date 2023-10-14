@@ -9,7 +9,7 @@ from cop_model.ShiftOptimizer import ShiftOptimizer
 
 # Initialize Flask app and configure logging
 #app = Flask(__name__)
-app = Flask(__name__, static_folder='../xai_frontend/public', static_url_path='/')
+app = Flask(__name__, static_folder='../xai_frontend/build', static_url_path='/')
 logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
 # Disable alphabetical sorting of dictionary keys for jsonify
@@ -34,12 +34,19 @@ COP_optimizer = ShiftOptimizer(
     num_shifts_per_day=num_shifts_per_day
 )
 
+@app.route('/<path:path>', methods=['GET'])
+def serve_file_in_dir(path):
+    return send_from_directory('../xai_frontend/build', path)
 
       
 
 @app.route('/', methods=['GET'])
-def root_endpoint():
-    return send_from_directory('../xai_frontend/public', 'index.html')
+#def root_endpoint():
+    #return send_from_directory('xai_frontend/public', 'index.html')
+
+def root_endpoint2():
+    return send_from_directory('../xai_frontend/build', 'index.html')
+    #return send_from_directory('../', 'react_test.html')
     #return jsonify(None)
 
 @app.route('/schedule', methods=['GET'])
