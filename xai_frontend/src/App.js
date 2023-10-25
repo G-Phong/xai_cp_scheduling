@@ -9,6 +9,8 @@ import WhatIfAnalysis from "./pages/WhatIfAnalysis.js";
 import Quiz from "./pages/Quiz.js";
 import EduGame from "./pages/EduGame.js";
 import AboutUs from "./pages/AboutUs.js";
+import Assistant from "./pages/Assistant.js";
+import Visualization from "./pages/Visualization.js";
 
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import "./App.css"; // Import your CSS file for additional customizations
@@ -27,8 +29,10 @@ export default function App() {
           <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/schedule" element={<Schedule />} />
+            <Route path="/visual" element={<Visualization />} />
             <Route path="/what-if" element={<WhatIfAnalysis />} />
             <Route path="/edugame" element={<EduGame />} />
+            <Route path="/assistant" element={<Assistant />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/faq" element={<FAQ />} />
             {/* Uncomment the next line if you want to enable the RandomButton route */}

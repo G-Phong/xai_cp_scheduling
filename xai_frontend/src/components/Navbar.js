@@ -15,7 +15,12 @@ function Navbar() {
         </li>
         <li className="nav-item">
           <Link to="/schedule" className="nav-link">
-            Pop-Up-Schedule
+            Weekly Schedule
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/visual" className="nav-link">
+            Visualization
           </Link>
         </li>
         <li className="nav-item">
@@ -26,6 +31,11 @@ function Navbar() {
         <li className="nav-item">
           <Link to="/edugame" className="nav-link">
             EduGame
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/assistant" className="nav-link">
+            AI Assistant
           </Link>
         </li>
         <li className="nav-item">
