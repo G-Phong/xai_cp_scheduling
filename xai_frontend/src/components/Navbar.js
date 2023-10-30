@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./Navbar.css";
 
 function Navbar() {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   return (
     <nav className="navbar navbar-dark bg-dark">
       <span className="navbar-brand mb-0 h1">Explainify.AI</span>
@@ -19,40 +25,53 @@ function Navbar() {
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/visual" className="nav-link">
-            Visualization
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/what-if" className="nav-link">
-            What-If Analysis
-          </Link>
+          <div
+            className={`nav-link ${dropdownOpen ? "active" : ""}`}
+            onClick={toggleDropdown}
+          >
+            Compare & Understand
+          </div>
+          <div
+            className={`dropdown-menu ${dropdownOpen ? "show" : ""}`}
+            onClick={toggleDropdown}
+          >
+            <Link to="/what-if" className="dropdown-item">
+              What-If Scenarios
+            </Link>
+            <Link to="/visualization" className="dropdown-item">
+              Visualization
+            </Link>
+          </div>
         </li>
         <li className="nav-item">
           <Link to="/edugame" className="nav-link">
-            EduGame
+            Interactive Learning Game
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/assistant" className="nav-link">
-            AI Assistant
+          <Link to="/educational-game" className="nav-link">
+            Educational Game
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/quiz" className="nav-link">
-            AI Quiz
-          </Link>
+          <div
+            className={`nav-link ${dropdownOpen ? "active" : ""}`}
+            onClick={toggleDropdown}
+          >
+            Theory Classroom
+          </div>
+          <div
+            className={`dropdown-menu ${dropdownOpen ? "show" : ""}`}
+            onClick={toggleDropdown}
+          >
+            <Link to="/ai-knowledge-quiz" className="dropdown-item">
+              AI Knowledge Quiz
+            </Link>
+            <Link to="/faq" className="dropdown-item">
+              FAQ
+            </Link>
+          </div>
         </li>
-        <li className="nav-item">
-          <Link to="/faq" className="nav-link">
-            FAQ
-          </Link>
-        </li>
-{/*         <li className="nav-item">
-          <Link to="/randomButton" className="nav-link">
-            Random Button
-          </Link>
-        </li> */}
         <li className="nav-item">
           <Link to="/about-us" className="nav-link">
             About Us
