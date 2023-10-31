@@ -30,6 +30,7 @@ function LandingPage() {
       {/* <!--SECTION FEATURES BLOG START--> */}
       <section class="features-section">
         <div class="container">
+          <h1>Features</h1>
           <ul>
             <li>Explainable AI for Scheduling: An explanation model</li>
             <li>End-user Centric Explanations: Made for humans</li>
@@ -38,14 +39,25 @@ function LandingPage() {
             <li>Preference-Awareness: The AI respects shift preferences</li>
             <li>Explore & Interact: A hands-on approach</li>
           </ul>
+          <img src={ai_brain} alt="ai_brain" />
         </div>
-        <img src={ai_brain} alt="phone" />
       </section>
       {/* <!--SECTION FEATURES BLOG END--> */}
+
+      {/* <!--SECTION GET STARTED START--> */}
+      <section class="get-started-section">
+        <div class="container">
+          <h2>Get Started</h2>
+          <p> Hier erklären Sie, wie die Seite funktioniert. </p>
+          {/* Hier können Sie weitere Inhalte oder Elemente hinzufügen. */}
+        </div>
+      </section>
+      {/* <!--SECTION GET STARTED END--> */}
 
       {/* <!--SECTION TEST  BLOG START--> */}
       <section class="test-monials-section">
         <div class="container">
+          {/* <h1> People </h1> */}
           <ul>
             {/* <!--Phong--> */}
             <li>
@@ -74,16 +86,6 @@ function LandingPage() {
         </div>
       </section>
       {/* <!--SECTION TEST  BLOG END--> */}
-
-      {/* <!--SECTION GET STARTED START--> */}
-      <section class="get-started-section">
-        <div class="container">
-          <h2>Get Started</h2>
-          <p> Hier erklären Sie, wie die Seite funktioniert. </p>
-          {/* Hier können Sie weitere Inhalte oder Elemente hinzufügen. */}
-        </div>
-      </section>
-      {/* <!--SECTION GET STARTED END--> */}
     </div>
   );
 }

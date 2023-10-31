@@ -1,53 +1,41 @@
 /* Entire App Container */
 .App {
   text-align: center;
-  font-family: Arial, sans-serif; /* Use a legible font */
+  font-family: Arial, sans-serif; /* Using a legible font */
+
+  /* Center-align text and set the font family */
 }
 
 /* Logo Style */
 .App-logo {
   height: 150px;
   pointer-events: none;
+
+  /* Define styles for the logo, making it unclickable */
 }
 
 /* Background color for the App Header */
 .App-header {
-  background-color: #007bff; /* Blue background color */
-  min-height: 100vh;
+  background-color: #007bff; /* Set a blue background color */
+  min-height: 100vh; /* Minimum height of 100% of the viewport height */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: white; /* White text color */
-  padding: 10px; /* Add some spacing */
+  padding: 10px; /* Add some spacing around the header content */
+
+  /* Styling for the header, including background color, layout, and text color */
 }
 
 /* Style for Links */
 .App-link {
   color: #61dafb;
-  text-decoration: none; /* Remove link underlines */
+  text-decoration: none; /* Remove underlines from links */
+
+  /* Define styles for links, including color and text decoration */
 }
 
-/* Animation for the Logo (only if not respecting reduced motion settings) */
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-/* Keyframes for the Logo Animation */
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* h1 font size */
-.custom-h1 {
-  font-size: 16px;
-  text-align: left;
-  font-weight: bold;
+.main-content {
+  padding: 0; /* oder welcher Wert auch immer gewünscht ist */
 }

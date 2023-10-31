@@ -5,7 +5,7 @@
 .navbar {
   background-color: #e3f2fd;
   color: white;
-  position: fixed;
+  position: static;
   top: 0;
   left: 0;
   bottom: 0;
@@ -15,7 +15,7 @@
   padding: 0rem;
   overflow-y: auto;
   border-right: 0px solid #ccc;
-  padding-right: 30px;
+  padding-right: 0px;
 }
 
 /* Dropdown Item Style */
@@ -85,26 +85,4 @@
 /* Hover Effect for List Items */
 .nav-item:hover {
   background-color: #777;
-}
-
-/* Attempt to extend the navbar down */
-.sidebar {
-  background-color: #333;
-  color: white;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 150px;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  z-index: 1;
-}
-
-.main-content {
-  margin-left: 325px;
-  margin-top: 0px;
-  padding: 0;
-  width: 100%;
 }

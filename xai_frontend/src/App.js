@@ -19,7 +19,7 @@ export default function App() {
           <CustomNavbar />
         </nav>
 
-        <main role="main" className="col-md-10 ml-sm-auto px-4 main-content">
+        <main role="main" className="col-md-10 ml-sm-auto main-content">
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/home" element={<LandingPage />} />
