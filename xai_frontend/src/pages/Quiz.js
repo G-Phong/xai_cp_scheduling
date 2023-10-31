@@ -2,8 +2,8 @@ import React from "react";
 import Quiz from "react-quiz-component";
 
 export const quiz = {
-  quizTitle: "AI-Based Shift Planning Quiz",
-  quizSynopsis: "Test your knowledge of AI-based shift planning.",
+  quizTitle: "Shift Planning Quiz",
+  quizSynopsis: "Test what you have just learned.",
   nrOfQuestions: "10",
   questions: [
     {
@@ -210,7 +210,7 @@ export default function MCQuiz() {
     <div className="container">
     <div className="row justify-content-center">
       <div className="col-md-6 text-center">
-        <h1>Understanding AI-based shift scheduling!</h1>
+        <h1>Test your knowledge!</h1>
         <Quiz
           quiz={quiz}
           shuffle={true}

@@ -1,18 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { animateScroll as scroll, Link as ScrollLink } from "react-scroll";
 
-import './Navbar.css';
+import "./Navbar.css";
 
 function Navbar() {
-  // Hier können Sie JavaScript verwenden, um das Dropdown-Verhalten zu steuern
-
   // Funktion, um das Dropdown zu öffnen/schließen
   const toggleDropdown = (event) => {
     const dropdownMenu = event.currentTarget.nextElementSibling;
     dropdownMenu.classList.toggle("show");
   };
-
-  
 
   return (
     <nav className="navbar navbar-dark bg-dark text-center">
@@ -29,10 +26,7 @@ function Navbar() {
           </Link>
         </li>
         <li className="nav-item dropdown">
-          <div
-            className="nav-link dropdown-toggle"
-            onClick={toggleDropdown}
-          >
+          <div className="nav-link dropdown-toggle" onClick={toggleDropdown}>
             Compare & Understand
           </div>
           <div className="dropdown-menu">
@@ -45,10 +39,7 @@ function Navbar() {
           </div>
         </li>
         <li className="nav-item dropdown">
-          <div
-            className="nav-link dropdown-toggle"
-            onClick={toggleDropdown}
-          >
+          <div className="nav-link dropdown-toggle" onClick={toggleDropdown}>
             Interactive Learning Game
           </div>
           <div className="dropdown-menu">
@@ -58,26 +49,34 @@ function Navbar() {
           </div>
         </li>
         <li className="nav-item dropdown">
-          <div
-            className="nav-link dropdown-toggle"
-            onClick={toggleDropdown}
-          >
+          <div className="nav-link dropdown-toggle" onClick={toggleDropdown}>
             Theory Classroom
           </div>
           <div className="dropdown-menu">
-            <Link to="/quiz" className="dropdown-item">
-              AI Knowledge Quiz
-            </Link>
-            <Link to="/faq" className="dropdown-item">
+            {/*             <ScrollLink
+              to="faq"
+              smooth={false}
+              duration={300}
+              className="dropdown-item"
+            >
               FAQ
+            </ScrollLink>
+            <ScrollLink
+              to="quiz"
+              smooth={false}
+              duration={300}
+              className="dropdown-item"
+            >
+              AI Knowledge Quiz
+            </ScrollLink> */}
+            <Link to="/theory#faq" className="dropdown-item">
+              FAQ
+            </Link>
+            <Link to="/theory#quiz" className="dropdown-item">
+              AI Knowledge Quiz
             </Link>
           </div>
         </li>
-  {/*         <li className="nav-item">
-            <Link to="/about-us" className="nav-link">
-              About Us
-            </Link>
-          </li> */}
       </ul>
     </nav>
   );
