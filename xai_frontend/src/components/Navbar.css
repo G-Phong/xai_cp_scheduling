@@ -10,13 +10,17 @@
   left: 0;
   bottom: 0;
   width: auto;
-  display: block;
+  display: flex;
   flex-direction: column;
   padding: 0rem;
   overflow-y: auto;
   border-right: 0px solid #ccc;
   padding-right: 0px;
+  justify-content: center; /* Horizontale Zentrierung */
+  align-items: center;     /* Vertikale Zentrierung */
 }
+
+
 
 /* Dropdown Item Style */
 .navbar .dropdown-item {
@@ -54,7 +58,10 @@
 .navbar .navbar-brand {
   font-size: 2rem;
   text-align: center;
-  margin-left: 30px;
+  margin-left: 0px;
+  align-content: center;
+  vertical-align: middle;
+  margin-top: 30px;
 }
 
 /* Style for the List of Links */
@@ -64,7 +71,10 @@
   margin-top: 2rem;
   flex-grow: 1; /* Fills the available vertical space */
   overflow-y: auto; /* Add scrollbar when overflow occurs */
+  display: flex;
+  align-items: center;
 }
+
 
 /* Style for List Items in the Navbar */
 .nav-item {

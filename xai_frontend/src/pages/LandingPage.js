@@ -5,7 +5,41 @@ import calendar_black from "../Img/calendar_black.png";
 import TUM_eng_logo from "../Img/TUM_Logo_extern_mt_EN_RGB_p.png";
 import phong from "../Img/phong.jpg";
 
-function LandingPage() {
+import calendar_zoom from "../Img/calendar_zoom.jpg";
+import coffee_spill from "../Img/coffee_spill.jpg";
+import holding_calendar from "../Img/holding_calendar.jpg";
+import pencil_book from "../Img/pencil_book.jpg";
+import smartphone_hand from "../Img/smartphone_hand.jpg";
+import thumbs_up_down from "../Img/thumbs_up_down.jpg";
+
+import React, { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
+
+export default function LandingPage() {
+  const featuresRef = useRef(null);
+  const getStartedRef = useRef(null);
+  const contactRef = useRef(null);
+  const location = useLocation();
+
+  const handleScroll = () => {
+    const hash = window.location.hash;
+    console.log("Hash:");
+    console.log(hash);
+    if (hash === "#features" && featuresRef.current) {
+      featuresRef.current.scrollIntoView({ behavior: "smooth" });
+
+    } else if (hash === "#getStarted" && getStartedRef.current) {
+      getStartedRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if(hash === "#contact" && contactRef.current){
+      contactRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    handleScroll();
+  }, [location.hash]);
+
+
   return (
     <div className="App">
       {/* <!--SECTION HERO BLOG START--> */}
@@ -16,8 +50,14 @@ function LandingPage() {
             <h1>A Scheduling AI made understandable</h1>
 
             <div class="hero-cta">
-              <a href="#" class="primery-cta">
+              <a href="#features" class="primery-cta">
+                Features
+              </a>
+              <a href="#getStarted" class="primery-cta">
                 Get Started
+              </a>
+              <a href="#contact" class="primery-cta">
+                Contact
               </a>
             </div>
           </div>
@@ -28,7 +68,7 @@ function LandingPage() {
       {/* <!--SECTION HERO BLOG END--> */}
 
       {/* <!--SECTION FEATURES BLOG START--> */}
-      <section class="features-section">
+      <section ref={featuresRef} class="features-section">
         <div class="container">
           <h1>Features</h1>
           <ul>
@@ -45,49 +85,141 @@ function LandingPage() {
       {/* <!--SECTION FEATURES BLOG END--> */}
 
       {/* <!--SECTION GET STARTED START--> */}
-      <section class="get-started-section">
-        <div class="container">
-          <h2>Get Started</h2>
-          <p> Hier erklären Sie, wie die Seite funktioniert. </p>
-          {/* Hier können Sie weitere Inhalte oder Elemente hinzufügen. */}
+      <section ref={getStartedRef} className="get-started-section">
+        <div className="container">
+          <h2>Two approaches to shift planning</h2>
+
+          <div className="info-section">
+            <div className="steps-section">
+              <span class="label-left">Manual approach</span>
+              <div className="step">
+                <img src={pencil_book} alt="TUM Logo" />
+                <h4>1. Manual Planning</h4>
+                <p>
+                  A shift supervisor spends hours creating the shift schedule.
+                  It is a complicated and tedious task.
+                </p>
+              </div>
+              <div className="step">
+                <img src={calendar_zoom} alt="TUM Logo" />
+                <h4>2. Ineffective Schedules</h4>
+                <p>
+                  Despite the efforts, there are conflicts and dissatisfaction
+                  among the employees.
+                </p>
+              </div>
+              <div className="step">
+                <img src={coffee_spill} alt="TUM Logo" />
+                <h4>3. Dissatisfaction</h4>
+                <p>
+                  Often, not all resources are used optimally and employee
+                  preferences are not well respected, leading to mediocre
+                  schedules.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Beginn der zweiten 3er-Reihe */}
+          <div className="info-section">
+            <div className="steps-section">
+              <span class="label-left">
+                Planning with Artificial Intelligence
+              </span>
+              <div className="step">
+                <img src={thumbs_up_down} alt="TUM Logo" />
+                <h4>1. Data Collection</h4>
+                <p>
+                  Employees enter their work preferences into a system,
+                  installed on their phones as an App.
+                </p>
+              </div>
+              <div className="step">
+                <img src={smartphone_hand} alt="TUM Logo" />
+                <h4>2. Preferences</h4>
+                <p>
+                  The system takes into account all preferences and respects
+                  them all.
+                </p>
+              </div>
+              <div className="step">
+                <img src={holding_calendar} alt="TUM Logo" />
+                <h4>3. Optimal Schedules</h4>
+                <p>
+                  The system ensures that all shifts are optimally staffed and
+                  employees having a satisfactory work schedule.
+                </p>
+              </div>
+            </div>
+          </div>
+          {/* Ende der zweiten 3er-Reihe */}
+
+          <h1>Hier fehlt noch ein Walkthrough!!!!!!!! </h1>
         </div>
       </section>
       {/* <!--SECTION GET STARTED END--> */}
 
-      {/* <!--SECTION TEST  BLOG START--> */}
-      <section class="test-monials-section">
+      {/* <!--SECTION TESTIMONIALS & CONTACT START--> */}
+      <section ref={contactRef} class="test-monials-section container-flex">
         <div class="container">
           {/* <h1> People </h1> */}
           <ul>
-            {/* <!--Phong--> */}
             <li>
+              {/* <!--Phong Image--> */}
               <img src={phong} alt="Person 1" />
               <blockquote>
                 Meet the driving force behind 'Explainify.AI'. The goal? Making
                 AI accessible and trusted by all.
               </blockquote>
-              <cite> &mdash; Gia-Phong Tran (TUM Master's student)</cite>
+              <cite> &mdash; Gia-Phong Tran (TUM Master's student)</cite> <br />
+              <a href="mailto:giaphong.tran@tum.de">giaphong.tran@tum.de</a>
             </li>
 
-            {/* <!--TUM-LOGO--> */}
             <li>
+              {/* <!--TUM-LOGO--> */}
               <img src={TUM_eng_logo} alt="TUM  " />
               <blockquote>
                 The Technical University of Munich, particularly the Chair of
                 Materials Handling, Material Flow, and Logistics (FML), is a
                 pioneer in logistics research and education. Their key areas of
-                focus range from robotics to sustainable logistics. They not
-                only envision the future of logistics but also play an active
-                role in shaping it.
+                focus range from robotics to sustainable logistics.
               </blockquote>
-              <cite> &mdash; Charlotte Haid (FML researcher)</cite>
+              <cite> &mdash; Charlotte Haid (FML researcher)</cite> <br />
+              <a href="mailto:charlotte.haid@tum.de">charlotte.haid@tum.de</a>
             </li>
           </ul>
         </div>
+
+        <div className="container">
+          <h2>Contact Information</h2>
+
+          <div className="contact-item">
+            <strong>Address:</strong> Technische Universität München <br />
+            Boltzmannstraße 15 <br />
+            85748 Garching bei München
+          </div>
+          <div className="contact-item">
+            <strong>Phone:</strong> +49.89.289.15921
+          </div>
+          <div className="contact-item">
+            <strong>Email:</strong>{" "}
+            <a href="mailto:kontakt.fml@ed.tum.de">kontakt.fml@ed.tum.de</a>{" "}
+            <br />
+          </div>
+          <div className="contact-item">
+            <strong>Website:</strong>{" "}
+            <a
+              href="http://www.mec.ed.tum.de/fml"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Technische Universität München - fml
+            </a>
+          </div>
+          {/* You can add more details from the provided contact info here */}
+        </div>
       </section>
-      {/* <!--SECTION TEST  BLOG END--> */}
+      {/* <!--SECTION TESTIMONIALS & CONTACT END--> */}
     </div>
   );
 }
-
-export default LandingPage;

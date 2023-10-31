@@ -26,6 +26,7 @@ section {
 
 /* --- HERO STYLE ---*/
 .hero {
+  background: rgb(239, 238, 238);
   text-align: center;
 }
 
@@ -50,23 +51,11 @@ section {
   color: #fff;
   text-decoration: none;
   padding: 0.6em 1.3em;
-  font-size: 1.4em;
+  font-size: 1.2em;
   border-radius: 5em;
+  white-space: nowrap;
   font-weight: bold;
   display: inline-block;
-}
-
-.watch-video-cta {
-  display: block;
-  margin-top: 0;
-}
-
-.watch-video-cta img {
-  display: line-block;
-  margin-top: 0;
-  margin-right: 0.5em;
-  vertical-align: middle;
-  width: 2.5em;
 }
 
 .hero-img {
@@ -262,10 +251,12 @@ iframe {
     display: flex;
     justify-content: center; /* horizontally centers the button */
     align-items: center; /* vertically centers the button (optional, if needed) */
+    margin: 0;
   }
 
   .primery-cta {
-    margin-right: 0;
+    margin-right: 10px;
+    margin-left: 0;
   }
   .features-section ul {
     display: block;
@@ -304,6 +295,7 @@ iframe {
     margin-left: 20px; /* Spacing between text and image */
     margin-right: 0px;
   }
+
 
   .features-section h1 {
     float: left;
@@ -349,5 +341,97 @@ iframe {
     margin-left: 0;
   }
 }
+.get-started-section {
+  background: #c7adad;
+}
+
+.get-started-section .container {
+  position: relative;
+}
+
+.info-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-top: 40px;
+}
+
+.info-box {
+  flex: 1;
+  padding-right: 30px;
+}
+
+.steps-section {
+  flex: 2;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  align-items: center;
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  z-index: 2;
+  position: relative;
+}
+
+.step img {
+  margin-bottom: 20px;
+  border-radius: 50%;
+  border: 3px solid #000; /* Adjust border color as needed */
+  width: 80%;  /* or adjust as needed */
+  height: auto;
+}
+
+.steps-section::before {
+  content: "";
+  position: absolute;
+  top: 27%; /* Adjusted the top value */
+  left: 10%; 
+  right: 10%; 
+  height: 2px;
+  background-color: #000;
+  z-index: 1;
+}
+
+.label-left {
+  position: absolute;
+  text-align: center;
+  left: -25%;  /* Je nach gewünschtem Abstand von der Linie anpassen */
+  top: 32%;
+  transform: translateY(-50%);  /* Vertikal zentriert */
+  white-space: normal;  /* Verhindert Zeilenumbrüche */
+  width: 150px;
+  font-size: 1.5em;  /* Adjust font size */
+  font-weight: bold;  /* Make text bold */
+  /* font-family: 'Desired Font Family', sans-serif;  Uncomment and replace with the desired font if needed */
+}
+
+
+.contact-item {
+  margin-bottom: 20px;
+  color: black;
+  text-align: left;
+  margin-left: 265px;
+}
+
+.contact-item strong {
+  color: white;
+}
+
+.contact-item a {
+  color: black;
+  text-decoration: underline; }
+
+.container-flex {
+  display: flex;
+  margin-right: 0px;
+}
+
+.container-flex strong {
+  color: b;
+}
+
 
 /*# sourceMappingURL=App.css.map */
