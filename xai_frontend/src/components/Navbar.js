@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
-import "./Navbar.css";
+import './Navbar.css';
 
 function Navbar() {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  // Hier können Sie JavaScript verwenden, um das Dropdown-Verhalten zu steuern
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+  // Funktion, um das Dropdown zu öffnen/schließen
+  const toggleDropdown = (event) => {
+    const dropdownMenu = event.currentTarget.nextElementSibling;
+    dropdownMenu.classList.toggle("show");
   };
 
+  
+
   return (
-    <nav className="navbar navbar-dark bg-dark">
+    <nav className="navbar navbar-dark bg-dark text-center">
       <span className="navbar-brand mb-0 h1">Explainify.AI</span>
       <ul className="navbar-nav">
         <li className="nav-item">
@@ -24,47 +28,44 @@ function Navbar() {
             Weekly Schedule
           </Link>
         </li>
-        <li className="nav-item">
+        <li className="nav-item dropdown">
           <div
-            className={`nav-link ${dropdownOpen ? "active" : ""}`}
+            className="nav-link dropdown-toggle"
             onClick={toggleDropdown}
           >
             Compare & Understand
           </div>
-          <div
-            className={`dropdown-menu ${dropdownOpen ? "show" : ""}`}
-            onClick={toggleDropdown}
-          >
+          <div className="dropdown-menu">
             <Link to="/what-if" className="dropdown-item">
               What-If Scenarios
             </Link>
-            <Link to="/visualization" className="dropdown-item">
+            <Link to="/visual" className="dropdown-item">
               Visualization
             </Link>
           </div>
         </li>
-        <li className="nav-item">
-          <Link to="/edugame" className="nav-link">
-            Interactive Learning Game
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/educational-game" className="nav-link">
-            Educational Game
-          </Link>
-        </li>
-        <li className="nav-item">
+        <li className="nav-item dropdown">
           <div
-            className={`nav-link ${dropdownOpen ? "active" : ""}`}
+            className="nav-link dropdown-toggle"
+            onClick={toggleDropdown}
+          >
+            Interactive Learning Game
+          </div>
+          <div className="dropdown-menu">
+            <Link to="/edugame" className="dropdown-item">
+              Educational Game
+            </Link>
+          </div>
+        </li>
+        <li className="nav-item dropdown">
+          <div
+            className="nav-link dropdown-toggle"
             onClick={toggleDropdown}
           >
             Theory Classroom
           </div>
-          <div
-            className={`dropdown-menu ${dropdownOpen ? "show" : ""}`}
-            onClick={toggleDropdown}
-          >
-            <Link to="/ai-knowledge-quiz" className="dropdown-item">
+          <div className="dropdown-menu">
+            <Link to="/quiz" className="dropdown-item">
               AI Knowledge Quiz
             </Link>
             <Link to="/faq" className="dropdown-item">
@@ -72,11 +73,11 @@ function Navbar() {
             </Link>
           </div>
         </li>
-        <li className="nav-item">
-          <Link to="/about-us" className="nav-link">
-            About Us
-          </Link>
-        </li>
+  {/*         <li className="nav-item">
+            <Link to="/about-us" className="nav-link">
+              About Us
+            </Link>
+          </li> */}
       </ul>
     </nav>
   );

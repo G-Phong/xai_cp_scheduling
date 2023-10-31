@@ -1,6 +1,7 @@
 /* Navbar.css */
+/* Explanation: To increase specificity, we use .navbar before .dropdown-item */
 
-/* Stil für die Navbar */
+/* Navbar Style */
 .navbar {
   background-color: #e3f2fd;
   color: white;
@@ -8,54 +9,86 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: 300px;
+  width: auto;
   display: block;
   flex-direction: column;
-  padding: 1rem;
+  padding: 0rem;
   overflow-y: auto;
-  border-right: 1px solid #ccc;
+  border-right: 0px solid #ccc;
   padding-right: 30px;
 }
 
-/* Stil für den Brand-Text */
-.navbar-brand {
+/* Dropdown Item Style */
+.navbar .dropdown-item {
+  background-color: #353535; /* Dropdown item background color (light gray) */
+  color: #ffffff; /* Dropdown item text color */
+  text-align: center;
+  line-height: 2;
+}
+
+/* Dropdown Menu Style */
+.navbar .dropdown-menu {
+  background-color: #333; /* Dropdown menu background color */
+  color: white; /* Text color in the dropdown menu */
+  border: none; /* No border around the dropdown menu */
+}
+
+/* Hover Effect for Dropdown Items */
+.navbar .dropdown-item:hover {
+  background-color: #555; /* Background color on hover */
+  color: white; /* Text color on hover */
+}
+
+/* Active Dropdown Item */
+.navbar .dropdown-item.active {
+  background-color: #777; /* Background color of the active item */
+}
+
+/* Background Color when Dropdown is Triggered */
+.navbar .dropdown-toggle:focus {
+  background-color: transparent; /* Transparent background */
+  border-color: transparent; /* Transparent border */
+}
+
+/* Brand Text Style */
+.navbar .navbar-brand {
   font-size: 2rem;
   text-align: center;
   margin-left: 30px;
 }
 
-/* Stil für die Liste der Links */
+/* Style for the List of Links */
 .navbar-nav {
   list-style: none;
   padding: 0;
   margin-top: 2rem;
-  flex-grow: 1; /* Füllt den verfügbaren vertikalen Raum aus */
-  overflow-y: auto; /* Scrollleiste bei Überlauf hinzufügen */
+  flex-grow: 1; /* Fills the available vertical space */
+  overflow-y: auto; /* Add scrollbar when overflow occurs */
 }
 
-/* Stil für die Listenelemente in der Navbar */
+/* Style for List Items in the Navbar */
 .nav-item {
   margin-bottom: 1rem;
 }
 
-/* Stil für die Link-Texte */
+/* Style for Link Text */
 .nav-link {
   color: white;
   text-decoration: none;
 }
 
-/* Aktives Listenelement in der Navbar */
+/* Active List Item in the Navbar */
 .nav-item.active {
   background-color: #555;
 }
 
-/* Hover-Effekt für Listenelemente */
+/* Hover Effect for List Items */
 .nav-item:hover {
   background-color: #777;
 }
 
-/* das ist ein versuch die navbar durchgängig nach unten zu gestalten */
- .sidebar {
+/* Attempt to extend the navbar down */
+.sidebar {
   background-color: #333;
   color: white;
   position: fixed;
@@ -70,6 +103,8 @@
 }
 
 .main-content {
-  margin-left: 350px;
-  padding: 1rem;
+  margin-left: 325px;
+  margin-top: 0px;
+  padding: 0;
+  width: 100%;
 }
