@@ -11,9 +11,10 @@ import holding_calendar from "../Img/holding_calendar.jpg";
 import pencil_book from "../Img/pencil_book.jpg";
 import smartphone_hand from "../Img/smartphone_hand.jpg";
 import thumbs_up_down from "../Img/thumbs_up_down.jpg";
+import fml_logo from "../Img/FML_logo.jpg";
 
 import React, { useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function LandingPage() {
   const featuresRef = useRef(null);
@@ -27,10 +28,9 @@ export default function LandingPage() {
     console.log(hash);
     if (hash === "#features" && featuresRef.current) {
       featuresRef.current.scrollIntoView({ behavior: "smooth" });
-
     } else if (hash === "#getStarted" && getStartedRef.current) {
       getStartedRef.current.scrollIntoView({ behavior: "smooth" });
-    } else if(hash === "#contact" && contactRef.current){
+    } else if (hash === "#contact" && contactRef.current) {
       contactRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
@@ -38,7 +38,6 @@ export default function LandingPage() {
   useEffect(() => {
     handleScroll();
   }, [location.hash]);
-
 
   return (
     <div className="App">
@@ -153,8 +152,15 @@ export default function LandingPage() {
             </div>
           </div>
           {/* Ende der zweiten 3er-Reihe */}
+          <br />
+          <br />
+          {/*           <h2>Learn how it works! </h2>
+          <Link to="/schedule" className="get-started-btn">Get Started</Link> */}
 
-          <h1>Hier fehlt noch ein Walkthrough!!!!!!!! </h1>
+          <Link to="/schedule" className="getstarted-button">
+            <div className="icon">📅</div> {/*  ☑️ */}
+            <div className="text">Get Started</div>
+          </Link>
         </div>
       </section>
       {/* <!--SECTION GET STARTED END--> */}
@@ -166,25 +172,26 @@ export default function LandingPage() {
           <ul>
             <li>
               {/* <!--Phong Image--> */}
-              <img src={phong} alt="Person 1" />
+              <img src={phong} alt="Phong" />
               <blockquote>
-                Meet the driving force behind 'Explainify.AI'. The goal? Making
-                AI accessible and trusted by all.
+              <br/>
+                Driving 'Explainify.AI' to make AI accessible and trusted by all.
               </blockquote>
-              <cite> &mdash; Gia-Phong Tran (TUM Master's student)</cite> <br />
+              <cite> &mdash; Gia-Phong Tran <br />
+                TUM Master's student</cite> <br />
               <a href="mailto:giaphong.tran@tum.de">giaphong.tran@tum.de</a>
             </li>
 
             <li>
               {/* <!--TUM-LOGO--> */}
-              <img src={TUM_eng_logo} alt="TUM  " />
+              <img src={fml_logo} alt="fml" />
               <blockquote>
-                The Technical University of Munich, particularly the Chair of
-                Materials Handling, Material Flow, and Logistics (FML), is a
-                pioneer in logistics research and education. Their key areas of
-                focus range from robotics to sustainable logistics.
+                <br/>
+                As a pioneer in logistics research and education, leading the way from robotics to sustainability.
               </blockquote>
-              <cite> &mdash; Charlotte Haid (FML researcher)</cite> <br />
+              <cite> &mdash; Charlotte Haid <br />
+                FML researcher and <br />
+                Master thesis supervisor </cite> <br />
               <a href="mailto:charlotte.haid@tum.de">charlotte.haid@tum.de</a>
             </li>
           </ul>

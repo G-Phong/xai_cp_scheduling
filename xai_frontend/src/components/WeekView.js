@@ -1,318 +1,263 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./WeekView.css"; // CSS Stylesheet
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
 
-function WeekView() {
-  const [shiftPlanData, setShiftPlanData] = useState({
-    Monday: {
-      EarlyShift: [
-        {
-          employee: 4,
-          job: 0,
-        },
-        {
-          employee: 1,
-          job: 1,
-        },
-        {
-          employee: 2,
-          job: 2,
-        },
-      ],
-      LateShift: [
-        {
-          employee: 0,
-          job: 0,
-        },
-        {
-          employee: 1,
-          job: 1,
-        },
-        {
-          employee: 4,
-          job: 2,
-        },
-      ],
-    },
-    Tuesday: {
-      EarlyShift: [
-        {
-          employee: 0,
-          job: 0,
-        },
-        {
-          employee: 4,
-          job: 1,
-        },
-        {
-          employee: 1,
-          job: 2,
-        },
-      ],
-      LateShift: [
-        {
-          employee: 0,
-          job: 0,
-        },
-        {
-          employee: 4,
-          job: 1,
-        },
-        {
-          employee: 2,
-          job: 2,
-        },
-      ],
-    },
-    Wednesday: {
-      EarlyShift: [
-        {
-          employee: 2,
-          job: 0,
-        },
-        {
-          employee: 4,
-          job: 1,
-        },
-        {
-          employee: 1,
-          job: 2,
-        },
-      ],
-      LateShift: [
-        {
-          employee: 2,
-          job: 0,
-        },
-        {
-          employee: 4,
-          job: 1,
-        },
-        {
-          employee: 1,
-          job: 2,
-        },
-      ],
-    },
-    Thursday: {
-      EarlyShift: [
-        {
-          employee: 2,
-          job: 0,
-        },
-        {
-          employee: 0,
-          job: 1,
-        },
-        {
-          employee: 4,
-          job: 2,
-        },
-      ],
-      LateShift: [
-        {
-          employee: 3,
-          job: 0,
-        },
-        {
-          employee: 1,
-          job: 1,
-        },
-        {
-          employee: 2,
-          job: 2,
-        },
-      ],
-    },
-    Friday: {
-      EarlyShift: [
-        {
-          employee: 3,
-          job: 0,
-        },
-        {
-          employee: 0,
-          job: 1,
-        },
-        {
-          employee: 4,
-          job: 2,
-        },
-      ],
-      LateShift: [
-        {
-          employee: 3,
-          job: 0,
-        },
-        {
-          employee: 0,
-          job: 1,
-        },
-        {
-          employee: 4,
-          job: 2,
-        },
-      ],
-    },
-  });
-  const [statistics, setStatistics] = useState({
-    num_employees: 5,
-    num_jobs: 3,
-    num_qualifications: 3,
-    num_days: 5,
-    num_shifts_per_day: 2,
-  });
+//Optionally German Locale format
+import de from "@fullcalendar/core/locales/de";
 
-  /* Eine "Hook" ist in React eine Funktion, die es funktionalen Komponenten ermöglicht,
-  Zustand (wie useState), Nebeneffekte (wie useEffect), Kontext und andere React-Funktionen zu nutzen,
-   ohne dass eine Klasse erforderlich ist. 
-*/
+// Sample data representing shift planning for employees
+const shiftPlanData = {
+  Monday: {
+    EarlyShift: [
+      {
+        employee: 4,
+        job: 0,
+      },
+      {
+        employee: 1,
+        job: 1,
+      },
+      {
+        employee: 2,
+        job: 2,
+      },
+    ],
+    LateShift: [
+      {
+        employee: 0,
+        job: 0,
+      },
+      {
+        employee: 1,
+        job: 1,
+      },
+      {
+        employee: 4,
+        job: 2,
+      },
+    ],
+  },
+  Tuesday: {
+    EarlyShift: [
+      {
+        employee: 0,
+        job: 0,
+      },
+      {
+        employee: 4,
+        job: 1,
+      },
+      {
+        employee: 1,
+        job: 2,
+      },
+    ],
+    LateShift: [
+      {
+        employee: 0,
+        job: 0,
+      },
+      {
+        employee: 4,
+        job: 1,
+      },
+      {
+        employee: 2,
+        job: 2,
+      },
+    ],
+  },
+  Wednesday: {
+    EarlyShift: [
+      {
+        employee: 2,
+        job: 0,
+      },
+      {
+        employee: 4,
+        job: 1,
+      },
+      {
+        employee: 1,
+        job: 2,
+      },
+    ],
+    LateShift: [
+      {
+        employee: 2,
+        job: 0,
+      },
+      {
+        employee: 4,
+        job: 1,
+      },
+      {
+        employee: 1,
+        job: 2,
+      },
+    ],
+  },
+  Thursday: {
+    EarlyShift: [
+      {
+        employee: 2,
+        job: 0,
+      },
+      {
+        employee: 0,
+        job: 1,
+      },
+      {
+        employee: 4,
+        job: 2,
+      },
+    ],
+    LateShift: [
+      {
+        employee: 3,
+        job: 0,
+      },
+      {
+        employee: 1,
+        job: 1,
+      },
+      {
+        employee: 2,
+        job: 2,
+      },
+    ],
+  },
+  Friday: {
+    EarlyShift: [
+      {
+        employee: 3,
+        job: 0,
+      },
+      {
+        employee: 0,
+        job: 1,
+      },
+      {
+        employee: 4,
+        job: 2,
+      },
+    ],
+    LateShift: [
+      {
+        employee: 3,
+        job: 0,
+      },
+      {
+        employee: 0,
+        job: 1,
+      },
+      {
+        employee: 4,
+        job: 2,
+      },
+    ],
+  },
+};
 
-  /* useEffect(() => {
-  console.log(shiftPlanData);
-}, [shiftPlanData]); */
+// Converts the shiftPlanData into FullCalendar events
+function convertToEvents(shiftPlanData) {
+  const events = [];
+  const date = new Date(); // Today's date
 
-  /*   useEffect(() => {
-    // Lambda Funktion / Pfeilfunktion
-    axios
-      .get("http://localhost:5000/schedule")
-      .then((response) => {
-        setShiftPlanData(response.data.schedule_data);
-        setStatistics(response.data.statistics);
-        console.log("retrieved shiftPlanData");
-        console.log(response.data.schedule_data);
-        console.log("retrieved shiftPlanData after assignment");
-        console.log(shiftPlanData);
-      })
-      .catch((error) => {
-        console.error(
-          "Es gab einen Fehler beim Abrufen der Schichtplandaten: ",
-          error
+  // Assume EarlyShift starts at 8:00 AM and LateShift starts at 4:00 PM
+  const shiftDuration = 8;
+  const earlyShiftStartTime = 6;
+  const lateShiftStartTime = 14;
+
+  date.setDate(date.getDate() - date.getDay() + 1); // Sets the date to the Monday of the current week
+
+  // Loop through each day and its shifts
+  for (const [day, shifts] of Object.entries(shiftPlanData)) {
+    for (const [shiftType, assignments] of Object.entries(shifts)) {
+      const shiftStartHour =
+        shiftType === "EarlyShift" ? earlyShiftStartTime : lateShiftStartTime;
+
+      // Process each assignment for the given shift type
+      assignments.forEach((assignment) => {
+        // Create a new date for the current event
+        const eventDate = new Date(date);
+
+        // Set the day of the week for the current event
+        eventDate.setDate(
+          eventDate.getDate() +
+            ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].indexOf(
+              day
+            )
         );
-      });
-  }, []); */
+        // Set the start time for the current event
+        eventDate.setHours(shiftStartHour, 0, 0, 0);
 
-  /// Hier wird der JSX-Code zurückgegeben, der gerendert wird, wenn die Komponente aufgerufen wird.
-  // Eine Tabelle wird erstellt, in der die Schichtplan-Daten aus shiftPlanData angezeigt werden.
+        // Create an end date based on the shift duration
+        const endDate = new Date(eventDate);
+        endDate.setHours(eventDate.getHours() + shiftDuration);
+
+        // Add the event to the events array
+        events.push({
+          title: `Employee: ${assignment.employee}, Job: ${assignment.job}`,
+          start: eventDate,
+          end: endDate,
+          display: "auto",
+        });
+      });
+    }
+  }
+
+  return events;
+}
+
+// Convert shiftPlanData to events
+var events = convertToEvents(shiftPlanData);
+
+let colors = ["#7a8b9d", "#7a9ec5", "#b0d3f8"]; // Beispiel-Farben
+events.map((event, index) => {
+  event.backgroundColor = colors[index % colors.length];
+  return event;
+});
+
+// Main React component rendering the calendar
+export default function WeekView() {
   return (
     <div>
-      <h2>Weekview Work Schedule</h2>
-      <ul>
-        <li>
-          <strong>Detailed Daily Breakdown:</strong> A complete overview of work
-          shifts for each weekday.
-        </li>
-        <li>
-          <strong>Two Main Shifts:</strong>
-          <ul>
-            <li>
-              <em>Early Shift</em>
-            </li>
-            <li>
-              <em>Late Shift</em>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <strong>Employee and Job Details:</strong> For each shift and day
-          combination, the Employee-ID and Job-ID are displayed, clarifying who
-          is assigned to which job.
-        </li>
-
-      </ul>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Early Shift</td>
-            {Object.keys(shiftPlanData).map((day) => (
-              <td key={day + "-Frühschicht"}>
-                {shiftPlanData[day]["EarlyShift"].map((shift, index) => (
-                  <div key={day + "-Frühschicht" + index} className="cell">
-                    <div className="subcell">
-                      {"Employee-ID: " + shift.employee}
-                    </div>
-                    <div className="subcell">{"Job-ID: " + shift.job}</div>
-                  </div>
-                ))}
-              </td>
-            ))}
-          </tr>
-          <tr>
-            <td>Late Shift</td>
-            {Object.keys(shiftPlanData).map((day) => (
-              <td key={day + "-Spätschicht"}>
-                {shiftPlanData[day]["LateShift"].map((shift, index) => (
-                  <div key={day + "-Spätschicht" + index} className="cell">
-                    <div className="subcell">
-                      {"Employee-ID: " + shift.employee}
-                    </div>
-                    <div className="subcell">{"Job-ID: " + shift.job}</div>
-                  </div>
-                ))}
-              </td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
-      <div className="container mt-4">
-        <h2>Statistics</h2>
-
-        <p>
-          The Statistics table offers insights into the work schedule's
-          composition:
-        </p>
-        <ul>
-          <li>
-            <strong>Total Employees:</strong> Indicates the total number of
-            employees, with the current value being 5.
-          </li>
-          <li>
-            <strong>Job Varieties:</strong> Shows the distinct number of jobs
-            available, currently listed as 3.
-          </li>
-          <li>
-            <strong>Qualification Types:</strong> Reflects the different
-            qualifications required for the jobs, presently at 3.
-          </li>
-          <li>
-            <strong>Days Covered:</strong> Represents the number of days in the
-            week the schedule covers, which is 5 in this case.
-          </li>
-          <li>
-            <strong>Shift Frequency:</strong> Details the number of shifts in a
-            day, with 2 shifts being the current system.
-          </li>
-        </ul>
-
-        <table className="table table-bordered table-statistics">
-          <thead>
-            <tr>
-              <th>Statistics</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.entries(statistics).map(([key, value]) => (
-              <tr key={key}>
-                <td>{key.replace(/_/g, " ")}</td>
-                <td>{value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin]} // Specify plugins to use
+        initialView="timeGridWeek" // Start with a weekly view
+        weekends={false} // Don't display weekends
+        events={events.map((event, index) => {
+          event.backgroundColor = colors[index % colors.length];
+          return event;
+        })}
+        slotMinTime="05:00:00"
+        // Provide the events data
+        eventContent={renderEventContent} // Custom rendering for events
+        slotLabelFormat={{ hour: "2-digit", minute: "2-digit", hour12: false }} // 24-hour format
+        /* locale={en} */ // Optionally: set the locale to German
+        dayHeaderFormat={{
+          weekday: "short",
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+          omitCommas: true,
+        }} // European date format
+        eventTimeFormat={{
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false, // 24-hour-format
+        }}
+      />
     </div>
   );
 }
 
-export default WeekView;
+function renderEventContent(eventInfo) {
+  return (
+    <>
+      <b style={{ color: "black" }}>{eventInfo.timeText}</b> <br />
+      <i style={{ color: "white" }}>{eventInfo.event.title}</i>
+    </>
+  );
+}

@@ -12,17 +12,17 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar navbar-dark bg-dark text-center">
-      <span className="navbar-brand mb-0 h1">Explainify.AI</span>
+    <nav className="navbar navbar-dark bg-dark text-center sticky-top">
+       <Link to="/home" className="navbar-brand mb-0 h1">Scheduling.AI</Link>
       <ul className="navbar-nav">
         <li className="nav-item">
           <Link to="/home" className="nav-link">
-            Home
+            Welcome
           </Link>
         </li>
         <li className="nav-item">
           <Link to="/schedule" className="nav-link">
-            Weekly Schedule
+            Get started: How It Works
           </Link>
         </li>
         <li className="nav-item dropdown">

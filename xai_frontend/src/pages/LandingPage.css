@@ -28,6 +28,8 @@ section {
 .hero {
   background: rgb(239, 238, 238);
   text-align: center;
+  padding: 250px;
+  /* height: 100vh; */
 }
 
 .left-col .sub-head {
@@ -98,10 +100,32 @@ section {
 /* --- TEST STYLE ---*/
 .test-monials-section {
   background: #91a3a5;
-  color: #fff;
+  color: #ffffff;
+  padding-top: 60px;
+  padding-bottom: 30px;
 }
 
-.test-monials-section img {
+.test-monials-section li {
+  background: #91a3a5;
+  color: #000000;
+  padding-top: 60px;
+  padding-bottom: 30px;
+}
+
+.test-monials-section li cite {
+  color: #ffffff;
+}
+
+/* .test-monials-section img {
+  width: 80%;
+  height: auto;
+  border: 5px solid #4c5e71b9;
+  border-radius: 5em;
+  margin-top: -4.5em;
+  background-size: cover;
+} */
+
+.test-monials-section li:nth-child(1) img {
   width: 50%;
   height: auto;
   border: 5px solid #4c5e71b9;
@@ -109,6 +133,16 @@ section {
   margin-top: -4.5em;
   background-size: cover;
 }
+
+.test-monials-section li:nth-child(2) img {
+  width: 60%;
+  height: auto;
+  border: 5px solid #4c5e71b9;
+  border-radius: 5em;
+  margin-top: -4.5em;
+  background-size: cover;
+}
+
 
 .test-monials-section li {
   background: #c3cfdc42;
@@ -126,7 +160,7 @@ h2 {
 
 label {
   display: block;
-  font-size: 1.2em;
+  font-size: 1.5em;
   margin-bottom: 0.5em;
 }
 
@@ -296,7 +330,6 @@ iframe {
     margin-right: 0px;
   }
 
-
   .features-section h1 {
     float: left;
     margin: auto;
@@ -323,11 +356,13 @@ iframe {
   }
   .contact-section {
     position: relative;
+    padding: 0;
   }
   .contact-section .container {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    padding: 0;
   }
   .contact-section .contact-right {
     position: absolute;
@@ -343,10 +378,12 @@ iframe {
 }
 .get-started-section {
   background: #c7adad;
+  padding: 30px;
 }
 
 .get-started-section .container {
   position: relative;
+  padding: 0;
 }
 
 .info-section {
@@ -380,7 +417,7 @@ iframe {
   margin-bottom: 20px;
   border-radius: 50%;
   border: 3px solid #000; /* Adjust border color as needed */
-  width: 80%;  /* or adjust as needed */
+  width: 80%; /* or adjust as needed */
   height: auto;
 }
 
@@ -388,8 +425,8 @@ iframe {
   content: "";
   position: absolute;
   top: 27%; /* Adjusted the top value */
-  left: 10%; 
-  right: 10%; 
+  left: 10%;
+  right: 10%;
   height: 2px;
   background-color: #000;
   z-index: 1;
@@ -398,31 +435,34 @@ iframe {
 .label-left {
   position: absolute;
   text-align: center;
-  left: -25%;  /* Je nach gewünschtem Abstand von der Linie anpassen */
+  left: -25%; /* Je nach gewünschtem Abstand von der Linie anpassen */
   top: 32%;
-  transform: translateY(-50%);  /* Vertikal zentriert */
-  white-space: normal;  /* Verhindert Zeilenumbrüche */
+  transform: translateY(-50%); /* Vertikal zentriert */
+  white-space: normal; /* Verhindert Zeilenumbrüche */
   width: 150px;
-  font-size: 1.5em;  /* Adjust font size */
-  font-weight: bold;  /* Make text bold */
+  font-size: 1.5em; /* Adjust font size */
+  font-weight: bold; /* Make text bold */
   /* font-family: 'Desired Font Family', sans-serif;  Uncomment and replace with the desired font if needed */
 }
-
 
 .contact-item {
   margin-bottom: 20px;
   color: black;
   text-align: left;
   margin-left: 265px;
+  font-size: 1.1em;
 }
 
 .contact-item strong {
+  font-size: 1.2em;
   color: white;
 }
 
 .contact-item a {
+  font-size: 1.1em;
   color: black;
-  text-decoration: underline; }
+  text-decoration: underline;
+}
 
 .container-flex {
   display: flex;
@@ -433,5 +473,48 @@ iframe {
   color: b;
 }
 
+/* .get-started-btn {
+  display: inline-block;
+  padding: 15px 25px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.get-started-btn:hover {
+  background-color: #555;
+} */
+
+.getstarted-button {
+  background-color: #333;
+  color: #ffffff;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px; /* Increased for rounded shape */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* smooth transition for hover effect */
+  text-decoration: none; /* Removes underline */
+  padding: 25px 50px; /* Adjusts padding for top/bottom and left/right respectively */
+}
+
+.getstarted-button:hover {
+  background-color: #618bd7;
+  color: #333;
+}
+
+.icon {
+  font-size: 36px;
+  margin-right: 15px;
+}
+
+.icon,
+.text {
+  font-size: 28px;
+  display: inline-block;
+  vertical-align: middle; /* This ensures they are aligned to each other's middle */
+}
 
 /*# sourceMappingURL=App.css.map */

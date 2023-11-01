@@ -4,8 +4,9 @@
 /* Navbar Style */
 .navbar {
   background-color: #e3f2fd;
+  /* overflow: visible; */
   color: white;
-  position: static;
+  position: sticky;
   top: 0;
   left: 0;
   bottom: 0;
@@ -15,12 +16,10 @@
   padding: 0rem;
   overflow-y: auto;
   border-right: 0px solid #ccc;
-  padding-right: 0px;
   justify-content: center; /* Horizontale Zentrierung */
   align-items: center;     /* Vertikale Zentrierung */
+  z-index: 1000; /* To ensure it stays on top of other content */
 }
-
-
 
 /* Dropdown Item Style */
 .navbar .dropdown-item {
@@ -56,7 +55,8 @@
 
 /* Brand Text Style */
 .navbar .navbar-brand {
-  font-size: 2rem;
+  position: sticky;
+  font-size: 2.3rem;
   text-align: center;
   margin-left: 0px;
   align-content: center;
@@ -64,8 +64,15 @@
   margin-top: 30px;
 }
 
+.navbar .navbar-brand:hover {
+  color: rgba(255, 255, 255, 0.7); /* Change to your desired hover color, this is white for example */
+  cursor: pointer; /* Changes the mouse cursor to a hand, indicating a clickable element */
+}
+
+
 /* Style for the List of Links */
 .navbar-nav {
+  position: sticky;
   list-style: none;
   padding: 0;
   margin-top: 2rem;
@@ -78,7 +85,8 @@
 
 /* Style for List Items in the Navbar */
 .nav-item {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.2em;
 }
 
 /* Style for Link Text */
@@ -93,6 +101,6 @@
 }
 
 /* Hover Effect for List Items */
-.nav-item:hover {
+/* .nav-item:hover {
   background-color: #777;
-}
+} */

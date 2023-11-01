@@ -56,3 +56,6 @@ td {
   color: #fff; /* Schriftfarbe für die erste Zeile */
 }
 
+.fc-event-title {
+  background: #b0d3f8;
+}
