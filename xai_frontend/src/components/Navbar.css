@@ -6,7 +6,6 @@
   background-color: #e3f2fd;
   /* overflow: visible; */
   color: white;
-  position: sticky;
   top: 0;
   left: 0;
   bottom: 0;
@@ -17,7 +16,7 @@
   overflow-y: auto;
   border-right: 0px solid #ccc;
   justify-content: center; /* Horizontale Zentrierung */
-  align-items: center;     /* Vertikale Zentrierung */
+  align-items: center; /* Vertikale Zentrierung */
   z-index: 1000; /* To ensure it stays on top of other content */
 }
 
@@ -55,7 +54,7 @@
 
 /* Brand Text Style */
 .navbar .navbar-brand {
-  position: sticky;
+  position: relative;
   font-size: 2.3rem;
   text-align: center;
   margin-left: 0px;
@@ -65,14 +64,18 @@
 }
 
 .navbar .navbar-brand:hover {
-  color: rgba(255, 255, 255, 0.7); /* Change to your desired hover color, this is white for example */
+  color: rgba(
+    255,
+    255,
+    255,
+    0.7
+  ); /* Change to your desired hover color, this is white for example */
   cursor: pointer; /* Changes the mouse cursor to a hand, indicating a clickable element */
 }
 
-
 /* Style for the List of Links */
 .navbar-nav {
-  position: sticky;
+  position: relative;
   list-style: none;
   padding: 0;
   margin-top: 2rem;
@@ -82,15 +85,16 @@
   align-items: center;
 }
 
-
 /* Style for List Items in the Navbar */
 .nav-item {
+  position: relative;
   margin-bottom: 1.5rem;
   font-size: 1.2em;
 }
 
 /* Style for Link Text */
 .nav-link {
+  position: relative;
   color: white;
   text-decoration: none;
 }
@@ -104,3 +108,68 @@
 /* .nav-item:hover {
   background-color: #777;
 } */
+
+.navbar-container {
+  position: fixed;
+  margin-left: 30px;
+}
+
+.uni-logo-wrapper {
+  position: absolute;
+  top: 85vh;
+  left: 50%;
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Um sowohl horizontal als auch vertikal zu zentrieren */
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.uni-logo {
+  width: auto;
+  height: 65px;
+
+  transition: transform 0.3s ease; /* Transition effect for smooth scaling */
+}
+
+.uni-logo:hover {
+  transform: scale(1.1); /* Scales the image up slightly on hover */
+}
+
+/* Follow socials styles*/
+.follow-container {
+  position: absolute;
+  top: 80vh;
+  left: 50%;
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Um sowohl horizontal als auch vertikal zu zentrieren */
+  align-items: center;
+  color: white;
+  font-size: 16px;
+}
+
+.follow-container p {
+  width: auto;
+  margin-right: 10px;
+  white-space: nowrap;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.social-icon {
+  width: 50px; /* adjust based on your preference */
+  height: auto;
+  margin: 0 5px;
+  transition: transform 0.3s ease;
+  border-radius: 50px;
+}
+
+.social-icon:hover {
+  transform: scale(1.1);
+}
