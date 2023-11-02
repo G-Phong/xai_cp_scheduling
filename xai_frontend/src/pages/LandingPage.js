@@ -2,7 +2,7 @@
 import "./LandingPage.css";
 import ai_brain from "../Img/ai_brain.jpg";
 import calendar_black from "../Img/calendar_black.png";
-import TUM_eng_logo from "../Img/TUM_Logo_extern_mt_EN_RGB_p.png";
+import xai from "../Img/XAI.jpg";
 import phong from "../Img/phong.jpg";
 
 import calendar_zoom from "../Img/calendar_zoom.jpg";
@@ -71,14 +71,15 @@ export default function LandingPage() {
         <div class="container">
           <h1>Features</h1>
           <ul>
-            <li>Explainable AI for Scheduling: An explanation model</li>
-            <li>End-user Centric Explanations: Made for humans</li>
-            <li>Visualization Tools: Easily interpret AI decisions</li>
-            <li>Transparent AI Process: Insights into scheduling process</li>
-            <li>Preference-Awareness: The AI respects shift preferences</li>
-            <li>Explore & Interact: A hands-on approach</li>
+            <li>An Explainable Artificial Intelligence approach</li>
+            <li> Understand the Shift Scheduling AI </li>
+            <li>Explanations made for humans</li>
+            <li>Easily interpretable visualizations</li>
+            <li>Compare your schedule to the one of the AI</li>
+            <li>Gamification: Play around with the schedule</li>
+            <li>Explore & Interact</li>
           </ul>
-          <img src={ai_brain} alt="ai_brain" />
+          <img src={xai} alt="xai" />
         </div>
       </section>
       {/* <!--SECTION FEATURES BLOG END--> */}
