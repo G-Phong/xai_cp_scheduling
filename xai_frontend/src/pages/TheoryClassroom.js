@@ -11,6 +11,12 @@ export default function TheoryClassroom() {
 
   const location = useLocation();
 
+    // Scroll to top on mount
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []); // The empty array ensures it only runs once on mount
+  
+
   const handleScroll = () => {
     const hash = window.location.hash;
     console.log("Hash:");

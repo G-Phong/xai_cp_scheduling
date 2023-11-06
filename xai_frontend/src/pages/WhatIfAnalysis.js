@@ -173,6 +173,12 @@ export default function WhatIfAnalysis() {
   // State variable for the current value (initially identical to staticShiftPlan)
   const [solutionData, setSolutionData] = useState(staticShiftPlan);
 
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []); // The empty array ensures it only runs once on mount
+
+
   // State variable
   const [solutionCount, setSolutionCount] = useState(0);
   // State variable (standard)

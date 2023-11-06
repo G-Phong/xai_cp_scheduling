@@ -1,8 +1,10 @@
 import React from "react";
 import Quiz from "react-quiz-component";
 
+import "./Quiz.css"
+
 export const quiz = {
-  quizTitle: "Shift Planning Quiz",
+  quizTitle: "AI-based Shift Scheduling",
   quizSynopsis: "Test what you have just learned.",
   nrOfQuestions: "10",
   questions: [
@@ -204,12 +206,10 @@ export const quiz = {
     },
   ],
 };
-
 export default function MCQuiz() {
   return (
-    <div className="container">
-    <div className="row justify-content-center">
-      <div className="col-md-6 text-center">
+    <div className="quiz-container d-flex justify-content-center align-items-center">
+      <div className="text-center">
         <h1>Test your knowledge!</h1>
         <Quiz
           quiz={quiz}
@@ -219,6 +219,6 @@ export default function MCQuiz() {
         />
       </div>
     </div>
-  </div>
   );
 }
+

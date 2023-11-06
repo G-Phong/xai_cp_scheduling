@@ -21,6 +21,7 @@ export default function LandingPage() {
   const getStartedRef = useRef(null);
   const contactRef = useRef(null);
   const location = useLocation();
+  
 
   const handleScroll = () => {
     const hash = window.location.hash;

@@ -57,6 +57,12 @@ export default function EduGame() {
     { employeeID: "5", name: "Franck" },
   ]);
 
+    // Scroll to top on mount
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []); // The empty array ensures it only runs once on mount
+  
+
   const [tableStatus, setTableStatus] = useState("UNSOLVED");
   const [remainingCells, setRemainingCells] = useState(0);
   const [totalPreference, setTotalPreference] = useState(0);

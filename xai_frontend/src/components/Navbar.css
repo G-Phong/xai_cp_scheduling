@@ -61,6 +61,7 @@
   align-content: center;
   vertical-align: middle;
   margin-top: 30px;
+  z-index: 1000;
 }
 
 .navbar .navbar-brand:hover {
@@ -83,6 +84,7 @@
   overflow-y: auto; /* Add scrollbar when overflow occurs */
   display: flex;
   align-items: center;
+  z-index: 1000;
 }
 
 /* Style for List Items in the Navbar */
@@ -112,6 +114,7 @@
 .navbar-container {
   position: fixed;
   margin-left: 30px;
+  z-index: 1000;
 }
 
 .uni-logo-wrapper {

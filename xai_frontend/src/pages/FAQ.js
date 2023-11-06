@@ -9,10 +9,26 @@ export default function FAQ() {
       category: "AI-based shift scheduling system",
       items: [
         {
+          question: "What is this website? And why?",
+          answer: (
+<div className="pre-wrap">
+{`Scheduling.AI provides a platform to understand AI-based shift scheduling. It features:
+   
+What-If-Scenarios: Allows users to see how changes in preferences affect the schedule.
+
+Educational Game: Lets users attempt to create schedules and compare with the AI results.
+
+Theory Classroom: Includes a FAQ and an AI Quiz to check your knowledge.
+
+These tools aim to give a clearer view of how AI helps in shift planning.`}
+</div>
+          ),
+        },
+        {
           question:
-            "How does the AI-based shift scheduling work? How do I use it?",
+            "How does the AI-based shift scheduling work? How can one use it?",
           answer:
-            "The AI-based shift scheduling system automates the process of allocating shifts to employees, rendering it more efficient, quicker, and optimized. Utilizing machine learning and constraint optimization techniques, the algorithm considers multiple variables such as operational requirements, legal constraints, and employee preferences. The system is designed to be trust-worthy and human-centric; it gives due importance to the needs and preferences of individual employees while ensuring operational efficiency. To use the system, simply log into the designated user interface and enter your shift preferences before the planning phase begins. The intuitive interface makes it easy to specify your preferences and view your assigned shifts.",
+            "Our AI-based shift scheduling system automates shift allocation efficiently, considering operational requirements, legal constraints, and employee preferences. It prioritizes individual employee needs while maintaining operational efficiency. Employees can set job preferences, and view their personal weekly schedule using the AI-generated solution.",
         },
 
         {
@@ -22,9 +38,9 @@ export default function FAQ() {
         },
         {
           question:
-            "When is the deadline for entering my preferences for shift planning?",
+            "Is there a deadline for entering my preferences?",
           answer:
-            "Preferences should ideally be submitted by a set deadline before the actual shift scheduling begins. Please refer to the internal communication channels of the company for details on the deadline.",
+            "Yes, preferences should ideally be submitted by a set deadline, depending on the company regulations.",
         },
         {
           question:
@@ -118,7 +134,7 @@ export default function FAQ() {
   };
 
   return (
-    <div className="container">
+    <div className="faq-container">
       <h1 className="mt-5">FAQ</h1>
       {faqData.map((category, categoryIndex) => (
         <div key={categoryIndex}>
