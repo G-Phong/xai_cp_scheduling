@@ -8,7 +8,25 @@
   justify-content: center;
   align-items: center;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
+}
+
+.faq-container .mt-5 {
+  color: ivory;
+  font-size: 36px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+
+.faq-container .h2-category {
+  text-align: left;
+  font-size: xx-large;
+  margin-bottom: 2%;
+  margin-top: 2%;
 }
 
 .accordion-item {

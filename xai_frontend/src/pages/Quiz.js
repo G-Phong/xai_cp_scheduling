@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Quiz from "react-quiz-component";
 
-import "./Quiz.css"
+import "./Quiz.css";
 
 export const quiz = {
   quizTitle: "AI-based Shift Scheduling",
@@ -9,7 +9,7 @@ export const quiz = {
   nrOfQuestions: "10",
   questions: [
     {
-      question: "What is the primary purpose of AI-based shift planning?",
+      question: "Why should one use AI-methods for shift scheduling?",
       questionType: "text",
       answerSelectionType: "single",
       answers: [
@@ -19,10 +19,9 @@ export const quiz = {
         "All of the above",
       ],
       correctAnswer: "4",
-      messageForCorrectAnswer:
-        "Correct! AI-based shift planning aims to achieve cost savings, efficiency improvement, and employee satisfaction.",
+      messageForCorrectAnswer: "Correct!",
       messageForIncorrectAnswer:
-        "Sorry, that's incorrect. AI-based shift planning aims to achieve cost savings, efficiency improvement, and employee satisfaction.",
+        "Sorry, that's incorrect. All of them are correct.",
       explanation:
         "AI-based shift planning is designed to achieve cost savings, improve efficiency, and enhance employee satisfaction.",
       point: "10",
@@ -39,16 +38,15 @@ export const quiz = {
         "Considers them only when there are no conflicts",
       ],
       correctAnswer: "2",
-      messageForCorrectAnswer:
-        "Correct! The shift planning system considers employee preferences to some extent, depending on other factors.",
+      messageForCorrectAnswer: "Correct!",
       messageForIncorrectAnswer:
-        "Sorry, that's incorrect. The shift planning system considers employee preferences to some extent, depending on other factors.",
+        "Sorry, that's incorrect. Preferences are soft constraints!",
       explanation:
-        "The shift planning system takes employee preferences into account to some extent, but it also considers other factors like operational requirements and conflicts.",
+        "The shift planning system takes employee preferences (soft constraints) into account to some extent, but it also considers other factors like operational requirements and conflicts.",
       point: "10",
     },
     {
-      question: "Why is optimizing shifts important for the company?",
+      question: "Why are good shift schedules important for a company?",
       questionType: "text",
       answerSelectionType: "single",
       answers: [
@@ -58,12 +56,10 @@ export const quiz = {
         "All of the above",
       ],
       correctAnswer: "4",
-      messageForCorrectAnswer:
-        "Correct! Optimizing shifts is important for reducing overtime, improving work morale, and increasing overall efficiency.",
-      messageForIncorrectAnswer:
-        "Sorry, that's incorrect. Optimizing shifts is important for reducing overtime, improving work morale, and increasing overall efficiency.",
+      messageForCorrectAnswer: "Correct!",
+      messageForIncorrectAnswer: "Sorry, that's incorrect.",
       explanation:
-        "Optimizing shifts helps reduce overtime, boost work morale, and enhance the overall efficiency of the company.",
+        "Optimizing shifts helps to reduce overtime, to boost work morale, and to enhance the overall efficiency of the company.",
       point: "10",
     },
     {
@@ -78,16 +74,15 @@ export const quiz = {
         "One of many factors to consider",
       ],
       correctAnswer: "3",
-      messageForCorrectAnswer:
-        "Correct! Compliance with legal regulations is of the highest priority in shift planning.",
+      messageForCorrectAnswer: "Correct!",
       messageForIncorrectAnswer:
-        "Sorry, that's incorrect. Compliance with legal regulations is of the highest priority in shift planning.",
+        "Sorry, that's incorrect. Legal regulations must be respected!",
       explanation:
         "Compliance with legal regulations is a top priority in shift planning, ensuring that the company adheres to all relevant laws.",
       point: "10",
     },
     {
-      question: "How can shift schedules be adjusted?",
+      question: "How can shift schedules be modified?",
       questionType: "text",
       answerSelectionType: "single",
       answers: [
@@ -97,10 +92,8 @@ export const quiz = {
         "All of the above",
       ],
       correctAnswer: "4",
-      messageForCorrectAnswer:
-        "Correct! Shift schedules can be adjusted manually by the manager, automatically by the system, or based on employee feedback.",
-      messageForIncorrectAnswer:
-        "Sorry, that's incorrect. Shift schedules can be adjusted manually by the manager, automatically by the system, or based on employee feedback.",
+      messageForCorrectAnswer: "Correct!",
+      messageForIncorrectAnswer: "Sorry, that's incorrect.",
       explanation:
         "Shift schedules can be adjusted in various ways, including manual adjustments by the manager, automated changes by the system, and consideration of employee feedback.",
       point: "10",
@@ -116,97 +109,91 @@ export const quiz = {
         "Only historical shift data",
       ],
       correctAnswer: "3",
-      messageForCorrectAnswer:
-        "Correct! The shift planning system uses a combination of various data sources for shift planning.",
-      messageForIncorrectAnswer:
-        "Sorry, that's incorrect. The shift planning system uses a combination of various data sources for shift planning.",
+      messageForCorrectAnswer: "Correct!",
+      messageForIncorrectAnswer: "Sorry, that's incorrect.",
       explanation:
         "The shift planning system leverages a combination of data sources to create effective shift schedules.",
       point: "10",
     },
     {
       question:
-        "What advantage does What-If analysis offer in the shift planning system?",
+        "What advantage do the What-If-Scenarios offer in the shift planning system?",
       questionType: "text",
       answerSelectionType: "single",
       answers: [
         "It allows predictions of future shifts",
         "It assists with troubleshooting",
         "It enables better strategic planning",
-        "It increases system transparency for users",
+        "It provides comparisons and thereby increases transparency",
       ],
       correctAnswer: "4",
-      messageForCorrectAnswer:
-        "Correct! What-If analysis in the shift planning system increases system transparency for users.",
+      messageForCorrectAnswer: "Correct!",
       messageForIncorrectAnswer:
-        "Sorry, that's incorrect. What-If analysis in the shift planning system increases system transparency for users.",
+        "Sorry, that's incorrect. They are only for the purpose of explanation.",
       explanation:
-        "What-If analysis helps users understand the system better and enhances its transparency.",
+        "What-If-Scenarios helps users understand the system better and enhances its transparency.",
       point: "10",
     },
     {
       question:
         "Which elements contribute to the trustworthiness of the AI-based shift scheduling system?",
       questionType: "text",
-      answerSelectionType: "multiple",
+      answerSelectionType: "single",
       answers: [
         "Transparency of Algorithm",
         "Ability to Handle Large Data Sets Efficiently",
         "Inclusion of Employee Preferences",
         "High Computational Speed",
       ],
-      correctAnswer: [1,3],
-      messageForCorrectAnswer:
-        "Correct! What-If analysis in the shift planning system increases system transparency for users.",
-      messageForIncorrectAnswer:
-        "Sorry, that's incorrect. What-If analysis in the shift planning system increases system transparency for users.",
+      correctAnswer: [1],
+      messageForCorrectAnswer: "Correct!",
+      messageForIncorrectAnswer: "Sorry, that's incorrect",
       explanation:
-        "What-If analysis helps users understand the system better and enhances its transparency.",
+        "Transparent algorithms lead to better understanding of those, and thus they can lead to more trust into the system.",
       point: "10",
     },
     {
       question:
-        "What are the types of constraints typically used in Constraint Optimization Problems (COPs)?",
+        "What are the types of constraints typically used in Shift Scheduling?",
       questionType: "text",
       answerSelectionType: "multiple",
       answers: [
-        "Soft Constraints",
-        "Equational Constraints",
-        "Hard Constraints",
+        "Soft Constraints (Employee preferences)",
+        "Equational Constraints (Mathematical rules)",
+        "Hard Constraints (Legal regulations)",
         "Non-equational Constraints",
       ],
       correctAnswer: [1, 3],
-      messageForCorrectAnswer:
-        "Correct! What-If analysis in the shift planning system increases system transparency for users.",
-      messageForIncorrectAnswer:
-        "Sorry, that's incorrect. What-If analysis in the shift planning system increases system transparency for users.",
+      messageForCorrectAnswer: "Correct!",
+      messageForIncorrectAnswer: "Sorry, that's incorrect.",
       explanation:
-        "What-If analysis helps users understand the system better and enhances its transparency.",
+        "In a Constraint Optimization Problem you usually have hard and soft constraints. In the context of shift scheduling you have employee preferences and the legal regulations of the company.",
       point: "10",
     },
     {
       question:
-        "Which of the following are key objectives of Explainable AI (XAI) in the context of shift scheduling?",
+        "What are the objectives of explaining Artificial Intelligence Systems?",
       questionType: "text",
       answerSelectionType: "multiple",
       answers: [
         "Improve Algorithm Efficiency",
         "Increase Human Trust in the System",
-        "Enhance Transparency and Interpretability",
+        "Make the AI more transparent and understandable",
         "Facilitate Easier Data Collection",
       ],
-      correctAnswer: [1,2,3],
-      messageForCorrectAnswer:
-        "Correct! What-If analysis in the shift planning system increases system transparency for users.",
-      messageForIncorrectAnswer:
-        "Sorry, that's incorrect. What-If analysis in the shift planning system increases system transparency for users.",
+      correctAnswer: [1, 2, 3],
+      messageForCorrectAnswer: "Correct!",
+      messageForIncorrectAnswer: "Sorry, that's incorrect.",
       explanation:
-        "What-If analysis helps users understand the system better and enhances its transparency.",
+        "Easier data collection is NOT achieved by Explainable Artificial Intelligence.",
       point: "10",
     },
   ],
 };
 export default function MCQuiz() {
+
+  
+  
   return (
     <div className="quiz-container d-flex justify-content-center align-items-center">
       <div className="text-center">
@@ -221,4 +208,3 @@ export default function MCQuiz() {
     </div>
   );
 }
-
