@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Quiz from "react-quiz-component";
 
 import "./Quiz.css";
 
 export const quiz = {
   quizTitle: "AI-based Shift Scheduling",
-  quizSynopsis: "Test what you have just learned.",
+  quizSynopsis: "You get 10 marks for each correct answer.",
   nrOfQuestions: "10",
   questions: [
     {
@@ -139,13 +139,13 @@ export const quiz = {
         "Which elements contribute to the trustworthiness of the AI-based shift scheduling system?",
       questionType: "text",
       answerSelectionType: "single",
-      answers: [
-        "Transparency of Algorithm",
-        "Ability to Handle Large Data Sets Efficiently",
-        "Inclusion of Employee Preferences",
-        "High Computational Speed",
+      answers: [        "Transparency of Algorithm",
+      "Ability to Handle Large Data Sets Efficiently",
+      "Inclusion of Employee Preferences",
+      "High Computational Speed",
+ 
       ],
-      correctAnswer: [1],
+      correctAnswer: "1",
       messageForCorrectAnswer: "Correct!",
       messageForIncorrectAnswer: "Sorry, that's incorrect",
       explanation:
@@ -191,9 +191,6 @@ export const quiz = {
   ],
 };
 export default function MCQuiz() {
-
-  
-  
   return (
     <div className="quiz-container d-flex justify-content-center align-items-center">
       <div className="text-center">

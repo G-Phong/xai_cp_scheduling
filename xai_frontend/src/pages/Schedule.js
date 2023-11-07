@@ -28,6 +28,7 @@ export default function Schedule() {
           Theory Classroom
         </Link>
       </div>
+      {/* <WeekView/> */}
     </div>
   );
 }
