@@ -1,5 +1,5 @@
 .highlighted-cell {
-  background-color: yellow;
+  background-color: lightblue;
 }
 
 .modern-toggle-button {
@@ -50,12 +50,6 @@ input:checked + .toggle-button-slider:before {
   transform: translateX(26px);
 }
 
-.center-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
 
 .btn-custom-yellow {
   background-color: yellow;

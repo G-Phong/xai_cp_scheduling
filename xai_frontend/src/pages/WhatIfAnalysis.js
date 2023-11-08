@@ -1,173 +1,20 @@
 import React, { useState, useEffect } from "react";
-import WeekView2 from "../components/WeekView2.js";
+
 import axios from "axios"; // JavaScript Library for HTTP-requests
 
-// static reference solution
-const staticShiftPlan = {
-  schedule_data: [
-    {
-      id: "solution1",
-      schedule: {
-        Monday: {
-          EarlyShift: [
-            { employee: 4, job: 0 },
-            { employee: 1, job: 1 },
-            { employee: 2, job: 2 },
-          ],
-          LateShift: [
-            { employee: 0, job: 0 },
-            { employee: 1, job: 1 },
-            { employee: 4, job: 2 },
-          ],
-        },
-        Tuesday: {
-          EarlyShift: [
-            { employee: 0, job: 0 },
-            { employee: 4, job: 1 },
-            { employee: 1, job: 2 },
-          ],
-          LateShift: [
-            { employee: 0, job: 0 },
-            { employee: 4, job: 1 },
-            { employee: 2, job: 2 },
-          ],
-        },
-        Wednesday: {
-          EarlyShift: [
-            { employee: 2, job: 0 },
-            { employee: 4, job: 1 },
-            { employee: 1, job: 2 },
-          ],
-          LateShift: [
-            { employee: 2, job: 0 },
-            { employee: 4, job: 1 },
-            { employee: 1, job: 2 },
-          ],
-        },
-        Thursday: {
-          EarlyShift: [
-            { employee: 2, job: 0 },
-            { employee: 0, job: 1 },
-            { employee: 4, job: 2 },
-          ],
-          LateShift: [
-            { employee: 3, job: 0 },
-            { employee: 1, job: 1 },
-            { employee: 2, job: 2 },
-          ],
-        },
-        Friday: {
-          EarlyShift: [
-            { employee: 3, job: 0 },
-            { employee: 0, job: 1 },
-            { employee: 4, job: 2 },
-          ],
-          LateShift: [
-            { employee: 3, job: 0 },
-            { employee: 0, job: 1 },
-            { employee: 4, job: 2 },
-          ],
-        },
-      },
-      total_preference: "1750",
-    },
-    {
-      id: "solution2",
-      schedule: {
-        Monday: {
-          EarlyShift: [
-            { employee: 2, job: 0 },
-            { employee: 1, job: 1 },
-            { employee: 4, job: 2 },
-          ],
-          LateShift: [
-            { employee: 0, job: 0 },
-            { employee: 4, job: 1 },
-            { employee: 1, job: 2 },
-          ],
-        },
-        Tuesday: {
-          EarlyShift: [
-            { employee: 4, job: 0 },
-            { employee: 0, job: 1 },
-            { employee: 2, job: 2 },
-          ],
-          LateShift: [
-            { employee: 0, job: 0 },
-            { employee: 4, job: 1 },
-            { employee: 2, job: 2 },
-          ],
-        },
-        Wednesday: {
-          EarlyShift: [
-            { employee: 2, job: 0 },
-            { employee: 1, job: 1 },
-            { employee: 4, job: 2 },
-          ],
-          LateShift: [
-            { employee: 2, job: 0 },
-            { employee: 4, job: 1 },
-            { employee: 1, job: 2 },
-          ],
-        },
-        Thursday: {
-          EarlyShift: [
-            { employee: 3, job: 0 },
-            { employee: 4, job: 1 },
-            { employee: 2, job: 2 },
-          ],
-          LateShift: [
-            { employee: 3, job: 0 },
-            { employee: 1, job: 1 },
-            { employee: 4, job: 2 },
-          ],
-        },
-        Friday: {
-          EarlyShift: [
-            { employee: 0, job: 0 },
-            { employee: 4, job: 1 },
-            { employee: 1, job: 2 },
-          ],
-          LateShift: [
-            { employee: 3, job: 0 },
-            { employee: 0, job: 1 },
-            { employee: 4, job: 2 },
-          ],
-        },
-      },
-      total_preference: "1780",
-    },
-  ],
-  solution_count: 2,
-  statistics: {
-    num_employees: 5,
-    num_jobs: 3,
-    num_qualifications: 3,
-    num_days: 5,
-    num_shifts_per_day: 2,
-  },
-  sum_shifts_per_employee: { 0: "5", 1: "6", 2: "6", 3: "3", 4: "10" },
-  individual_preference_score: {
-    0: "190",
-    1: "450",
-    2: "405",
-    3: "195",
-    4: "540",
-  },
-};
+import { ResponsiveContainer } from "recharts";
+import RadarPlot from "../components/RadarPlot";
 
-// static preference matrix
-const staticPreferences = [
-  [50, 20, 15],
-  [0, 100, 50],
-  [90, 25, 45],
-  [65, 50, 15],
-  [50, 50, 60],
-];
+import WeekView2 from "../components/WeekView2.js";
+import { staticShiftPlan, staticPreferences } from "./staticData.js";
+
+import AI_icon from "../Img/ai.png"; // Adjust the path to your icon file
+
+import "./WhatIfAnalysis.css";
 
 export default function WhatIfAnalysis() {
   // Status variable for the list of preferences
-  const [preferencesList, setPreferencesList] = useState([0, 0, 0]);
+  const [preferencesList, setPreferencesList] = useState([50, 50, 50]);
   // State variable for the current value
   const [currentValueList, setCurrentValueList] = useState([50, 20, 15]);
   // State variable for the current value (initially identical to staticShiftPlan)
@@ -177,7 +24,6 @@ export default function WhatIfAnalysis() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []); // The empty array ensures it only runs once on mount
-
 
   // State variable
   const [solutionCount, setSolutionCount] = useState(0);
@@ -212,6 +58,26 @@ export default function WhatIfAnalysis() {
   // State variable
   const [currentSolutionId, setCurrentSolutionId] = useState(0);
 
+  //My personal preferences
+  const [yourPreferences, setYourPreferences] = useState([
+    { subject: "Forklift", You: 50 },
+    { subject: "Sorting", You: 50 },
+    { subject: "Picking", You: 50 },
+  ]);
+
+  // Function to update your preferences based on the slider values
+  const updateYourPreferences = () => {
+    const newPreferences = preferencesList.map((value, index) => ({
+      subject: yourPreferences[index].subject,
+      You: parseInt(value),
+    }));
+    setYourPreferences(newPreferences);
+  };
+
+  useEffect(() => {
+    updateYourPreferences(); // Update your preferences when sliders change
+  }, [preferencesList]);
+
   // Function to solve the shift plan with new preferences
   const solveWithPreferences = () => {
     // Use preferencesList to access the new preferences
@@ -242,13 +108,15 @@ export default function WhatIfAnalysis() {
         setIndividualPreferenceScore(solutionData.individual_preference_score);
 
         // Compare the new solution with the previous one and mark the differences
-        console.log("Listenzugriff")
-        console.log(solutionData.schedule_data[0].schedule)
-        const changedShifts = findChangedShifts(staticShiftPlan.schedule_data[0].schedule, solutionData.schedule_data[0].schedule);
+        console.log("Listenzugriff");
+        console.log(solutionData.schedule_data[0].schedule);
+        const changedShifts = findChangedShifts(
+          staticShiftPlan.schedule_data[0].schedule,
+          solutionData.schedule_data[0].schedule
+        );
         console.log("After changed function:");
         console.log(changedShifts);
         setChangedShifts(changedShifts);
-
 
         if (solutionData == null) {
           console.log("Null Response!");
@@ -266,7 +134,6 @@ export default function WhatIfAnalysis() {
         console.log(updatedPreferenceMatrix);
         console.log(sumShiftsPerEmployee);
         console.log(individualPreferenceScore);
-
       })
       .catch((error) => {
         // Handle errors if they occur
@@ -291,6 +158,9 @@ export default function WhatIfAnalysis() {
 
     // Set the updated matrix in the state
     setUpdatedPreferenceMatrix(updatedMatrix);
+
+    console.log("Preferences list updated!:");
+    console.log(preferencesList);
   };
 
   /**
@@ -349,8 +219,9 @@ export default function WhatIfAnalysis() {
           }
         }
       }
+    } else {
+      console.log("ELSE BLOCK");
     }
-    else{console.log("ELSE BLOCK")}
     // Debug output of the found changes
     console.log("changedShifts:", changedShifts);
 
@@ -362,54 +233,269 @@ export default function WhatIfAnalysis() {
   };
 
   return (
-    <div className="container">
-      <h1>What-If-Analysis</h1>
+    <div className="container-what-if">
+      <h1>What-If-Scenarios</h1>
       <h2>
-        Change preferences of Employee 0 here
+        Give your preferences and see how your week schedule would look like!{" "}
         <br />
-        (0 = no preference, 100 = full preference)
+        <br />
       </h2>
-      <div className="row">
-        {[0, 1, 2].map((index) => (
-          <div className="col-md-4" key={index}>
-            <label>Job {index + 1} Preference (1-100):</label>
-            <div className="input-group">
-              <input
-                type="number"
-                min="1"
-                max="100"
-                className="form-control"
-                value={preferencesList[index]}
-                onChange={(e) => updatePreferences(index, e.target.value)}
-              />
-              <div className="input-group-append">
-                <span className="input-group-text">
-                  Current Value: {currentValueList[index]}
-                </span>
+      <div className="row-pref">
+        <div className="sliders">
+          {[
+            { label: "Your preference for Forklifting", index: 0 },
+            { label: "Your preference for Sorting", index: 1 },
+            { label: "Your preference for Picking", index: 2 },
+          ].map((item) => (
+            <div key={item.index} className="slider-item">
+              <label>
+                {item.label} : {preferencesList[item.index]}
+              </label>
+              <div className="input-group">
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  className="form-range"
+                  value={preferencesList[item.index]}
+                  onChange={(e) =>
+                    updatePreferences(item.index, e.target.value)
+                  }
+                />
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-      {/* Solve Button */}
-      <div className="row">
-        <div className="col-md-12">
-          <button className="btn btn-primary" onClick={solveWithPreferences}>
-            Solve
-          </button>
+          ))}
+        </div>
+        <div className="spider-plot">
+          <h5>Your Job Preferences</h5>
+          <ResponsiveContainer height={300}>
+            <RadarPlot data={yourPreferences} name={"You"} />
+          </ResponsiveContainer>
         </div>
       </div>
 
-      {/* Weekly View */}
-      <WeekView2
-        shiftData={solutionData}
-        changedShifts={changedShifts}
-        staticShiftData={staticShiftPlan} // Static shift plan
-        staticPreferenceMatrix={staticPreferences} // Static preference matrix
-        updatedPreferenceMatrix={updatedPreferenceMatrix} // Updated preference matrix
-        sumShiftsPerEmployee={sumShiftsPerEmployee} // Sum of shifts per employee
-        individualPreferenceScore={individualPreferenceScore} // Individual preference score
-      />
+      <div className="availability-mask">
+        <h1> AVAILABILITIES</h1>
+
+        <div class="row-availability">
+          <div class="col-6">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Shift Type</th>
+                  <th scope="col">Monday</th>
+                  <th scope="col">Tuesday</th>
+                  <th scope="col">Wednesday</th>
+                  <th scope="col">Thursday</th>
+                  <th scope="col">Friday</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Early Shift <br/>
+                  06.00 - 14.00</td>
+                  <td>
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="customCheck1"
+                        checked
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="customCheck1"
+                      ></label>
+                    </div>
+                  </td>
+                  <td>
+                
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="customCheck1"
+                        checked
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="customCheck1"
+                      ></label>
+                    </div>
+                  </td>
+                  <td>
+                  
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="customCheck1"
+                        checked
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="customCheck1"
+                      ></label>
+                    </div>
+                  </td>
+                  <td>
+                   
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="customCheck1"
+                        checked
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="customCheck1"
+                      ></label>
+                    </div>
+                  </td>
+                  <td>
+                
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="customCheck1"
+                        checked
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="customCheck1"
+                      ></label>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>Late Shift <br/>
+                  14.00 - 22.00</td>
+                  <td>
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="customCheck1"
+                        checked
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="customCheck1"
+                      ></label>
+                    </div>
+                  </td>
+                  <td>
+                    {" "}
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="customCheck1"
+                        checked
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="customCheck1"
+                      ></label>
+                    </div>
+                  </td>
+                  <td>
+                    {" "}
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="customCheck1"
+                        checked
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="customCheck1"
+                      ></label>
+                    </div>
+                  </td>
+                  <td>
+                    {" "}
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="customCheck1"
+                        checked
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="customCheck1"
+                      ></label>
+                    </div>
+                  </td>
+                  <td>
+                    {" "}
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="customCheck1"
+                        checked
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="customCheck1"
+                      ></label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div className="button-container">
+        {/* Generate Schedule Button */}
+        <div className="row">
+          <div className="col-md-12">
+            <button
+              className="btn btn-primary custom-button"
+              onClick={solveWithPreferences}
+            >
+              <img src={AI_icon} alt="Custom Icon" className="custom-icon" />
+              Generate schedule
+            </button>
+          </div>
+        </div>
+
+        {/* Set to Compare Button */}
+        <div className="row">
+          <div className="col-md-12">
+            <button
+              className="btn btn-primary custom-button"
+              onClick={solveWithPreferences}
+            >
+              Set this schedule to compare
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="schedule-container">
+        <div className="schedule-view">
+          <h2>Schedule A</h2>
+
+          <WeekView2
+            shiftData={solutionData}
+            changedShifts={changedShifts}
+            staticShiftData={staticShiftPlan} // Static shift plan
+          />
+        </div>
+
+        <div className="schedule-view">
+          <h2>Schedule B</h2>
+        </div>
+      </div>
     </div>
   );
 }
