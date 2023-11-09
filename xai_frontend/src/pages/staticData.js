@@ -1,5 +1,5 @@
 // static reference solution
-export const staticShiftPlan = {
+/* export const staticShiftPlan2 = {
   schedule_data: [
     {
       id: "solution1",
@@ -149,6 +149,34 @@ export const staticShiftPlan = {
     2: "405",
     3: "195",
     4: "540",
+  },
+}; */
+
+// static reference solution
+export const staticShiftPlan = {
+  schedule_data: [
+    {
+      id: "solution1",
+      schedule: {
+      },
+      total_preference: "0",
+    },
+  ],
+  solution_count: 0,
+  statistics: {
+    num_employees: 5,
+    num_jobs: 3,
+    num_qualifications: 3,
+    num_days: 5,
+    num_shifts_per_day: 2,
+  },
+  sum_shifts_per_employee: { 0: "0", 1: "0", 2: "0", 3: "0", 4: "0" },
+  individual_preference_score: {
+    0: "0",
+    1: "0",
+    2: "0",
+    3: "0",
+    4: "0",
   },
 };
 

@@ -1,7 +1,54 @@
-.highlighted-cell {
-  background-color: lightblue;
+/* Define styles for the custom table */
+.custom-table {
+  background-color: lightsteelblue;
+  border-collapse: collapse;
+  width: 100%;
+  color: black;
+  text-align: center;
 }
 
+.custom-table th, .custom-table td {
+  border: 1px solid black; /* Add borders to table cells */
+  padding: 8px; /* Add padding for better spacing */
+}
+
+
+.custom-table th{
+  background-color: darkblue; /* Dark background color */
+  border-collapse: collapse;
+  width: 100%;
+  color: white; /* Text color */
+  text-align: center;
+  border: 1px solid black;
+}
+
+
+/* Highlighted cells for "YOU" */
+.custom-table .highlighted-cell {
+  background-color: lightgreen;
+}
+
+
+/* Animation for table row highlighting */
+.custom-table .highlighted-cell {
+  animation: highlight 1s infinite alternate; /* Animation for highlighting */
+}
+
+.shift-type-td{
+  font-weight:bold ;
+}
+
+.subcell.jobType{
+  background-color: darkblue;
+  color: white;
+}
+
+.subcell.regular{
+  background-color: white;
+  color: black;
+}
+
+/* Toggle button styles */
 .modern-toggle-button {
   position: relative;
   width: 60px;
@@ -50,39 +97,33 @@ input:checked + .toggle-button-slider:before {
   transform: translateX(26px);
 }
 
-
+/* Yellow and white button styles */
 .btn-custom-yellow {
   background-color: yellow;
   color: black;
 }
 
-/* Hover Zustand, wenn Button aktiv */
 .btn-custom-yellow:hover {
   background-color: rgb(207, 207, 207);
   color: black;
 }
 
-/* Custom Weiß-Button */
 .btn-custom-white {
   background-color: rgb(207, 207, 207);
   color: black;
 }
 
-/* Hover Zustand, wenn Button inaktiv */
 .btn-custom-white:hover {
   background-color: yellow;
   color: black;
 }
 
-/* Beschränkt die Breite des Buttons und zentriert den Text */
+/* Button width and margin styles */
 .btn-sm.custom-width {
-  width: 30px;  /* oder die Breite, die Sie bevorzugen */
+  width: 30px;
   text-align: center;
 }
 
-/* Fügt oberen Abstand zur Button-Gruppe hinzu */
 .btn-group {
-  margin-bottom: 20px; /* oder den Abstand, den Sie bevorzugen */
+  margin-bottom: 20px;
 }
-
-

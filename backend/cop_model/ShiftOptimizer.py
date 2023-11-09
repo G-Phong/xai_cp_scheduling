@@ -199,7 +199,7 @@ class ShiftOptimizer:
         optimizer = ShiftOptimizer()
     """ 
  
-    def __init__(self, employee_job_preference_matrix=None, num_employees=0, num_jobs=0, num_qualifications=0, num_days=0, num_shifts_per_day=0):
+    def __init__(self, employee_job_preference_matrix=None, availabilityList=None, num_employees=0, num_jobs=0, num_qualifications=0, num_days=0, num_shifts_per_day=0):
         """
         Initializes an instance of the ShiftOptimizer class and initializes instance variables.
 
@@ -212,9 +212,14 @@ class ShiftOptimizer:
         """
 
         if employee_job_preference_matrix is None:
-            print("Initializing ShiftOptimizer instance with default values!")
+            print("Initializing ShiftOptimizer instance with default values for preferences!")
         else:
             print("Initializing ShiftOptimizer instance with MODIFIED preference matrix!")
+
+        if availabilityList is None:
+            print("Initializing ShiftOptimizer instance with default values for availabilities!")
+        else:
+            print("Initializing ShiftOptimizer instance with MODIFIED availability matrix!")
 
         # Initialize instance variables
         self.num_employees = num_employees
@@ -227,12 +232,18 @@ class ShiftOptimizer:
           # Initialize arrays and matrices
         self.max_shifts_per_employee = arr.array('i', [10, 10, 10, 10, 10])
         self.min_shifts_per_employee = arr.array('i', [5, 5, 5, 3, 3])
-        self.employee_availability_matrix = np.array([[0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+
+        if availabilityList is None:
+            self.employee_availability_matrix = np.array([[0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                                              [1, 1, 1, 0, 1, 1, 0, 1, 1, 0],
                                              [1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
                                              [0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
                                              [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
                                              ])
+        else: 
+            self.employee_availability_matrix = availabilityList
+
+ 
         self.employee_qualification_matrix = np.array([[1, 1, 2],
                                               [2, 1, 1],
                                               [3, 1, 2],
@@ -375,6 +386,32 @@ class ShiftOptimizer:
         print(newPreferenceMatrix)
 
         return newPreferenceMatrix
+    
+    def update_availabilities(self, availabilityList):
+        """
+        Update the availability matrix based on the given availabilityList.
+
+        :param availabilityList: List of availabilities from the frontend.
+        :return: The updated availability matrix.
+        """
+
+        newAvailabilityMatrix = self.employee_availability_matrix
+
+        
+        # Define the mapping from availabilityList to the first row of the matrix
+        # Mapping here is necessary because the availabilityList structure differs from the availability matrix row structure!
+        mapping = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]
+
+        # Iterate over the availabilityList and update the corresponding slots in the first row of the matrix
+        for i, availability in enumerate(availabilityList):
+            matrix_index = mapping[i]
+            newAvailabilityMatrix[0, matrix_index] = 1 if availability else 0
+
+
+        print("New availability matrix")
+        print(newAvailabilityMatrix)
+
+        return newAvailabilityMatrix
         
     def solve_shifts(self):
         """
