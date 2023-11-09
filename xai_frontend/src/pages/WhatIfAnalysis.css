@@ -3,18 +3,30 @@
   background-color: lightslategray;
 }
 
-.row-pref {
-  display: flex;
-  justify-content: left;
+.container-what-if h1 {
+  text-align: center;
+}
+
+.row {
+  margin-bottom: 30px;
 }
 
 .sliders {
-  width: 550px;
+  width: 55vh;
+  color: white;
+  background-color: #4A5D62;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  margin: auto; /* Centers the sliders */
 }
 
 .spider-plot {
   background-color: white;
-  width: 30%;
+  width: 60%;
+  margin: auto; /* Centers the spider plot */
 }
 
 .spider-plot h5 {
@@ -27,27 +39,93 @@
 }
 
 .custom-button {
-  margin-bottom: 10px; /* Adjust the margin as needed */
+  margin-bottom: 10px;
   font-size: 20px;
   margin-left: 20px;
 }
 
 /* CSS for Two-Column Layout */
 .schedule-container {
-  margin: 0;
-  padding: 0;
   display: flex;
-  justify-content: left;
+  justify-content: space-between; /* Adjusted for space between the two main columns */
 }
 
 .schedule-view {
   padding: 3px;
   width: 40vh;
-  margin: 0;
+  margin: auto; /* Center within the schedule-container if needed */
 }
 
 .button-container {
   display: flex;
   justify-content: left;
   align-items: center;
+}
+
+.custom-control-input {
+  width: 25px;
+  height: 25px;
+  display: block;
+  margin: auto;
+}
+
+/* CSS for Availability Mask Table */
+.availability-mask {
+  margin: 0 auto; /* Center the table horizontally */
+  display: block;
+}
+
+.availability-mask h2 {
+  text-align: center;
+  /* If there are any additional styles that might be affecting it, address them here */
+}
+
+
+.availability-mask th,
+.availability-mask td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ccc;
+  background-color: #78979E;
+  transition: background-color 0.3s ease;
+}
+
+/* Override Bootstrap styles for Availability Mask Table */
+.availability-mask th {
+  background-color: #4A5D62;
+  color: white;
+}
+
+.availability-mask td {
+  background-color: #78979E;
+}
+
+/* Centering content within the columns */
+.centered-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.full-height {
+  min-height: 100vh;
+}
+
+/* Increase specificity for your custom table styles */
+.container-what-if .availability-mask .table th,
+.container-what-if .availability-mask .table td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ccc;
+  background-color: #78979E; /* Your desired color */
+}
+
+.container-what-if .availability-mask .table th {
+  background-color: #4A5D62; /* Your desired color */
+  color: white;
+}
+
+.container-what-if .availability-mask .table td {
+  background-color: #78979E; /* Your desired color */
 }

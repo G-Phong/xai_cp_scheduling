@@ -232,54 +232,23 @@ export default function WhatIfAnalysis() {
     setCurrentSolutionId((prevId) => (prevId + 1) % solutionCount);
   };
 
+  // Initialize checkboxes with false as default value
+  let checkboxStatuses = new Array(10).fill(false);
+
   return (
     <div className="container-what-if">
       <h1>What-If-Scenarios</h1>
-      <h2>
-        Give your preferences and see how your week schedule would look like!{" "}
-        <br />
-        <br />
-      </h2>
-      <div className="row-pref">
-        <div className="sliders">
-          {[
-            { label: "Your preference for Forklifting", index: 0 },
-            { label: "Your preference for Sorting", index: 1 },
-            { label: "Your preference for Picking", index: 2 },
-          ].map((item) => (
-            <div key={item.index} className="slider-item">
-              <label>
-                {item.label} : {preferencesList[item.index]}
-              </label>
-              <div className="input-group">
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  className="form-range"
-                  value={preferencesList[item.index]}
-                  onChange={(e) =>
-                    updatePreferences(item.index, e.target.value)
-                  }
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="spider-plot">
-          <h5>Your Job Preferences</h5>
-          <ResponsiveContainer height={300}>
-            <RadarPlot data={yourPreferences} name={"You"} />
-          </ResponsiveContainer>
-        </div>
-      </div>
-
+      <div className="row"> 
+      {/*first column*/}
+      <div className="col-md-6 centered-flex full-height">
       <div className="availability-mask">
-        <h1> AVAILABILITIES</h1>
+        <h2>
+          When are you available? <br />
+        </h2>
 
-        <div class="row-availability">
-          <div class="col-6">
-            <table class="table table-bordered">
+        <div className="row-availability">
+          <div className="col-4">
+            <table className="table table-bordered">
               <thead>
                 <tr>
                   <th scope="col">Shift Type</th>
@@ -290,168 +259,239 @@ export default function WhatIfAnalysis() {
                   <th scope="col">Friday</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>Early Shift <br/>
-                  06.00 - 14.00</td>
-                  <td>
-                    <div class="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="customCheck1"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label"
-                        for="customCheck1"
-                      ></label>
-                    </div>
-                  </td>
-                  <td>
-                
-                    <div class="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="customCheck1"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label"
-                        for="customCheck1"
-                      ></label>
-                    </div>
-                  </td>
-                  <td>
-                  
-                    <div class="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="customCheck1"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label"
-                        for="customCheck1"
-                      ></label>
-                    </div>
-                  </td>
-                  <td>
-                   
-                    <div class="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="customCheck1"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label"
-                        for="customCheck1"
-                      ></label>
-                    </div>
-                  </td>
-                  <td>
-                
-                    <div class="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="customCheck1"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label"
-                        for="customCheck1"
-                      ></label>
-                    </div>
-                  </td>
-                </tr>
 
-                <tr>
-                  <td>Late Shift <br/>
-                  14.00 - 22.00</td>
+              <tbody>
+                <tr key="Early Shift">
                   <td>
-                    <div class="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="customCheck1"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label"
-                        for="customCheck1"
-                      ></label>
-                    </div>
+                    Early Shift <br /> 06.00 - 14.00
                   </td>
+                  {[...Array(5)].map((_, index) => (
+                    <td key={index}>
+                      <div className="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          className="custom-control-input"
+                          id={`Early-Shift-${index}`}
+                          defaultChecked={false}
+                          onChange={(event) => {
+                            // Update the checkbox status in the data structure
+                            checkboxStatuses[index] = event.target.checked;
+
+                            console.log("checkbox Statuses");
+                            console.log(checkboxStatuses);
+
+                            // Log the updated status if needed
+                            console.log(
+                              `Checkbox Early-Shift-${index} is now ${
+                                event.target.checked ? "checked" : "unchecked"
+                              }.`
+                            );
+                          }}
+                        />
+                        <label
+                          className="custom-control-label"
+                          htmlFor={`Early-Shift-${index}`}
+                        ></label>
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+                <tr key="Late Shift">
                   <td>
-                    {" "}
-                    <div class="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="customCheck1"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label"
-                        for="customCheck1"
-                      ></label>
-                    </div>
+                    Late Shift <br /> 06.00 - 14.00
                   </td>
-                  <td>
-                    {" "}
-                    <div class="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="customCheck1"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label"
-                        for="customCheck1"
-                      ></label>
-                    </div>
-                  </td>
-                  <td>
-                    {" "}
-                    <div class="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="customCheck1"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label"
-                        for="customCheck1"
-                      ></label>
-                    </div>
-                  </td>
-                  <td>
-                    {" "}
-                    <div class="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="customCheck1"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label"
-                        for="customCheck1"
-                      ></label>
-                    </div>
-                  </td>
+                  {[...Array(5)].map((_, index) => (
+                    <td key={index}>
+                      <div className="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          className="custom-control-input"
+                          id={`Late-Shift-${index}`}
+                          defaultChecked={false}
+                          onChange={(event) => {
+                            // Update the checkbox status in the data structure
+                            checkboxStatuses[index + 5] = event.target.checked;
+
+                            console.log("checkbox Statuses");
+                            console.log(checkboxStatuses);
+
+                            // Log the updated status if needed
+                            console.log(
+                              `Checkbox Late-Shift-${index} is now ${
+                                event.target.checked ? "checked" : "unchecked"
+                              }.`
+                            );
+                          }}
+                        />
+                      </div>
+                    </td>
+                  ))}
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
+      </div>
+      <h2>
+        What are your preferences? <br />
+      </h2>
+      <div className="sliders">
+        {[
+          { label: "Your preference for Forklifting", index: 0 },
+          { label: "Your preference for Sorting", index: 1 },
+          { label: "Your preference for Picking", index: 2 },
+        ].map((item) => (
+          <div key={item.index} className="slider-item">
+            <label>
+              {item.label} : {preferencesList[item.index]}
+            </label>
+            <div className="input-group">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                className="form-range"
+                value={preferencesList[item.index]}
+                onChange={(e) => updatePreferences(item.index, e.target.value)}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="spider-plot">
+        <h5>Your Job Preferences</h5>
+        <ResponsiveContainer height={300}>
+          <RadarPlot data={yourPreferences} name={"You"} />
+        </ResponsiveContainer>
+      </div>
+      </div>
+
+          {/*second column*/}
+      <div className="col-md-6 centered-flex full-height"> 
+      <div className="availability-mask">
+        <h2>
+          When are you available? <br />
+        </h2>
+
+        <div className="row-availability">
+          <div className="col-4">
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Shift Type</th>
+                  <th scope="col">Monday</th>
+                  <th scope="col">Tuesday</th>
+                  <th scope="col">Wednesday</th>
+                  <th scope="col">Thursday</th>
+                  <th scope="col">Friday</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr key="Early Shift">
+                  <td>
+                    Early Shift <br /> 06.00 - 14.00
+                  </td>
+                  {[...Array(5)].map((_, index) => (
+                    <td key={index}>
+                      <div className="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          className="custom-control-input"
+                          id={`Early-Shift-${index}`}
+                          defaultChecked={false}
+                          onChange={(event) => {
+                            // Update the checkbox status in the data structure
+                            checkboxStatuses[index] = event.target.checked;
+
+                            console.log("checkbox Statuses");
+                            console.log(checkboxStatuses);
+
+                            // Log the updated status if needed
+                            console.log(
+                              `Checkbox Early-Shift-${index} is now ${
+                                event.target.checked ? "checked" : "unchecked"
+                              }.`
+                            );
+                          }}
+                        />
+                        <label
+                          className="custom-control-label"
+                          htmlFor={`Early-Shift-${index}`}
+                        ></label>
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+                <tr key="Late Shift">
+                  <td>
+                    Late Shift <br /> 06.00 - 14.00
+                  </td>
+                  {[...Array(5)].map((_, index) => (
+                    <td key={index}>
+                      <div className="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          className="custom-control-input"
+                          id={`Late-Shift-${index}`}
+                          defaultChecked={false}
+                          onChange={(event) => {
+                            // Update the checkbox status in the data structure
+                            checkboxStatuses[index + 5] = event.target.checked;
+
+                            console.log("checkbox Statuses");
+                            console.log(checkboxStatuses);
+
+                            // Log the updated status if needed
+                            console.log(
+                              `Checkbox Late-Shift-${index} is now ${
+                                event.target.checked ? "checked" : "unchecked"
+                              }.`
+                            );
+                          }}
+                        />
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <h2>
+        What are your preferences? <br />
+      </h2>
+      <div className="sliders">
+        {[
+          { label: "Your preference for Forklifting", index: 0 },
+          { label: "Your preference for Sorting", index: 1 },
+          { label: "Your preference for Picking", index: 2 },
+        ].map((item) => (
+          <div key={item.index} className="slider-item">
+            <label>
+              {item.label} : {preferencesList[item.index]}
+            </label>
+            <div className="input-group">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                className="form-range"
+                value={preferencesList[item.index]}
+                onChange={(e) => updatePreferences(item.index, e.target.value)}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="spider-plot">
+        <h5>Your Job Preferences</h5>
+        <ResponsiveContainer height={300}>
+          <RadarPlot data={yourPreferences} name={"You"} />
+        </ResponsiveContainer>
+      </div>
+      </div>
       </div>
 
       <div className="button-container">
