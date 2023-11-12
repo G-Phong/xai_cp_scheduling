@@ -39,9 +39,9 @@ function Navbar() {
               <Link to="/what-if" className="dropdown-item">
                 What-If Scenarios
               </Link>
-              <Link to="/visual" className="dropdown-item">
+       {/*        <Link to="/visual" className="dropdown-item">
                 Visualization
-              </Link>
+              </Link> */}
             </div>
           </li>
           <li className="nav-item dropdown">

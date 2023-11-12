@@ -1,9 +1,9 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import "./LandingPage.css";
 import ai_brain from "../Img/ai_brain.jpg";
 import calendar_black from "../Img/calendar_black.png";
 import xai from "../Img/XAI.jpg";
 import phong from "../Img/phong.jpg";
+import charlotte from "../Img/charlotte.jpg"
 
 import calendar_zoom from "../Img/calendar_zoom.jpg";
 import coffee_spill from "../Img/coffee_spill.jpg";
@@ -160,7 +160,7 @@ export default function LandingPage() {
           <Link to="/schedule" className="get-started-btn">Get Started</Link> */}
 
           <Link to="/schedule" className="getstarted-button">
-            <div className="icon">📅</div> {/*  ☑️ */}
+            <div className="icon">➡️</div> {/* 📅☑️ */}
             <div className="text">Get Started</div>
           </Link>
         </div>
@@ -172,13 +172,13 @@ export default function LandingPage() {
         <div class="container">
           {/* <h1> People </h1> */}
           <ul>
-            <li>
+            <li className= "testimonials-li">
               {/* <!--Phong Image--> */}
               <img src={phong} alt="Phong" />
               <blockquote>
               <br/>
-                Driving 'Explainify.AI' to make AI accessible and trusted by all.
-              </blockquote>
+              Initiated 'Explainify.AI' to improve transparency and trust in AI technologies across diverse user groups. Specialized in AI-driven shift scheduling algorithms and creating user-friendly interfaces. Started my master's thesis journey at the FML chair in the summer of 2023.
+               </blockquote>
               <cite> &mdash; Gia-Phong Tran <br />
                 TUM Master's student</cite> <br />
               <a href="mailto:giaphong.tran@tum.de">giaphong.tran@tum.de</a>
@@ -186,11 +186,11 @@ export default function LandingPage() {
 
             <li>
               {/* <!--TUM-LOGO--> */}
-              <img src={fml_logo} alt="fml" />
+              <img src={charlotte} alt="fml" />
               <blockquote>
                 <br/>
-                As a pioneer in logistics research and education, leading the way from robotics to sustainability.
-              </blockquote>
+                A Research Associate at the Chair of Material Handling, Material Flow, and Logistics (FML) at TU Munich. Since mid-2020, her research interests at the chair have expanded to include the future of work, robotics, and the societal impact of technological innovations in manufacturing.
+             </blockquote>
               <cite> &mdash; Charlotte Haid <br />
                 FML researcher and <br />
                 Master thesis supervisor </cite> <br />

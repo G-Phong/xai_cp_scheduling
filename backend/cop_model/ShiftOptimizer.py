@@ -461,7 +461,9 @@ class ShiftOptimizer:
             solution_dict = {
                 'id': f"solution{i+1}",
                 'schedule': sol['solution'],  # Add the schedule to the solution
-                'total_preference': str(sol['total_preference'])  # Add the total preference to the solution
+                'total_preference': str(sol['total_preference']),  # Add the total preference to the solution
+                'sum_shifts_per_employee': self.sum_shifts_per_employee(), # Add the number of shifts for each employee
+                'individual_preference_score': self.calculate_individual_preference_score() # Add total preference score for each employee
             }
 
             # Add the entire dictionary to the 'solutions' list

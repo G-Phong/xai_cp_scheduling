@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./WeekViewSchedule.css"; // CSS Stylesheet
 
-export default function WeekViewSchedule({ shiftData }) {
-  const [activeSolutionIndex, setActiveSolutionIndex] = useState(0);
+export default function WeekViewSchedule({ shiftData, activeSolutionIndex, setActiveSolutionIndex }) {
+/*   const [activeSolutionIndex, setActiveSolutionIndex] = useState(0); */
   const maxSolutions = shiftData.solution_count;
 
   let weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];

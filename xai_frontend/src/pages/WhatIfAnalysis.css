@@ -60,9 +60,11 @@
   width: auto;
 }
 
-.schedule-view h2 {
+.schedule-view h2,
+.schedule-view h3 {
   text-align: center;
 }
+
 
 .button-container {
   display: flex;
@@ -146,4 +148,9 @@
 
 .status-box p {
   margin: 0; /* Remove default margin for paragraphs inside the box */
+}
+
+.comparison-section{
+  text-align: center;
+  background-color: white;
 }

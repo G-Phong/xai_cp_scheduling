@@ -118,16 +118,7 @@ def solve_shifts_with_preferences():
 
     response_data = {
         "schedule_data": output_data.get("solutions", []),
-        "solution_count": output_data.get("number_of_solutions", 0),
-        "statistics": {
-            "num_employees": num_employees,
-            "num_jobs": num_jobs,
-            "num_qualifications": num_qualifications,
-            "num_days": num_days,
-            "num_shifts_per_day": num_shifts_per_day,
-        },
-        "sum_shifts_per_employee": sum_shifts_per_employee,
-        "individual_preference_score": individual_preference_score,
+        "solution_count": output_data.get("number_of_solutions", 0)
     }
 
     print(response_data)

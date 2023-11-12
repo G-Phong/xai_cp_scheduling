@@ -127,13 +127,18 @@ section {
 } */
 
 .test-monials-section li:nth-child(1) img {
-  width: 50%;
+  width: 70%;
   height: auto;
   border: 5px solid #4c5e71b9;
   border-radius: 5em;
   margin-top: -4.5em;
   background-size: cover;
 }
+
+.test-monials-section ul li {
+  width: auto; /* You can adjust the width as per your preference */
+}
+
 
 .test-monials-section li:nth-child(2) img {
   width: 60%;
