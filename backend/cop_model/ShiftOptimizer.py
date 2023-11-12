@@ -462,8 +462,8 @@ class ShiftOptimizer:
                 'id': f"solution{i+1}",
                 'schedule': sol['solution'],  # Add the schedule to the solution
                 'total_preference': str(sol['total_preference']),  # Add the total preference to the solution
-                'sum_shifts_per_employee': self.sum_shifts_per_employee(), # Add the number of shifts for each employee
-                'individual_preference_score': self.calculate_individual_preference_score() # Add total preference score for each employee
+                'sum_shifts_per_employee': self.calculateNumberShifts(sol['solution']), # Add the number of shifts for each employee
+                'individual_preference_score': self.calculateIndividualPreferences(sol['solution']) # Add total preference score for each employee
             }
 
             # Add the entire dictionary to the 'solutions' list
@@ -482,6 +482,50 @@ class ShiftOptimizer:
 
         # Return a tuple containing schedule data and optimal solution count
         return output_data
+    
+
+    def calculateNumberShifts(self, schedule):
+        """
+        Calculate the number of shifts per employee based on the schedule.
+
+        Args:
+            schedule (dict): The schedule dictionary for a single solution.
+
+        Returns:
+            dict: A dictionary with the employee ID as the key and the number of shifts as the value.
+        """
+        # Initialize a dictionary to hold the count of shifts per employee.
+        shift_count = {str(employee_id): 0 for employee_id in self.employees}
+
+        # Iterate over each day and shift to count the number of shifts per employee.
+        for day, shifts in schedule.items():
+            for shift_type, assignments in shifts.items():
+                for assignment in assignments:
+                    employee_id = str(assignment['employee'])
+                    # Increment the shift count for this employee.
+                    shift_count[employee_id] += 1
+
+        # Convert the counts to strings as specified.
+        shift_count_str = {employee_id: str(count) for employee_id, count in shift_count.items()}
+        return shift_count_str
+    
+    def calculateIndividualPreferences(self, schedule):
+        # Initialize a dictionary to hold the total preference score per employee.
+        individual_preference_score = {str(employee_id): 0 for employee_id in range(self.employee_job_preference_matrix.shape[0])}
+
+        # Iterate over each day and shift to accumulate the total preference score for each employee.
+        for day, shifts in schedule.items():
+            for shift_type, assignments in shifts.items():
+                for assignment in assignments:
+                    # Ensure employee_id is an integer for indexing numpy array.
+                    employee_id = assignment['employee']
+                    job_id = assignment['job']
+                    # Accumulate the preference score for this employee.
+                    individual_preference_score[str(employee_id)] += self.employee_job_preference_matrix[employee_id, job_id]
+
+        # Convert the scores to strings as specified.
+        individual_preference_score_str = {employee_id: str(score) for employee_id, score in individual_preference_score.items()}
+        return individual_preference_score_str
 
     def sum_shifts_per_employee(self):
         """
@@ -505,6 +549,10 @@ class ShiftOptimizer:
 
         counter_day = 1
         number_shifts_per_day = len(self.schedule) // len(self.employees)
+
+        """ print("Schedule taken to calculate sum_shifts_per_employee")
+        print() """
+        
 
         for s in self.schedule:
             counter_day = self.divisible(s + 1, number_shifts_per_day, counter_day)

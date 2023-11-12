@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 
 import axios from "axios"; // JavaScript Library for HTTP-requests
 
@@ -12,6 +12,7 @@ import WeekViewSchedule from "../components/WeekViewSchedule.js";
 import {
   staticShiftPlan,
   initialStackedBarData,
+  initialStackedBarData2,
   initialBarData,
 } from "./staticData.js";
 
@@ -158,8 +159,6 @@ export default function WhatIfAnalysis() {
     ); // Update your preferences when sliders change
   }, [preferencesListB]);
 
-
-
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -178,6 +177,7 @@ export default function WhatIfAnalysis() {
     preferencesList
   ) {
     console.log("in function calculatePreferenceSatisfaction");
+    console.log(solution_data.schedule_data[solutionIndex]);
 
     // Get the individual preference scores for the given solutionIndex
     const individualPreferenceScore =
@@ -296,7 +296,7 @@ export default function WhatIfAnalysis() {
   }
 
   // Function to update stackedBarData based on response_data and solution index
-  const updateStackedBarData = useCallback ((
+  const updateStackedBarData = (
     solution_data,
     solutionIndex,
     preferencesList) => {
@@ -325,7 +325,7 @@ export default function WhatIfAnalysis() {
 
     console.log("StackedBarData was updated! :");
     console.log(calculatedData);
-  },[stackedBarData]);
+  };
 
   useEffect(() => {
     console.log("IN USE EFFECT");
@@ -346,8 +346,9 @@ export default function WhatIfAnalysis() {
         activeSolutionIndex,
         preferencesListA
       );
+      //setStackedBarData(initialStackedBarData2); //DEBUG
     }
-  }, [activeSolutionIndex, solutionDataA, preferencesListA, updateStackedBarData]);
+  }, [activeSolutionIndex, solutionDataA, preferencesListA]);
 
   return (
     <div className="container-what-if">
@@ -506,6 +507,21 @@ export default function WhatIfAnalysis() {
                   />
                   Generate schedule
                 </button>
+
+                <button
+                  className="btn btn-primary custom-button"
+                  onClick={() => {
+                    setStackedBarData(initialStackedBarData);
+                  }}
+                >
+                  <img
+                    src={AI_icon}
+                    alt="Custom Icon"
+                    className="custom-icon"
+                  />
+                  Update StackedBar
+                </button>
+
               </div>
             </div>
           }
@@ -566,13 +582,6 @@ export default function WhatIfAnalysis() {
                 </h3>
               </div>
 
-              {/* Overall Job Popularity */}
-              {/*               <div className="job-popularity">
-                <h3>How popular are the jobs amongst all?</h3>
-                <ResponsiveContainer width="100%" height={400}>
-                  <PiePlot data={pieData} activeIndex={0} onPieEnter={0} />
-                </ResponsiveContainer>
-              </div> */}
 
               {/* Preference Satisfaction Bar */}
               <div className="preference-satisfaction">
@@ -796,17 +805,8 @@ export default function WhatIfAnalysis() {
                   })()}
                 </h3>
 
-                {console.log("Total Preference: ")}
-                {/*     {console.log(solutionDataA.schedule_data[0].total_preference)} */}
               </div>
 
-              {/* Overall Job Popularity */}
-              {/*               <div className="job-popularity">
-                <h3>How popular are the jobs amongst all?</h3>
-                <ResponsiveContainer width="100%" height={400}>
-                  <PiePlot data={pieData} activeIndex={0} onPieEnter={0} />
-                </ResponsiveContainer>
-              </div> */}
 
               {/* Preference Satisfaction Bar */}
               <div className="preference-satisfaction">

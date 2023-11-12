@@ -270,7 +270,35 @@ export const initialStackedBarData = [
   },
   {
     name: "Emily",
+    Satisfaction: 100,
+    Unfulfilled: 100 - 40,
+  },
+  {
+    name: "Franck",
     Satisfaction: 0,
+    Unfulfilled: 100 - 65,
+  },
+];
+
+export const initialStackedBarData2 = [
+  {
+    name: "YOU",
+    Satisfaction: 100,
+    Unfulfilled: 100 - 50,
+  },
+  {
+    name: "Alice",
+    Satisfaction: 0,
+    Unfulfilled: 100 - 70,
+  },
+  {
+    name: "Bob",
+    Satisfaction: 0,
+    Unfulfilled: 100 - 30,
+  },
+  {
+    name: "Emily",
+    Satisfaction: 100,
     Unfulfilled: 100 - 40,
   },
   {
