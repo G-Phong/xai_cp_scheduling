@@ -276,6 +276,17 @@ export const zero_stackedBarData = [
   },
 ];
 
+export const initialSegmentedBarChartData = [
+  {
+    name: "Contributions",
+    You: 0, // value for You
+    Alice: 0, // value for Alice
+    Bob: 0, // value for Bob
+    Emily: 0, // value for Emily
+    Franck: 0, // value for Franck
+  },
+];
+
 export const initialStackedBarData = [
   {
     name: "YOU",

@@ -2,7 +2,18 @@ import React, { useState, useEffect } from "react";
 
 import axios from "axios"; // JavaScript Library for HTTP-requests
 
-import { ResponsiveContainer } from "recharts";
+import {
+  ResponsiveContainer,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  LabelList,
+  Bar,
+  Label,
+} from "recharts";
 import RadarPlot from "../components/RadarPlot";
 import StackedBarPlot from "../components/StackedBarPlot";
 import BarPlot from "../components/BarPlot";
@@ -14,6 +25,7 @@ import {
   zero_barData,
   zero_stackedBarData,
   initialBarData,
+  initialSegmentedBarChartData,
 } from "./staticData.js";
 
 import AI_icon from "../Img/ai.png"; // Adjust the path to your icon file
@@ -56,6 +68,12 @@ export default function WhatIfAnalysis() {
   const [stackedBarDataB, setStackedBarDataB] = useState(initialStackedBarData);
   const [barDataA, setBarDataA] = useState(initialBarData);
   const [barDataB, setBarDataB] = useState(initialBarData);
+  const [segmentedBarDataA, setsegmentedBarDataA] = useState(
+    initialSegmentedBarChartData
+  );
+  const [segmentedBarDataB, setsegmentedBarDataB] = useState(
+    initialSegmentedBarChartData
+  );
 
   //My personal preferences for scenario A and B
   const [yourPreferencesA, setYourPreferencesA] = useState([
@@ -380,6 +398,13 @@ export default function WhatIfAnalysis() {
         preferencesListA,
         setStackedBarDataA
       );
+      updateSegmentedBarData(
+        solutionDataA,
+        activeSolutionIndexA,
+        setsegmentedBarDataA
+      );
+      console.log("segmentedBarDataA");
+      console.log(segmentedBarDataA);
     }
   }, [activeSolutionIndexA, solutionDataA, preferencesListA]);
 
@@ -403,8 +428,118 @@ export default function WhatIfAnalysis() {
         preferencesListB,
         setStackedBarDataB
       );
+      updateSegmentedBarData(
+        solutionDataB,
+        activeSolutionIndexB,
+        setsegmentedBarDataB
+      );
     }
   }, [activeSolutionIndexB, solutionDataB, preferencesListB]);
+
+  const CustomTooltipStackedBar = ({ active, payload, label }) => {
+    if (active && payload && payload.length === 2) {
+      const satisfactionValue = payload[0].value;
+      const unfulfilledValue = payload[1].value;
+
+      // Ensure that values are parsed as numbers
+      const satisfaction = parseFloat(satisfactionValue);
+      const unfulfilled = parseFloat(unfulfilledValue);
+
+      const total = satisfaction + unfulfilled;
+      const satisfactionPercentage =
+        total !== 0 ? ((satisfaction / total) * 100).toFixed(1) : 0;
+
+      return (
+        <div
+          className="custom-tooltip"
+          style={{
+            backgroundColor: "white",
+            padding: "8px",
+            border: "1px solid #888",
+          }}
+        >
+          <p
+            className="label"
+            style={{ color: "purple" }}
+          >{`${satisfactionPercentage}% of ${label}'s preferences were satisfied`}</p>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
+  const CustomTooltipBar = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const uvValue = payload[0].value;
+      const totalShifts = 30; // Assuming a total of 30 shifts in a week
+
+      const percentageOfWork = ((uvValue / totalShifts) * 100).toFixed(1);
+
+      return (
+        <div
+          className="custom-tooltip"
+          style={{
+            backgroundColor: "white",
+            padding: "8px",
+            border: "1px solid #888",
+          }}
+        >
+          <p
+            className="label"
+            style={{ color: "purple" }}
+          >{`${label} works ${uvValue} shifts this week.`}</p>
+          <p className="desc">{`He/She is doing ${percentageOfWork}% of all the work this week.`}</p>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
+  function updateSegmentedBarData(
+    solutionData,
+    solutionIndex,
+    setSegmentedBarData
+  ) {
+    const mapping = {
+      0: "You",
+      1: "Alice",
+      2: "Bob",
+      3: "Emily",
+      4: "Franck",
+    };
+
+    // Initialize the structure for the stacked bar chart
+    const updatedData = {
+      name: "Contributions",
+      You: 0,
+      Alice: 0,
+      Bob: 0,
+      Emily: 0,
+      Franck: 0,
+    };
+
+    if (
+      solutionData &&
+      solutionData.schedule_data &&
+      solutionIndex >= 0 &&
+      solutionIndex < solutionData.schedule_data.length
+    ) {
+      const solution = solutionData.schedule_data[solutionIndex];
+      Object.keys(mapping).forEach((index) => {
+        const name = mapping[index];
+        const score = parseInt(solution.individual_preference_score[index], 10);
+        if (!isNaN(score)) {
+          updatedData[name] = score;
+        }
+      });
+    }
+    console.log("updatedSegData");
+    console.log(updatedData);
+
+    setSegmentedBarData([updatedData]); // Update the state with the new data
+  }
 
   return (
     <div className="container-what-if">
@@ -608,11 +743,10 @@ export default function WhatIfAnalysis() {
           {/* Here comes the comparison section */}
           {generatedA && (
             <div className="comparison-section">
-              {/* Total Overall Preference Text */}
+              {/* Total Overall Preference in a segmented bar chart */}
               <div className="total-preference">
-                <h2>How good is the solution?</h2>
-
                 <h3>
+                  {" "}
                   If you add up all satisfied preferences of this solution,
                   you'll get:{" "}
                   {solutionDataA && solutionDataA.solution_count > 0
@@ -620,6 +754,25 @@ export default function WhatIfAnalysis() {
                         .total_preference
                     : "-"}
                 </h3>
+
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart
+                    data={segmentedBarDataA}
+                    layout="vertical"
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" />
+                    <YAxis type="category" dataKey="name" />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="You" stackId="a" fill="#8884d8" />
+                    <Bar dataKey="Alice" stackId="a" fill="#82ca9d" />
+                    <Bar dataKey="Bob" stackId="a" fill="#ffc658" />
+                    <Bar dataKey="Emily" stackId="a" fill="#ff8042" />
+                    <Bar dataKey="Franck" stackId="a" fill="#a4de6c" />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
 
               {/* Preference Satisfaction Bar */}
@@ -630,7 +783,46 @@ export default function WhatIfAnalysis() {
                 </h3>
                 {solutionDataA && solutionDataA.solution_count > 0 ? (
                   <ResponsiveContainer width="100%" height={400}>
-                    <StackedBarPlot data={stackedBarDataA} />
+                    <BarChart data={stackedBarDataA}>
+                      <XAxis dataKey="name">
+                        <Label value="" offset={0} position="insideRight" />
+                      </XAxis>
+                      <YAxis>
+                        <Label
+                          value="Preference Satisfaction Rate"
+                          offset={20} // Adjust the offset to add more space
+                          angle={-90}
+                          position="inside"
+                        />
+                      </YAxis>
+                      <Tooltip content={<CustomTooltipStackedBar />} />
+                      <Legend
+                        payload={[
+                          {
+                            value: "Preferences satisfied",
+                            type: "rect",
+                            color: "#800080",
+                          },
+                          {
+                            value: "Missed Preferences",
+                            type: "rect",
+                            color: "white",
+                          },
+                        ]}
+                      />
+                      <Bar
+                        dataKey="Satisfaction"
+                        stackId="a"
+                        fill="#800080"
+                        name="Preferences satisfied"
+                      />
+                      <Bar
+                        dataKey="Unfulfilled"
+                        stackId="a"
+                        fill="white"
+                        name="Missed Preferences"
+                      />
+                    </BarChart>
                   </ResponsiveContainer>
                 ) : (
                   <ResponsiveContainer width="100%" height={400}>
@@ -645,7 +837,31 @@ export default function WhatIfAnalysis() {
 
                 {solutionDataA && solutionDataA.solution_count > 0 ? (
                   <ResponsiveContainer width="100%" height={400}>
-                    <BarPlot data={barDataA} />
+                    <BarChart data={barDataA}>
+                      <XAxis dataKey="name" label={{ fill: "black" }}>
+                        <Label value="" offset={0} position="insideRight" />
+                      </XAxis>
+                      <YAxis label={{ fill: "black" }}>
+                        <Label
+                          value="Number of shifts"
+                          offset={15}
+                          angle={-90}
+                          position="center"
+                        />
+                      </YAxis>
+                      <Tooltip content={<CustomTooltipBar />} />
+                      <Legend
+                        payload={[
+                          {
+                            value: "Number of Shifts",
+                            type: "rect",
+                            color: "#800080",
+                          },
+                        ]}
+                        label={{ fill: "black" }}
+                      />
+                      <Bar dataKey="uv" fill="#800080" />
+                    </BarChart>
                   </ResponsiveContainer>
                 ) : (
                   <ResponsiveContainer width="100%" height={400}>
@@ -857,15 +1073,14 @@ export default function WhatIfAnalysis() {
             <div className="comparison-section">
               {/* Total Overall Preference Text */}
               <div className="total-preference">
-                <h2>How good is the solution?</h2>
-                <h3>
+                <h2>
                   If you add up all satisfied preferences of this solution,
                   you'll get:{" "}
                   {solutionDataB && solutionDataB.solution_count > 0
                     ? solutionDataB.schedule_data[activeSolutionIndexB]
                         .total_preference
                     : "-"}
-                </h3>
+                </h2>
               </div>
 
               {/* Preference Satisfaction Bar */}
