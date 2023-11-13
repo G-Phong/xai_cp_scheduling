@@ -4,7 +4,6 @@ import axios from "axios"; // JavaScript Library for HTTP-requests
 
 import { ResponsiveContainer } from "recharts";
 import RadarPlot from "../components/RadarPlot";
-import PiePlot from "../components/PiePlot";
 import StackedBarPlot from "../components/StackedBarPlot";
 import BarPlot from "../components/BarPlot";
 
@@ -12,7 +11,8 @@ import WeekViewSchedule from "../components/WeekViewSchedule.js";
 import {
   staticShiftPlan,
   initialStackedBarData,
-  initialStackedBarData2,
+  zero_barData,
+  zero_stackedBarData,
   initialBarData,
 } from "./staticData.js";
 
@@ -40,7 +40,8 @@ export default function WhatIfAnalysis() {
   // State variables for the shift schedule solutions
   const [solutionDataA, setSolutionDataA] = useState(staticShiftPlan);
   const [solutionDataB, setSolutionDataB] = useState(staticShiftPlan);
-  const [activeSolutionIndex, setActiveSolutionIndex] = useState(0); //"lift state up for the child component"
+  const [activeSolutionIndexA, setActiveSolutionIndexA] = useState(0); //"lift state up for the child component"
+  const [activeSolutionIndexB, setActiveSolutionIndexB] = useState(0); //"lift state up for the child component"
 
   // State variable (standard)
   const [updatedPreferenceMatrix, setUpdatedPreferenceMatrix] = useState([
@@ -51,8 +52,10 @@ export default function WhatIfAnalysis() {
     [50, 50, 60],
   ]);
 
-  const [stackedBarData, setStackedBarData] = useState(initialStackedBarData);
-  const [barData, setBarData] = useState(initialBarData);
+  const [stackedBarDataA, setStackedBarDataA] = useState(initialStackedBarData);
+  const [stackedBarDataB, setStackedBarDataB] = useState(initialStackedBarData);
+  const [barDataA, setBarDataA] = useState(initialBarData);
+  const [barDataB, setBarDataB] = useState(initialBarData);
 
   //My personal preferences for scenario A and B
   const [yourPreferencesA, setYourPreferencesA] = useState([
@@ -83,7 +86,10 @@ export default function WhatIfAnalysis() {
   const generateSolution = (
     preferencesList,
     availabilityList,
-    setSolutionData
+    setSolutionData,
+    activeSolutionIndex,
+    setBarData,
+    setStackedBarData
   ) => {
     console.log("Updated preferences list sent!");
     console.log(preferencesList);
@@ -106,9 +112,10 @@ export default function WhatIfAnalysis() {
         updateStackedBarData(
           response.data,
           activeSolutionIndex,
-          preferencesList
+          preferencesList,
+          setStackedBarData
         );
-        updateBarData(response.data, activeSolutionIndex);
+        updateBarData(response.data, activeSolutionIndex, setBarData);
       })
       .catch((error) => {
         // Handle errors if they occur
@@ -163,12 +170,6 @@ export default function WhatIfAnalysis() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []); // The empty array ensures it only runs once on mount
-
-  const pieData = [
-    { name: "Job 1", value: 600 },
-    { name: "Job 2", value: 100 },
-    { name: "Job 3", value: 300 },
-  ];
 
   // Function to calculate preference satisfaction rates based on response_data and solutionIndex
   function calculatePreferenceSatisfaction(
@@ -227,23 +228,9 @@ export default function WhatIfAnalysis() {
             maxPreferences[employeeId]
         );
 
-        /*     console.log(
-          "maxPossPrefs: " +
-            maxPossiblePreference +
-            " for employee " +
-            employeeId
-        ); */
-
         // Calculate the satisfaction rate as a percentage
         const satisfactionRate =
           (preferenceScore / maxPossiblePreference) * 100;
-
-        /*         console.log(
-          "satisfactionRate: " +
-            satisfactionRate +
-            " for employee " +
-            employeeId
-        ); */
 
         const employeeNames = {
           0: "YOU",
@@ -268,12 +255,29 @@ export default function WhatIfAnalysis() {
     return satisfactionRates;
   }
 
-  function updateBarData(solution_data, solutionIndex) {
-    const sumShiftsPerEmployee =
-      solution_data.schedule_data[solutionIndex].sum_shifts_per_employee;
+  function updateBarData(solution_data, solutionIndex, setBarData) {
+    if (
+      !solution_data ||
+      !solution_data.schedule_data ||
+      solutionIndex >= solution_data.schedule_data.length
+    ) {
+      // Handle the situation where the data is not as expected
+      console.error(
+        "Solution data is not available or the index is out of bounds."
+      );
+      return;
+    }
 
-    console.log("sum shifts per emplo");
-    console.log(sumShiftsPerEmployee);
+    const solution = solution_data.schedule_data[solutionIndex];
+    const sumShiftsPerEmployee = solution?.sum_shifts_per_employee;
+
+    if (!sumShiftsPerEmployee) {
+      // Handle the situation where sumShiftsPerEmployee is not defined
+      console.error(
+        "sum_shifts_per_employee is not available for the current index."
+      );
+      return;
+    }
 
     const employeeNames = {
       0: "YOU",
@@ -286,9 +290,10 @@ export default function WhatIfAnalysis() {
     const updatedBarData = Object.keys(sumShiftsPerEmployee).map(
       (employeeId) => ({
         name: employeeNames[employeeId],
-        uv: parseInt(sumShiftsPerEmployee[employeeId]),
+        uv: parseInt(sumShiftsPerEmployee[employeeId], 10),
       })
     );
+
     console.log("updated bar data: ");
     console.log(updatedBarData);
 
@@ -296,10 +301,12 @@ export default function WhatIfAnalysis() {
   }
 
   // Function to update stackedBarData based on response_data and solution index
-  const updateStackedBarData = (
+  function updateStackedBarData(
     solution_data,
     solutionIndex,
-    preferencesList) => {
+    preferencesList,
+    setStackedBarData
+  ) {
     console.log("StackedBarData was updated! solution_data :");
     console.log(solution_data);
 
@@ -309,6 +316,30 @@ export default function WhatIfAnalysis() {
     console.log("StackedBarData was updated! preferencesList:");
     console.log(preferencesList);
 
+    // Check if the required data is present
+    if (
+      !solution_data ||
+      !solution_data.schedule_data ||
+      solutionIndex >= solution_data.schedule_data.length
+    ) {
+      console.error(
+        "Solution data is not available or the index is out of bounds."
+      );
+      return; // Exit the function if data is not as expected
+    }
+
+    // Optional chaining to safely access individual_preference_score
+    const individualPreferenceScore =
+      solution_data.schedule_data[solutionIndex]?.individual_preference_score;
+
+    // Check if individual_preference_score is available
+    if (!individualPreferenceScore) {
+      console.error(
+        "individual_preference_score is not available for the current index."
+      );
+      return; // Exit the function if data is not as expected
+    }
+
     // Calculate the preference satisfaction rates based on response_data and solutionIndex
     const calculatedData = calculatePreferenceSatisfaction(
       solution_data,
@@ -316,16 +347,18 @@ export default function WhatIfAnalysis() {
       preferencesList
     );
 
-    console.log("StackedBarData before update: ");
-    console.log(stackedBarData);
+    // Check if calculatedData is successfully generated
+    if (!calculatedData) {
+      console.error("Failed to calculate preference satisfaction.");
+      return; // Exit the function if calculation failed
+    }
+
     // Update the stackedBarData state with the calculated data
     setStackedBarData(calculatedData);
-    console.log("StackedBarData after update: ");
-    console.log(stackedBarData);
 
     console.log("StackedBarData was updated! :");
     console.log(calculatedData);
-  };
+  }
 
   useEffect(() => {
     console.log("IN USE EFFECT");
@@ -339,23 +372,46 @@ export default function WhatIfAnalysis() {
     ) {
       console.log("IN USE EFFECT - IF STATEMENT!!!!!!!!");
       console.log("updating with values: ");
-      console.log(activeSolutionIndex);
-      updateBarData(solutionDataA, activeSolutionIndex);
+      console.log(activeSolutionIndexA);
+      updateBarData(solutionDataA, activeSolutionIndexA, setBarDataA);
       updateStackedBarData(
         solutionDataA,
-        activeSolutionIndex,
-        preferencesListA
+        activeSolutionIndexA,
+        preferencesListA,
+        setStackedBarDataA
       );
-      //setStackedBarData(initialStackedBarData2); //DEBUG
     }
-  }, [activeSolutionIndex, solutionDataA, preferencesListA]);
+  }, [activeSolutionIndexA, solutionDataA, preferencesListA]);
+
+  useEffect(() => {
+    console.log("IN USE EFFECT");
+    // Ensure that solutionDataA and preferencesListA are not null or undefined
+    // and that solutionDataA has the schedule_data array with the correct index.
+    if (
+      solutionDataB &&
+      solutionDataB.schedule_data &&
+      Array.isArray(solutionDataB.schedule_data) &&
+      preferencesListB
+    ) {
+      console.log("IN USE EFFECT - IF STATEMENT!!!!!!!!");
+      console.log("updating with values: ");
+      console.log(activeSolutionIndexB);
+      updateBarData(solutionDataB, activeSolutionIndexB, setBarDataB);
+      updateStackedBarData(
+        solutionDataB,
+        activeSolutionIndexB,
+        preferencesListB,
+        setStackedBarDataB
+      );
+    }
+  }, [activeSolutionIndexB, solutionDataB, preferencesListB]);
 
   return (
     <div className="container-what-if">
       <h1>What-If-Scenarios</h1>
-      <div className="row">
+      <div className="row align-items-start">
         {/*first column*/}
-        <div className="col-md-6 centered-flex full-height">
+        <div className="col-md-6 centered-flex">
           <div className="availability-mask">
             <h2>
               Scenario A <br />
@@ -494,9 +550,12 @@ export default function WhatIfAnalysis() {
                     generateSolution(
                       preferencesListA,
                       availabilityListA,
-                      setSolutionDataA
+                      setSolutionDataA,
+                      activeSolutionIndexA,
+                      setBarDataA,
+                      setStackedBarDataA
                     );
-                    setActiveSolutionIndex(0);
+                    setActiveSolutionIndexA(0);
                     setGeneratedA(true);
                   }}
                 >
@@ -507,21 +566,6 @@ export default function WhatIfAnalysis() {
                   />
                   Generate schedule
                 </button>
-
-                <button
-                  className="btn btn-primary custom-button"
-                  onClick={() => {
-                    setStackedBarData(initialStackedBarData);
-                  }}
-                >
-                  <img
-                    src={AI_icon}
-                    alt="Custom Icon"
-                    className="custom-icon"
-                  />
-                  Update StackedBar
-                </button>
-
               </div>
             </div>
           }
@@ -550,13 +594,13 @@ export default function WhatIfAnalysis() {
               <h2>Schedule A</h2>
               <h3>
                 {" "}
-                Solution Nr. {activeSolutionIndex + 1} out of{" "}
+                Solution Nr. {activeSolutionIndexA + 1} out of{" "}
                 {solutionDataA["solution_count"]}
               </h3>
               <WeekViewSchedule
                 shiftData={solutionDataA}
-                activeSolutionIndex={activeSolutionIndex}
-                setActiveSolutionIndex={setActiveSolutionIndex}
+                activeSolutionIndex={activeSolutionIndexA}
+                setActiveSolutionIndex={setActiveSolutionIndexA}
               />
             </div>
           )}
@@ -571,17 +615,12 @@ export default function WhatIfAnalysis() {
                 <h3>
                   If you add up all satisfied preferences of this solution,
                   you'll get:{" "}
-                  {(() => {
-                    try {
-                      return solutionDataA.schedule_data[activeSolutionIndex]
-                        .total_preference;
-                    } catch (error) {
-                      return "n.a.";
-                    }
-                  })()}
+                  {solutionDataA && solutionDataA.solution_count > 0
+                    ? solutionDataA.schedule_data[activeSolutionIndexA]
+                        .total_preference
+                    : "-"}
                 </h3>
               </div>
-
 
               {/* Preference Satisfaction Bar */}
               <div className="preference-satisfaction">
@@ -589,25 +628,38 @@ export default function WhatIfAnalysis() {
                   The best possible preference satisfaction rate for each
                   employee - according to the AI:
                 </h3>
-                <ResponsiveContainer width="100%" height={400}>
-                  <StackedBarPlot data={stackedBarData} />
-                </ResponsiveContainer>
+                {solutionDataA && solutionDataA.solution_count > 0 ? (
+                  <ResponsiveContainer width="100%" height={400}>
+                    <StackedBarPlot data={stackedBarDataA} />
+                  </ResponsiveContainer>
+                ) : (
+                  <ResponsiveContainer width="100%" height={400}>
+                    <StackedBarPlot data={zero_stackedBarData} />
+                  </ResponsiveContainer>
+                )}
               </div>
 
               {/* Workload Ranking */}
               <div className="workload-ranking">
                 <h3>How many shifts does everyone take?</h3>
 
-                <ResponsiveContainer width="100%" height={400}>
-                  <BarPlot data={barData} />
-                </ResponsiveContainer>
+                {solutionDataA && solutionDataA.solution_count > 0 ? (
+                  <ResponsiveContainer width="100%" height={400}>
+                    <BarPlot data={barDataA} />
+                  </ResponsiveContainer>
+                ) : (
+                  <ResponsiveContainer width="100%" height={400}>
+                    <BarPlot data={zero_barData} />
+                  </ResponsiveContainer>
+                )}
               </div>
             </div>
           )}
         </div>
 
         {/*second column*/}
-        <div className="col-md-6 centered-flex full-height">
+
+        <div className="col-md-6 centered-flex">
           <div className="availability-mask">
             <h2>
               Scenario B <br />
@@ -746,7 +798,10 @@ export default function WhatIfAnalysis() {
                     generateSolution(
                       preferencesListB,
                       availabilityListB,
-                      setSolutionDataB
+                      setSolutionDataB,
+                      activeSolutionIndexB,
+                      setBarDataB,
+                      setStackedBarDataB
                     );
                     setGeneratedB(true);
                   }}
@@ -784,7 +839,16 @@ export default function WhatIfAnalysis() {
           {generatedB && (
             <div className="schedule-view">
               <h2>Schedule B</h2>
-              <WeekViewSchedule shiftData={solutionDataB} />
+              <h3>
+                {" "}
+                Solution Nr. {activeSolutionIndexB + 1} out of{" "}
+                {solutionDataB["solution_count"]}
+              </h3>
+              <WeekViewSchedule
+                shiftData={solutionDataB}
+                activeSolutionIndex={activeSolutionIndexB}
+                setActiveSolutionIndex={setActiveSolutionIndexB}
+              />
             </div>
           )}
 
@@ -795,18 +859,14 @@ export default function WhatIfAnalysis() {
               <div className="total-preference">
                 <h2>How good is the solution?</h2>
                 <h3>
-                  Overall preference score:{" "}
-                  {(() => {
-                    try {
-                      return solutionDataB.schedule_data[0].total_preference;
-                    } catch (error) {
-                      return "n.a.";
-                    }
-                  })()}
+                  If you add up all satisfied preferences of this solution,
+                  you'll get:{" "}
+                  {solutionDataB && solutionDataB.solution_count > 0
+                    ? solutionDataB.schedule_data[activeSolutionIndexB]
+                        .total_preference
+                    : "-"}
                 </h3>
-
               </div>
-
 
               {/* Preference Satisfaction Bar */}
               <div className="preference-satisfaction">
@@ -814,18 +874,30 @@ export default function WhatIfAnalysis() {
                   The best possible preference satisfaction rate for each
                   employee - according to the AI:
                 </h3>
-                <ResponsiveContainer width="100%" height={400}>
-                  <StackedBarPlot data={stackedBarData} />
-                </ResponsiveContainer>
+                {solutionDataB && solutionDataB.solution_count > 0 ? (
+                  <ResponsiveContainer width="100%" height={400}>
+                    <StackedBarPlot data={stackedBarDataB} />
+                  </ResponsiveContainer>
+                ) : (
+                  <ResponsiveContainer width="100%" height={400}>
+                    <StackedBarPlot data={zero_stackedBarData} />
+                  </ResponsiveContainer>
+                )}
               </div>
 
               {/* Workload Ranking */}
               <div className="workload-ranking">
                 <h3>How many shifts does everyone take?</h3>
 
-                <ResponsiveContainer width="100%" height={400}>
-                  <BarPlot data={barData} />
-                </ResponsiveContainer>
+                {solutionDataB && solutionDataB.solution_count > 0 ? (
+                  <ResponsiveContainer width="100%" height={400}>
+                    <BarPlot data={barDataB} />
+                  </ResponsiveContainer>
+                ) : (
+                  <ResponsiveContainer width="100%" height={400}>
+                    <BarPlot data={zero_barData} />
+                  </ResponsiveContainer>
+                )}
               </div>
             </div>
           )}

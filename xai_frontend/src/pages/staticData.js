@@ -162,86 +162,82 @@ export const staticShiftPlan = {
           EarlyShift: [
             { employee: 2, job: 0 },
             { employee: 1, job: 1 },
-            { employee: 4, job: 2 }
+            { employee: 4, job: 2 },
           ],
           LateShift: [
             { employee: 0, job: 0 },
             { employee: 4, job: 1 },
-            { employee: 1, job: 2 }
-          ]
+            { employee: 1, job: 2 },
+          ],
         },
         Tuesday: {
           EarlyShift: [
             { employee: 2, job: 0 },
             { employee: 1, job: 1 },
-            { employee: 4, job: 2 }
+            { employee: 4, job: 2 },
           ],
           LateShift: [
             { employee: 0, job: 0 },
             { employee: 4, job: 1 },
-            { employee: 2, job: 2 }
-          ]
+            { employee: 2, job: 2 },
+          ],
         },
         Wednesday: {
           EarlyShift: [
             { employee: 2, job: 0 },
             { employee: 4, job: 1 },
-            { employee: 1, job: 2 }
+            { employee: 1, job: 2 },
           ],
           LateShift: [
             { employee: 1, job: 0 },
             { employee: 4, job: 1 },
-            { employee: 0, job: 2 }
-          ]
+            { employee: 0, job: 2 },
+          ],
         },
         Thursday: {
           EarlyShift: [
             { employee: 3, job: 0 },
             { employee: 4, job: 1 },
-            { employee: 2, job: 2 }
+            { employee: 2, job: 2 },
           ],
           LateShift: [
             { employee: 4, job: 0 },
             { employee: 1, job: 1 },
-            { employee: 0, job: 2 }
-          ]
+            { employee: 0, job: 2 },
+          ],
         },
         Friday: {
           EarlyShift: [
             { employee: 3, job: 0 },
             { employee: 4, job: 1 },
-            { employee: 1, job: 2 }
+            { employee: 1, job: 2 },
           ],
           LateShift: [
             { employee: 3, job: 0 },
             { employee: 0, job: 1 },
-            { employee: 2, job: 2 }
-          ]
-        }
+            { employee: 2, job: 2 },
+          ],
+        },
       },
       total_preference: "2020",
       sum_shifts_per_employee: {
-        '0': '5',
-        '1': '6',
-        '2': '6',
-        '3': '3',
-        '4': '10'
+        0: "5",
+        1: "6",
+        2: "6",
+        3: "3",
+        4: "10",
       },
       individual_preference_score: {
-        '0': '500',
-        '1': '450',
-        '2': '405',
-        '3': '195',
-        '4': '540'
-      }
-    }
+        0: "500",
+        1: "450",
+        2: "405",
+        3: "195",
+        4: "540",
+      },
+    },
   ],
   solution_count: 0,
 };
-
-
-
-
 
 // static preference matrix
 export const staticPreferences = [
@@ -252,38 +248,66 @@ export const staticPreferences = [
   [50, 50, 60],
 ];
 
-export const initialStackedBarData = [
+export const zero_stackedBarData = [
   {
     name: "YOU",
     Satisfaction: 0,
-    Unfulfilled: 100 - 50,
+    Unfulfilled: 0,
   },
   {
     name: "Alice",
     Satisfaction: 0,
-    Unfulfilled: 100 - 70,
+    Unfulfilled: 0,
   },
   {
     name: "Bob",
     Satisfaction: 0,
-    Unfulfilled: 100 - 30,
+    Unfulfilled: 0,
   },
   {
     name: "Emily",
-    Satisfaction: 100,
-    Unfulfilled: 100 - 40,
+    Satisfaction: 0,
+    Unfulfilled: 0,
   },
   {
     name: "Franck",
     Satisfaction: 0,
-    Unfulfilled: 100 - 65,
+    Unfulfilled: 0,
+  },
+];
+
+export const initialStackedBarData = [
+  {
+    name: "YOU",
+    Satisfaction: 100,
+    Unfulfilled: 0,
+  },
+  {
+    name: "Alice",
+    Satisfaction: 0,
+    Unfulfilled: 0,
+  },
+  {
+    name: "Bob",
+    Satisfaction: 0,
+    Unfulfilled: 0,
+  },
+  {
+    name: "Emily",
+    Satisfaction: 0,
+    Unfulfilled: 0,
+  },
+  {
+    name: "Franck",
+    Satisfaction: 0,
+    Unfulfilled: 0,
   },
 ];
 
 export const initialStackedBarData2 = [
   {
     name: "YOU",
-    Satisfaction: 100,
+    Satisfaction: 0,
     Unfulfilled: 100 - 50,
   },
   {
@@ -298,7 +322,7 @@ export const initialStackedBarData2 = [
   },
   {
     name: "Emily",
-    Satisfaction: 100,
+    Satisfaction: 0,
     Unfulfilled: 100 - 40,
   },
   {
@@ -314,4 +338,12 @@ export const initialBarData = [
   { name: "Bob", uv: 2 },
   { name: "Emily", uv: 3 },
   { name: "Franck", uv: 1 },
+];
+
+export const zero_barData = [
+  { name: "YOU", uv: 0 },
+  { name: "Alice", uv: 0 },
+  { name: "Bob", uv: 0 },
+  { name: "Emily", uv: 0 },
+  { name: "Franck", uv: 0 },
 ];

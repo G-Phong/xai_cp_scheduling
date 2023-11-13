@@ -51,7 +51,9 @@
 /* CSS for Two-Column Layout */
 .schedule-container {
   display: flex;
-  justify-content: space-between; /* Adjusted for space between the two main columns */
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 100vh;
 }
 
 .schedule-view {
@@ -64,7 +66,6 @@
 .schedule-view h3 {
   text-align: center;
 }
-
 
 .button-container {
   display: flex;
@@ -114,12 +115,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
-.full-height {
-  min-height: 100vh;
-}
 
 /* Increase specificity for your custom table styles */
 .container-what-if .availability-mask .table th,
@@ -139,7 +136,6 @@
   background-color: #78979e; /* Your desired color */
 }
 
-
 .status-box {
   border: 1px solid #ccc; /* Border style */
   padding: 10px; /* Padding for content inside the box */
@@ -150,7 +146,7 @@
   margin: 0; /* Remove default margin for paragraphs inside the box */
 }
 
-.comparison-section{
+.comparison-section {
   text-align: center;
   background-color: white;
 }
