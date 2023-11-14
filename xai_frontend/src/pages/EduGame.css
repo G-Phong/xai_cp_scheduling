@@ -1,37 +1,9 @@
 /* EduGame.css */
 
-.eduGame{
+.eduGame {
   background-color: lightsteelblue;
   text-align: center;
   padding: 5vh;
-}
-
-.employee-kiosk {
-  background-color: gray;
-  border: 2px solid #ccc;
-  padding: 8px;
-  margin: 4px;
-  background-color: #fff;
-  cursor: grab;
-  transition: transform 0.2s;
-}
-
-.employee-kiosk:active {
-  background-color: gray;
-  transform: scale(1.1);
-}
-
-
-.subcell {
-  border: 1px solid #ccc;
-  padding: 8px;
-  margin: 4px;
-  background-color: #fff;
-  transition: transform 0.2s;
-}
-
-.subcell:hover {
-  transform: scale(1.05);
 }
 
 .employee-kiosk {
@@ -49,6 +21,17 @@
   transform: scale(1.1);
 }
 
+.subcell {
+  border: 1px solid #ccc;
+  padding: 8px;
+  margin: 4px;
+  background-color: #fff;
+  transition: transform 0.2s;
+}
+
+.subcell:hover {
+  transform: scale(1.05);
+}
 
 .employee-box {
   display: flex;
@@ -59,37 +42,28 @@
   align-items: center; /* Center-align items vertically */
 }
 
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-table,
-th,
-td {
-  border: 1px solid #ccc;
-}
-
-th,
-td {
-  padding: 8px;
-  text-align: center;
-}
-
-th {
-  background-color: #f2f2f2;
-}
-
-td {
-  min-width: 100px;
-}
-
-td:hover {
-  background-color: #e0e0e0;
-}
-
 .alert {
   display: inline-block;
   max-width: 300px;
+}
+
+.row-gaugeCharts {
+  display: flex;
+  justify-content: center; /* Horizontally center the content in the row */
+  align-items: center; /* Vertically center the content in the row */
+}
+
+.gauge-charts {
+  display: flex;
+  flex-direction: row; /* Ensure charts are in a row */
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically */
+}
+
+.row-availability {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }

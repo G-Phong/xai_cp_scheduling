@@ -112,18 +112,27 @@ export let initialAllConstraintStatus = {
   };
 
  export const workingHoursData = [
-  { name: "John", assignedShifts: 2, minShifts: 2, maxShifts: 5 },
-  { name: "Alice", assignedShifts: 3, minShifts: 1, maxShifts: 5 },
-  { name: "Bob", assignedShifts: 1, minShifts: 2, maxShifts: 5 },
-  { name: "Emily", assignedShifts: 6, minShifts: 1, maxShifts: 5 },
-  { name: "Franck", assignedShifts: 3, minShifts: 1, maxShifts: 5 },
+  { name: "John",  minShifts: 2, maxShifts: 5 },
+  { name: "Alice",  minShifts: 1, maxShifts: 5 },
+  { name: "Bob", minShifts: 2, maxShifts: 5 },
+  { name: "Emily",  minShifts: 1, maxShifts: 5 },
+  { name: "Franck",  minShifts: 1, maxShifts: 5 },
 ];
+
+export const workingHoursData_old = [
+    { name: "John", assignedShifts: 2, minShifts: 2, maxShifts: 5 },
+    { name: "Alice", assignedShifts: 3, minShifts: 1, maxShifts: 5 },
+    { name: "Bob", assignedShifts: 1, minShifts: 2, maxShifts: 5 },
+    { name: "Emily", assignedShifts: 6, minShifts: 1, maxShifts: 5 },
+    { name: "Franck", assignedShifts: 3, minShifts: 1, maxShifts: 5 },
+  ];
+  
 
 export const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 export const shiftTypes = ["DayShift"]; // To simplify EduGame, we use only one shift type
 
 export const jobDescriptions = {
-  0: "Forklift",
+  0: "Forklifting",
   1: "Sorting",
   2: "Picking",
 };

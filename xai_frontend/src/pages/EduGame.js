@@ -24,21 +24,7 @@ import {
   employees,
 } from "./EduGame_data.js";
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  ReferenceLine,
-  CartesianGrid,
-  Cell,
-  ResponsiveContainer,
-  Label,
-  LabelList,
-  Legend,
-  Tooltip,
-} from "recharts";
-
+import GaugeChart from "react-gauge-chart";
 
 export default function EduGame() {
   const [scheduleData, setScheduleData] = useState(staticShiftData);
@@ -61,12 +47,102 @@ export default function EduGame() {
   const [constraint4Violated, setConstraint4] = useState(true); //An employee must meet the qualifications for a job.
   const [constraint5Violated, setConstraint5] = useState(true); //Availabilities of an employee must be respected.
 
+  const [shiftCounts, setShiftCounts] = useState({
+    John: 0,
+    Alice: 0,
+    Bob: 0,
+    Emily: 0,
+    Franck: 0,
+  });
+
   const handleDragStart = (event, employee) => {
     event.dataTransfer.setData("employee", JSON.stringify(employee));
   };
 
   const handleDragOver = (event) => {
     event.preventDefault();
+  };
+
+  const handleDrop = (event, day, shiftType, subIndex) => {
+    event.preventDefault();
+    const employee = JSON.parse(event.dataTransfer.getData("employee"));
+    const updatedScheduleData = { ...scheduleData };
+    updatedScheduleData[day][shiftType][subIndex].employee = employee;
+    setScheduleData(updatedScheduleData);
+
+    // Check Hard Constraints and get the result once
+    const constraintsStatus = checkHardConstraints(updatedScheduleData);
+
+    const employeeID = parseInt(employee.employeeID);
+    const preferencePoints = jobPreference[employeeID]?.[subIndex] || 0; // Use optional chaining
+
+    // Update preference points
+    setTotalPreference((prev) => prev + preferencePoints);
+
+    // Update Constraints
+    setConstraint1(constraintsStatus.constraint1Violated);
+    setConstraint2(constraintsStatus.constraint2Violated);
+    setConstraint3(constraintsStatus.constraint3Violated);
+    setConstraint4(constraintsStatus.constraint4Violated);
+    setConstraint5(constraintsStatus.constraint5Violated);
+
+    // Calculate the new shift count for the employee
+    /* const updatedShiftCount =
+      updatedScheduleData[day][shiftType].filter(
+        (subShift) => subShift.employee
+      )?.length || 0;
+ */
+
+    /* const updatedShiftCount = updatedScheduleData[day][shiftType].filter(
+      (subShift) => subShift.employee?.employeeID === employee.employeeID
+    ).length; */
+
+    /* WORKING CODE BELOW!!! */
+
+    /* console.log("updatedScheduleData");
+    console.log(updatedScheduleData);
+    console.log("employeeID");
+    console.log(employeeID);
+
+    // Calculate the new total shift count for the employee across all days
+    const updatedShiftCount = weekdays.reduce((totalShiftCount, day) => {
+      const dayShifts = updatedScheduleData[day]["DayShift"];
+      const dayShiftCountForEmployee = dayShifts.reduce((count, subShift) => {
+        const employeeName = subShift.employee?.name;
+        return employeeName === employee.name ? count + 1 : count;
+      }, 0);
+      return totalShiftCount + dayShiftCountForEmployee;
+    }, 0);
+
+    window.alert(updatedShiftCount);
+
+    // Update the shift count for the employee in the shiftCounts object
+    setShiftCounts((prevShiftCounts) => ({
+      ...prevShiftCounts,
+      [employee.name]: updatedShiftCount,
+    })); */
+  };
+
+  const handleRemoveFromShift = (day, shiftType, subIndex) => {
+    const updatedScheduleData = { ...scheduleData };
+    const removedEmployee =
+      updatedScheduleData[day][shiftType][subIndex].employee;
+
+    // Remove the employee from the schedule
+    delete updatedScheduleData[day][shiftType][subIndex].employee;
+    setScheduleData(updatedScheduleData);
+
+    if (removedEmployee) {
+      const employeeID = parseInt(removedEmployee.employeeID);
+      const preferencePointsToSubtract =
+        jobPreference[employeeID]?.[subIndex] || 0;
+
+      // Update constraint box colors
+      changeConstraintBoxColors(checkHardConstraints(updatedScheduleData));
+
+      // Subtract preference points
+      setTotalPreference((prev) => prev - preferencePointsToSubtract);
+    }
   };
 
   const changeConstraintBoxColors = (constraintFlags) => {
@@ -252,97 +328,46 @@ export default function EduGame() {
     return !constraintViolated;
   };
 
-  const handleDrop = (event, day, shiftType, subIndex) => {
-    event.preventDefault();
-    const employee = JSON.parse(event.dataTransfer.getData("employee"));
-    const updatedScheduleData = { ...scheduleData };
-    updatedScheduleData[day][shiftType][subIndex].employee = employee;
-    setScheduleData(updatedScheduleData);
-
-    // Check Hard Constraints and get the result once
-    const constraintsStatus = checkHardConstraints(updatedScheduleData);
-
-    const employeeID = parseInt(employee.employeeID);
-    const preferencePoints = jobPreference[employeeID]?.[subIndex] || 0; // Use optional chaining
-
-    // Update preference points
-    setTotalPreference((prev) => prev + preferencePoints);
-
-    // Update Constraints
-    setConstraint1(constraintsStatus.constraint1Violated);
-    setConstraint2(constraintsStatus.constraint2Violated);
-    setConstraint3(constraintsStatus.constraint3Violated);
-    setConstraint4(constraintsStatus.constraint4Violated);
-    setConstraint5(constraintsStatus.constraint5Violated);
-  };
-
-  const handleRemoveFromShift = (day, shiftType, subIndex) => {
-    const updatedScheduleData = { ...scheduleData };
-    const removedEmployee =
-      updatedScheduleData[day][shiftType][subIndex].employee;
-
-    // Remove the employee from the schedule
-    delete updatedScheduleData[day][shiftType][subIndex].employee;
-    setScheduleData(updatedScheduleData);
-
-    if (removedEmployee) {
-      const employeeID = parseInt(removedEmployee.employeeID);
-      const preferencePointsToSubtract =
-        jobPreference[employeeID]?.[subIndex] || 0;
-
-      // Update constraint box colors
-      changeConstraintBoxColors(checkHardConstraints(updatedScheduleData));
-
-      // Subtract preference points
-      setTotalPreference((prev) => prev - preferencePointsToSubtract);
+  const showSolution = (optimalShiftData, totalPreferenceValue) => {
+    if (tableStatus === "UNSOLVED") {
+      alert(
+        "Solve the game first, then have a look at the AI-generated solutions!"
+      );
+      return;
     }
+    setCurrentData(optimalShiftData);
+    setCurrentTotalPreference(totalPreferenceValue);
   };
 
+  const getColorForArcs = (minShifts, maxShifts) => {
+    const colors = [];
 
-  const renderCustomBar = (props) => {
-    const { x, y, width, height, fill } = props;
-  
-    // Define the number of units and calculate unit width
-    const numUnits = 10;
-    const unitWidth = width / numUnits;
-  
-    // Create an array of units with lines and fill rectangles
-    const units = Array.from({ length: numUnits }, (_, index) => (
-      <g key={`unit-${index}`}>
-        {/* Add vertical grid line */}
-        <line
-          x1={x + unitWidth * index}
-          y1={y}
-          x2={x + unitWidth * index}
-          y2={y + height}
-          stroke="black" // You can customize the grid line color here
-        />
-        {/* Fill rectangle */}
-        <rect
-          x={x + unitWidth * index}
-          y={y}
-          width={unitWidth}
-          height={height}
-          fill={fill}
-        />
-      </g>
-    ));
-  
-    return (
-      <g>
-        {units}
-      </g>
-    );
+    console.log("minShifts");
+    console.log(minShifts);
+    console.log("maxShifts");
+    console.log(maxShifts);
+    console.log();
+
+    // Add red arcs for values less than minShifts
+    for (let i = 0; i < minShifts; i++) {
+      colors.push("red");
+    }
+
+    // Add green arcs for values between minShifts and maxShifts
+    for (let i = minShifts; i <= maxShifts; i++) {
+      colors.push("green");
+    }
+
+    // Add red arcs for values greater than maxShifts
+    for (let i = maxShifts + 1; i <= 9; i++) {
+      colors.push("red");
+    }
+
+    console.log("colors:");
+    console.log(colors);
+
+    return colors;
   };
-
-  // Anpassen der Daten, um die gestapelten Balken zu erstellen
-  const stackedData = workingHoursData.map((item) => ({
-    ...item,
-    tooFewShifts: item.minShifts,
-    validShifts: item.maxShifts - item.minShifts,
-    tooManyShifts: 10 - item.maxShifts,
-    actualShifts: 3,
-  }));
 
   // Scroll to top on mount
   useEffect(() => {
@@ -390,131 +415,85 @@ export default function EduGame() {
     }
   }, [tableStatus]);
 
-  const showSolution = (optimalShiftData, totalPreferenceValue) => {
-    if (tableStatus === "UNSOLVED") {
-      alert(
-        "Solve the game first, then have a look at the AI-generated solutions!"
-      );
-      return;
+  useEffect(() => {
+    const initialShiftCounts = {};
+
+    for (const employee of employees) {
+      initialShiftCounts[employee.name] = 0;
     }
-    setCurrentData(optimalShiftData);
-    setCurrentTotalPreference(totalPreferenceValue);
-  };
+
+    setShiftCounts(initialShiftCounts);
+  }, [employees]);
+
+  // Watch for changes in the scheduleData and update shiftCounts accordingly
+  useEffect(() => {
+    // Create a function to calculate the shift counts
+    const calculateShiftCounts = () => {
+      const newShiftCounts = {};
+
+      for (const day of weekdays) {
+        for (const shiftType of shiftTypes) {
+          for (const subShift of scheduleData[day][shiftType]) {
+            const employeeName = subShift.employee?.name;
+            if (employeeName) {
+              // If an employee is assigned to the subShift, increment their count
+              newShiftCounts[employeeName] =
+                (newShiftCounts[employeeName] || 0) + 1;
+            }
+          }
+        }
+      }
+
+      return newShiftCounts;
+    };
+
+    // Calculate the initial shift counts when the component mounts
+    setShiftCounts(calculateShiftCounts());
+  }, [weekdays, shiftTypes, scheduleData]);
 
   return (
     <div className="eduGame">
-      <h1>EDUCATIONAL DRAG-AND-DROP GAME</h1>
+      <h1>Shift Puzzle Game</h1>
 
-      <div className="container">
-        <div className="row">
-          <div className="col-md-4">
-            <h4>Number of allowed shifts</h4>
+      <div className="container-edugame">
+        <br />
+        <h4>Employees must take a certain amount of shifts:</h4>
+        <br />
+        <div className="row row-gaugeCharts">
+          <div className="col-md-4 ">
+            <div className="gauge-charts">
+              {workingHoursData.map((user, index) => {
+                const { name, minShifts, maxShifts } = user;
 
-            {/*             <table className="table table-sm table-info">
-              <thead>
-                <tr>
-                  <th>Employee</th>
-                  <th>Min Shifts Allowed</th>
-                  <th>Max Shifts Allowed</th>
-                </tr>
-              </thead>
-              <tbody>
-                {employees.map((employee, index) => (
-                  <tr key={index}>
-                    <td>{employee.name}</td>
-                    <td>{minShifts[employee.employeeID]}</td>
-                    <td>{maxShifts[employee.employeeID]}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table> */}
+                // Get the number of assigned shifts from the state
+                const assignedShifts = shiftCounts[name] || 0;
 
-            {/* <ResponsiveContainer width="100%" height={200}>
-              <BarChart
-                layout="vertical"
-                data={workingHoursData}
-                barCategoryGap={5}
-              >
-                <XAxis type="number" hide domain={[0, "dataMax+1"]} />
-                <YAxis type="category" dataKey="name" />
-                <Bar dataKey="assignedShifts" fill="#82ca9d">
-                  <LabelList
-                    dataKey="assignedShifts"
-                    content={renderCustomBarLabel}
-                  />
-                  {workingHoursData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={
-                        entry.assignedShifts < entry.minShifts ||
-                        entry.assignedShifts > entry.maxShifts
-                          ? "red"
-                          : "green"
-                      }
+                // Calculate the percent based on assignedShifts and the range
+                const percent = assignedShifts / 10;
+
+                // Get the colors based on assignedShifts, minShifts, and maxShifts
+                let colors = getColorForArcs(minShifts, maxShifts);
+
+                return (
+                  <div key={index}>
+                    <h3>{user.name}</h3>
+                    <GaugeChart
+                      id={`gauge-chart-${index}`}
+                      animate={true}
+                      animDelay={200}
+                      animateDuration={1000}
+                      nrOfLevels={10} // Set the number of levels to 10
+                      percent={percent}
+                      colors={colors}
+                      arcWidth={0.2}
+                      formatTextValue={(value) =>
+                        Math.round(value / 10).toString() + " shift(s)"
+                      } // Display integers
                     />
-                  ))}
-                </Bar>
-                <Bar dataKey="maxShifts" fill="transparent">
-                  <LabelList
-                    dataKey="maxShifts"
-                    content={renderCustomBarLabel}
-                  />
-                  {workingHoursData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={
-                        entry.assignedShifts >= entry.maxShifts
-                          ? "red"
-                          : "transparent"
-                      }
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer> */}
-
-            <ResponsiveContainer width="100%" height={400}>
-              <BarChart data={stackedData} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" />
-
-                <YAxis dataKey="name" type="category" />
-                <XAxis type="number" domain={[0, 10]} />
-                <Tooltip />
-                <Legend />
-
-                {/* Render the too few shifts (red) */}
-                <Bar dataKey="tooFewShifts" stackId="a" fill="#FF0000" shape={renderCustomBar}>
-                  {stackedData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} />
-                  ))}
-                 
-                </Bar>
-
-                {/* Render the valid shifts (green) */}
-                <Bar dataKey="validShifts" stackId="a" fill="#00FF00" shape={renderCustomBar}>
-                  {stackedData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} />
-                  ))}
-                 
-                </Bar>
-
-                {/* Render the too many shifts (red) */}
-                <Bar dataKey="tooManyShifts" stackId="a" fill="#FF0000" shape={renderCustomBar}>
-                  {stackedData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} />
-                  ))}
-                 
-                </Bar>
-
-                {/* Render the too many shifts (red) */}
-                <Bar dataKey="actualShifts" stackId="b" fill="gray" shape={renderCustomBar}>
-                  {stackedData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} />
-                  ))}
-                </Bar>
-               
-              </BarChart>
-            </ResponsiveContainer>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           {/*           <div className="col-md-4">
@@ -549,10 +528,13 @@ export default function EduGame() {
           </div> */}
         </div>
 
-        <div className="row">
-          <div className="col">
-            <h3>Employee Availability</h3>
-            <table className="table table-sm table-info">
+        <div className="row-availability">
+          <div className="col-md-8">
+            <br />
+            <br />
+            <h4>Consider their availabilities:</h4>
+            <br />
+            <table className="table table-md table-info">
               <thead>
                 <tr>
                   {Object.keys(availability).map((day) => (
@@ -603,16 +585,10 @@ export default function EduGame() {
 
       <div className="row">
         <div className="col text-center">
-          {" "}
-          {/* Center align the content */}
+          <br />
           <h3>
-            Assign Employees to Shifts
-            <p>
-              Drag and drop employees into the shift placeholders to assign them
-              a shift.
-              <br />
-              Ensure all cells are properly assigned to solve the game!
-            </p>
+            Drag and Drop the employees below into the Week-Schedule to assign
+            them shifts:
           </h3>
         </div>
       </div>
@@ -626,77 +602,83 @@ export default function EduGame() {
             onDragStart={(e) => handleDragStart(e, employee)}
           >
             {"E: " + employee.name}
+            <div>Shifts: {shiftCounts[employee.name]}</div>
           </div>
         ))}
       </div>
 
-      <table className="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>Job-Description</th>
-            {weekdays.map((weekday) => (
-              <th key={weekday}>{weekday}</th>
+      <div className="table-responsive">
+  <table className="table table-bordered table-striped table-info">
+    <thead className="thead-dark">
+      <tr>
+        <th className="col-md-1 ">Job-Description</th>
+        {weekdays.map((weekday) => (
+          <th key={weekday} className="col-1">
+            {weekday}
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {shiftTypes.map((shiftType) => (
+        <tr key={shiftType}>
+          <td className="table-info">
+            {Object.values(jobDescriptions).map((job, index) => (
+              <div
+                key={index}
+                className="subcell bg-light  p-2 rounded mb-1"
+              >
+                {job}
+              </div>
             ))}
-          </tr>
-        </thead>
-        <tbody>
-          {shiftTypes.map((shiftType) => (
-            <tr key={shiftType}>
-              <td>
-                {Object.values(jobDescriptions).map((job, index) => (
-                  <div
-                    key={index}
-                    className="subcell bg-light p-2 rounded mb-1"
-                  >
-                    {"Job " + (index + 1) + ":\n" + job}
-                  </div>
-                ))}
-              </td>
-              {weekdays.map((weekday) => (
-                <td key={weekday}>
-                  {scheduleData[weekday][shiftType].map(
-                    (subShift, subIndex) => {
-                      const constraintStatus = allConstraintsStatus[weekday];
-                      const isViolated =
-                        constraintStatus["DayShift"][subIndex][
-                          "constraint5Violated"
-                        ];
-                      const className = isViolated
-                        ? "bg-danger p-2 rounded mb-1"
-                        : "bg-light p-2 rounded mb-1";
+          </td>
+          {weekdays.map((weekday) => (
+            <td key={weekday} className="col-1">
+              {scheduleData[weekday][shiftType].map(
+                (subShift, subIndex) => {
+                  const constraintStatus = allConstraintsStatus[weekday];
+                  const isViolated =
+                    constraintStatus["DayShift"][subIndex][
+                      "constraint5Violated"
+                    ];
+                  const className = isViolated
+                    ? "bg-danger p-2 rounded mb-1"
+                    : "bg-light p-2 rounded mb-1";
 
-                      return (
-                        <div
-                          key={subIndex}
-                          className={className}
-                          onDragOver={(e) => handleDragOver(e)}
-                          onDrop={(e) =>
-                            handleDrop(e, weekday, shiftType, subIndex)
-                          }
-                        >
-                          {subShift.employee && `E: ${subShift.employee.name}`}
-                          <button
-                            className="btn btn-sm btn-info"
-                            onClick={() =>
-                              handleRemoveFromShift(
-                                weekday,
-                                shiftType,
-                                subIndex
-                              )
-                            }
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      );
-                    }
-                  )}
-                </td>
-              ))}
-            </tr>
+                  return (
+                    <div
+                      key={subIndex}
+                      className={className}
+                      onDragOver={(e) => handleDragOver(e)}
+                      onDrop={(e) =>
+                        handleDrop(e, weekday, shiftType, subIndex)
+                      }
+                    >
+                      {subShift.employee && `E: ${subShift.employee.name}`}
+                      <button
+                        className="btn btn-sm btn-info"
+                        onClick={() =>
+                          handleRemoveFromShift(
+                            weekday,
+                            shiftType,
+                            subIndex
+                          )
+                        }
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  );
+                }
+              )}
+            </td>
           ))}
-        </tbody>
-      </table>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
 
       <div className="container">
         <div className="row mb">
@@ -828,7 +810,7 @@ export default function EduGame() {
           </h1>
 
           <div>
-            <table className="table table-bordered table-striped">
+            <table className="table  table-bordered table-striped">
               <thead>
                 <tr>
                   <th>Job-Description</th>
