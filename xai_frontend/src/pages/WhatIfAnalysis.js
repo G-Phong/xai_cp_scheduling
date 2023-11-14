@@ -210,13 +210,14 @@ export default function WhatIfAnalysis() {
 
     console.log(sumShiftsPerEmployee);
 
+    //Static exemplary data from model
     const maxPreference1 = 100;
     const maxPreference2 = 90;
     const maxPreference3 = 65;
     const maxPreference4 = 60;
 
     // Calculate the highest preference from the preferencesList
-    const maxPreference0 = Math.max(...preferencesList); //Problem: von der Präferenzliste wird der maximalwert genommen, aber das wird hier nur gemacht für "YOU"
+    const maxPreference0 = Math.max(...preferencesList);
 
     const maxPreferences = [
       maxPreference0,
@@ -247,8 +248,21 @@ export default function WhatIfAnalysis() {
         );
 
         // Calculate the satisfaction rate as a percentage
-        const satisfactionRate =
-          (preferenceScore / maxPossiblePreference) * 100;
+        let satisfactionRate = (preferenceScore / maxPossiblePreference) * 100;
+
+/*         if(satisfactionRate > 100){
+          window.alert("The satisfaction rate was higher than 100?! It is " + satisfactionRate.toString()
+          + ". preferenceScore is " + preferenceScore.toString() 
+          + ", maxPossiblePreference is " + maxPossiblePreference.toString()
+          + ". Max preference value is " + maxPreference0.toString()
+          );
+
+        } */
+
+        // Check if satisfaction rate exceeds 100 and set it to 100 if it does
+        satisfactionRate = satisfactionRate > 100 ? 100 : satisfactionRate;
+
+        
 
         const employeeNames = {
           0: "YOU",
@@ -745,56 +759,74 @@ export default function WhatIfAnalysis() {
             <div className="comparison-section">
               {/* Total Overall Preference in a segmented bar chart */}
               <div className="total-preference">
+                <br />
                 <h3>
                   {" "}
-                  If you add up all satisfied preferences of this solution,
-                  you'll get:{" "}
+                  The overall score of this solution:{" "}
                   {solutionDataA && solutionDataA.solution_count > 0
                     ? solutionDataA.schedule_data[activeSolutionIndexA]
                         .total_preference
                     : "-"}
                 </h3>
-
-                <ResponsiveContainer width="100%" height={300}>
+                <br />
+                <ResponsiveContainer width="100%" height={200}>
                   <BarChart
                     data={segmentedBarDataA}
                     layout="vertical"
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      bottom: 50,
+                    }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" />
-                    <YAxis type="category" dataKey="name" />
+                    <XAxis type="number" domain={[0, 2200]}>
+                      <Label
+                        value="The higher the overall score the better the solution"
+                        offset={0}
+                        position="insideBottom"
+                        dy={35}
+                      />
+                    </XAxis>
+                    <YAxis
+                      type="category"
+                      dataKey="name"
+                      angle={-90}
+                      position="insideLeft"
+                      textAnchor="middle"
+                      interval={0}
+                      dx={-10}
+                    />
                     <Tooltip />
                     <Legend />
                     <Bar dataKey="You" stackId="a" fill="#8884d8" />
                     <Bar dataKey="Alice" stackId="a" fill="#82ca9d" />
                     <Bar dataKey="Bob" stackId="a" fill="#ffc658" />
                     <Bar dataKey="Emily" stackId="a" fill="#ff8042" />
-                    <Bar dataKey="Franck" stackId="a" fill="#a4de6c" />
+                    <Bar dataKey="Franck" stackId="a" fill="#2A6979" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
 
               {/* Preference Satisfaction Bar */}
               <div className="preference-satisfaction">
-                <h3>
-                  The best possible preference satisfaction rate for each
-                  employee - according to the AI:
-                </h3>
+                <h3>How well are my preferences satisfied?</h3>
                 {solutionDataA && solutionDataA.solution_count > 0 ? (
                   <ResponsiveContainer width="100%" height={400}>
                     <BarChart data={stackedBarDataA}>
                       <XAxis dataKey="name">
                         <Label value="" offset={0} position="insideRight" />
                       </XAxis>
-                      <YAxis>
+                      <YAxis type="number" domain={[0, 100]}>
                         <Label
                           value="Preference Satisfaction Rate"
                           offset={20} // Adjust the offset to add more space
                           angle={-90}
                           position="inside"
+                          dx={-10}
                         />
                       </YAxis>
+
                       <Tooltip content={<CustomTooltipStackedBar />} />
                       <Legend
                         payload={[
@@ -829,6 +861,7 @@ export default function WhatIfAnalysis() {
                     <StackedBarPlot data={zero_stackedBarData} />
                   </ResponsiveContainer>
                 )}
+                <br />
               </div>
 
               {/* Workload Ranking */}
@@ -1073,31 +1106,108 @@ export default function WhatIfAnalysis() {
             <div className="comparison-section">
               {/* Total Overall Preference Text */}
               <div className="total-preference">
-                <h2>
-                  If you add up all satisfied preferences of this solution,
-                  you'll get:{" "}
+                <br />
+                <h3>
+                  {" "}
+                  The overall score of this solution:{" "}
                   {solutionDataB && solutionDataB.solution_count > 0
                     ? solutionDataB.schedule_data[activeSolutionIndexB]
                         .total_preference
                     : "-"}
-                </h2>
+                </h3>
+                <br />
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart
+                    data={segmentedBarDataB}
+                    layout="vertical"
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      bottom: 50,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" domain={[0, 2200]}>
+                      <Label
+                        value="The higher the overall score the better the solution"
+                        offset={0}
+                        position="insideBottom"
+                        dy={35}
+                      />
+                    </XAxis>
+                    <YAxis
+                      type="category"
+                      dataKey="name"
+                      angle={-90}
+                      position="insideLeft"
+                      textAnchor="middle"
+                      interval={0}
+                      dx={-10}
+                    />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="You" stackId="a" fill="#8884d8" />
+                    <Bar dataKey="Alice" stackId="a" fill="#82ca9d" />
+                    <Bar dataKey="Bob" stackId="a" fill="#ffc658" />
+                    <Bar dataKey="Emily" stackId="a" fill="#ff8042" />
+                    <Bar dataKey="Franck" stackId="a" fill="#2A6979" />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
 
               {/* Preference Satisfaction Bar */}
               <div className="preference-satisfaction">
-                <h3>
-                  The best possible preference satisfaction rate for each
-                  employee - according to the AI:
-                </h3>
+                <h3>How well are my preferences satisfied?</h3>
                 {solutionDataB && solutionDataB.solution_count > 0 ? (
                   <ResponsiveContainer width="100%" height={400}>
-                    <StackedBarPlot data={stackedBarDataB} />
+                    <BarChart data={stackedBarDataB}>
+                      <XAxis dataKey="name">
+                        <Label value="" offset={0} position="insideRight" />
+                      </XAxis>
+                      <YAxis type="number" domain={[0, 100]}>
+                        <Label
+                          value="Preference Satisfaction Rate"
+                          offset={20} // Adjust the offset to add more space
+                          angle={-90}
+                          position="inside"
+                          dx={-10}
+                        />
+                      </YAxis>
+                      <Tooltip content={<CustomTooltipStackedBar />} />
+                      <Legend
+                        payload={[
+                          {
+                            value: "Preferences satisfied",
+                            type: "rect",
+                            color: "#800080",
+                          },
+                          {
+                            value: "Missed Preferences",
+                            type: "rect",
+                            color: "white",
+                          },
+                        ]}
+                      />
+                      <Bar
+                        dataKey="Satisfaction"
+                        stackId="a"
+                        fill="#800080"
+                        name="Preferences satisfied"
+                      />
+                      <Bar
+                        dataKey="Unfulfilled"
+                        stackId="a"
+                        fill="white"
+                        name="Missed Preferences"
+                      />
+                    </BarChart>
                   </ResponsiveContainer>
                 ) : (
                   <ResponsiveContainer width="100%" height={400}>
                     <StackedBarPlot data={zero_stackedBarData} />
                   </ResponsiveContainer>
                 )}
+                <br />
               </div>
 
               {/* Workload Ranking */}
@@ -1106,7 +1216,31 @@ export default function WhatIfAnalysis() {
 
                 {solutionDataB && solutionDataB.solution_count > 0 ? (
                   <ResponsiveContainer width="100%" height={400}>
-                    <BarPlot data={barDataB} />
+                    <BarChart data={barDataB}>
+                      <XAxis dataKey="name" label={{ fill: "black" }}>
+                        <Label value="" offset={0} position="insideRight" />
+                      </XAxis>
+                      <YAxis label={{ fill: "black" }}>
+                        <Label
+                          value="Number of shifts"
+                          offset={15}
+                          angle={-90}
+                          position="center"
+                        />
+                      </YAxis>
+                      <Tooltip content={<CustomTooltipBar />} />
+                      <Legend
+                        payload={[
+                          {
+                            value: "Number of Shifts",
+                            type: "rect",
+                            color: "#800080",
+                          },
+                        ]}
+                        label={{ fill: "black" }}
+                      />
+                      <Bar dataKey="uv" fill="#800080" />
+                    </BarChart>
                   </ResponsiveContainer>
                 ) : (
                   <ResponsiveContainer width="100%" height={400}>

@@ -1,5 +1,11 @@
 /* EduGame.css */
 
+.eduGame{
+  background-color: lightsteelblue;
+  text-align: center;
+  padding: 5vh;
+}
+
 .employee-kiosk {
   background-color: gray;
   border: 2px solid #ccc;

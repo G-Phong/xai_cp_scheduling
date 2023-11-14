@@ -10,180 +10,49 @@ import {
   totalPreference3,
 } from "./EduGame_Solutions.js";
 
-const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-const shiftTypes = ["DayShift"]; // To simplify EduGame, we use only one shift type
+import {
+  initialAllConstraintStatus,
+  workingHoursData,
+  weekdays,
+  shiftTypes,
+  jobDescriptions,
+  staticShiftData,
+  maxShifts,
+  minShifts,
+  availability,
+  jobPreference,
+  employees,
+} from "./EduGame_data.js";
 
-const jobDescriptions = {
-  0: "Forklift",
-  1: "Sorting",
-  2: "Picking",
-};
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  ReferenceLine,
+  CartesianGrid,
+  Cell,
+  ResponsiveContainer,
+  Label,
+  LabelList,
+  Legend,
+  Tooltip,
+} from "recharts";
 
-const staticShiftData = {
-  Monday: { DayShift: [{}, {}, {}] },
-  Tuesday: { DayShift: [{}, {}, {}] },
-  Wednesday: { DayShift: [{}, {}, {}] },
-  Thursday: { DayShift: [{}, {}, {}] },
-  Friday: { DayShift: [{}, {}, {}] },
-};
-
-// Problem data
-const maxShifts = { 1: 5, 2: 5, 3: 5, 4: 5, 5: 5 };
-const minShifts = { 1: 2, 2: 1, 3: 2, 4: 1, 5: 1 };
-
-const availability = {
-  Monday: { DayShift: { 1: 0, 2: 1, 3: 1, 4: 0, 5: 1 } },
-  Tuesday: { DayShift: { 1: 1, 2: 1, 3: 1, 4: 0, 5: 1 } },
-  Wednesday: { DayShift: { 1: 1, 2: 0, 3: 1, 4: 0, 5: 1 } },
-  Thursday: { DayShift: { 1: 1, 2: 1, 3: 1, 4: 0, 5: 1 } },
-  Friday: { DayShift: { 1: 1, 2: 0, 3: 0, 4: 1, 5: 1 } },
-};
-
-const jobPreference = {
-  1: { 0: 50, 1: 20, 2: 15 },
-  2: { 0: 0, 1: 100, 2: 50 },
-  3: { 0: 90, 1: 25, 2: 45 },
-  4: { 0: 65, 1: 50, 2: 15 },
-  5: { 0: 50, 1: 50, 2: 60 },
-};
 
 export default function EduGame() {
   const [scheduleData, setScheduleData] = useState(staticShiftData);
-  const [employees, setEmployees] = useState([
-    { employeeID: "1", name: "John" },
-    { employeeID: "2", name: "Alice" },
-    { employeeID: "3", name: "Bob" },
-    { employeeID: "4", name: "Emily" },
-    { employeeID: "5", name: "Franck" },
-  ]);
-
-    // Scroll to top on mount
-    useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []); // The empty array ensures it only runs once on mount
-  
-
   const [tableStatus, setTableStatus] = useState("UNSOLVED");
   const [remainingCells, setRemainingCells] = useState(0);
   const [totalPreference, setTotalPreference] = useState(0);
-  const [allConstraintsStatus, setAllConstraintsStatus] = useState({
-    Monday: {
-      DayShift: {
-        0: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-        1: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-        2: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-      },
-    },
-    Tuesday: {
-      DayShift: {
-        0: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-        1: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-        2: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-      },
-    },
-    Wednesday: {
-      DayShift: {
-        0: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-        1: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-        2: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-      },
-    },
-    Thursday: {
-      DayShift: {
-        0: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-        1: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-        2: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-      },
-    },
-    Friday: {
-      DayShift: {
-        0: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-        1: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-        2: {
-          constraint1Violated: false,
-          constraint3Violated: false,
-          constraint4Violated: false,
-          constraint5Violated: false,
-        },
-      },
-    },
-  });
+  const [allConstraintsStatus, setAllConstraintsStatus] = useState(
+    initialAllConstraintStatus
+  );
   const [currentData, setCurrentData] = useState(optimalShiftData1);
   const [currentTotalPreference, setCurrentTotalPreference] =
     useState(totalPreference1);
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activeSolution, setActiveSolution] = useState(null);
 
   // Constraints violated? false = not violated, green | true = violated, red
   const [constraint1Violated, setConstraint1] = useState(false); //No employee may work more than 1 shift per day.
@@ -314,7 +183,6 @@ export default function EduGame() {
     return !constraintViolated; // Return the inverse of the flag, as the question is whether the constraint is NOT violated
   };
 
-  //check if schedule is complete
   const checkConstraint2 = (updatedScheduleData) => {
     for (const day in updatedScheduleData) {
       for (const shiftType in updatedScheduleData[day]) {
@@ -430,6 +298,57 @@ export default function EduGame() {
     }
   };
 
+
+  const renderCustomBar = (props) => {
+    const { x, y, width, height, fill } = props;
+  
+    // Define the number of units and calculate unit width
+    const numUnits = 10;
+    const unitWidth = width / numUnits;
+  
+    // Create an array of units with lines and fill rectangles
+    const units = Array.from({ length: numUnits }, (_, index) => (
+      <g key={`unit-${index}`}>
+        {/* Add vertical grid line */}
+        <line
+          x1={x + unitWidth * index}
+          y1={y}
+          x2={x + unitWidth * index}
+          y2={y + height}
+          stroke="black" // You can customize the grid line color here
+        />
+        {/* Fill rectangle */}
+        <rect
+          x={x + unitWidth * index}
+          y={y}
+          width={unitWidth}
+          height={height}
+          fill={fill}
+        />
+      </g>
+    ));
+  
+    return (
+      <g>
+        {units}
+      </g>
+    );
+  };
+
+  // Anpassen der Daten, um die gestapelten Balken zu erstellen
+  const stackedData = workingHoursData.map((item) => ({
+    ...item,
+    tooFewShifts: item.minShifts,
+    validShifts: item.maxShifts - item.minShifts,
+    tooManyShifts: 10 - item.maxShifts,
+    actualShifts: 3,
+  }));
+
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []); // The empty array ensures it only runs once on mount
+
   useEffect(() => {
     let remaining = 0;
 
@@ -483,15 +402,15 @@ export default function EduGame() {
   };
 
   return (
-    <div>
+    <div className="eduGame">
       <h1>EDUCATIONAL DRAG-AND-DROP GAME</h1>
 
-      <h2>Employee Shift Constraints</h2>
       <div className="container">
         <div className="row">
           <div className="col-md-4">
-            <h3>Minimum and Maximum Shifts Allowed</h3>
-            <table className="table table-sm table-info">
+            <h4>Number of allowed shifts</h4>
+
+            {/*             <table className="table table-sm table-info">
               <thead>
                 <tr>
                   <th>Employee</th>
@@ -508,10 +427,97 @@ export default function EduGame() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table> */}
+
+            {/* <ResponsiveContainer width="100%" height={200}>
+              <BarChart
+                layout="vertical"
+                data={workingHoursData}
+                barCategoryGap={5}
+              >
+                <XAxis type="number" hide domain={[0, "dataMax+1"]} />
+                <YAxis type="category" dataKey="name" />
+                <Bar dataKey="assignedShifts" fill="#82ca9d">
+                  <LabelList
+                    dataKey="assignedShifts"
+                    content={renderCustomBarLabel}
+                  />
+                  {workingHoursData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={
+                        entry.assignedShifts < entry.minShifts ||
+                        entry.assignedShifts > entry.maxShifts
+                          ? "red"
+                          : "green"
+                      }
+                    />
+                  ))}
+                </Bar>
+                <Bar dataKey="maxShifts" fill="transparent">
+                  <LabelList
+                    dataKey="maxShifts"
+                    content={renderCustomBarLabel}
+                  />
+                  {workingHoursData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={
+                        entry.assignedShifts >= entry.maxShifts
+                          ? "red"
+                          : "transparent"
+                      }
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer> */}
+
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart data={stackedData} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" />
+
+                <YAxis dataKey="name" type="category" />
+                <XAxis type="number" domain={[0, 10]} />
+                <Tooltip />
+                <Legend />
+
+                {/* Render the too few shifts (red) */}
+                <Bar dataKey="tooFewShifts" stackId="a" fill="#FF0000" shape={renderCustomBar}>
+                  {stackedData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} />
+                  ))}
+                 
+                </Bar>
+
+                {/* Render the valid shifts (green) */}
+                <Bar dataKey="validShifts" stackId="a" fill="#00FF00" shape={renderCustomBar}>
+                  {stackedData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} />
+                  ))}
+                 
+                </Bar>
+
+                {/* Render the too many shifts (red) */}
+                <Bar dataKey="tooManyShifts" stackId="a" fill="#FF0000" shape={renderCustomBar}>
+                  {stackedData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} />
+                  ))}
+                 
+                </Bar>
+
+                {/* Render the too many shifts (red) */}
+                <Bar dataKey="actualShifts" stackId="b" fill="gray" shape={renderCustomBar}>
+                  {stackedData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} />
+                  ))}
+                </Bar>
+               
+              </BarChart>
+            </ResponsiveContainer>
           </div>
 
-          <div className="col-md-4">
+          {/*           <div className="col-md-4">
             <h2>Employee Job Preferences</h2>
             <table className="table table-sm table-info">
               <thead>
@@ -540,7 +546,7 @@ export default function EduGame() {
                 })}
               </tbody>
             </table>
-          </div>
+          </div> */}
         </div>
 
         <div className="row">
@@ -599,7 +605,7 @@ export default function EduGame() {
         <div className="col text-center">
           {" "}
           {/* Center align the content */}
-          <h2>
+          <h3>
             Assign Employees to Shifts
             <p>
               Drag and drop employees into the shift placeholders to assign them
@@ -607,7 +613,7 @@ export default function EduGame() {
               <br />
               Ensure all cells are properly assigned to solve the game!
             </p>
-          </h2>
+          </h3>
         </div>
       </div>
 

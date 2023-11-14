@@ -290,7 +290,7 @@ export const initialSegmentedBarChartData = [
 export const initialStackedBarData = [
   {
     name: "YOU",
-    Satisfaction: 100,
+    Satisfaction: 0,
     Unfulfilled: 0,
   },
   {
@@ -319,27 +319,27 @@ export const initialStackedBarData2 = [
   {
     name: "YOU",
     Satisfaction: 0,
-    Unfulfilled: 100 - 50,
+    Unfulfilled: 0,
   },
   {
     name: "Alice",
     Satisfaction: 0,
-    Unfulfilled: 100 - 70,
+    Unfulfilled: 0,
   },
   {
     name: "Bob",
     Satisfaction: 0,
-    Unfulfilled: 100 - 30,
+    Unfulfilled: 0,
   },
   {
     name: "Emily",
     Satisfaction: 0,
-    Unfulfilled: 100 - 40,
+    Unfulfilled: 0,
   },
   {
     name: "Franck",
     Satisfaction: 0,
-    Unfulfilled: 100 - 65,
+    Unfulfilled: 0,
   },
 ];
 
