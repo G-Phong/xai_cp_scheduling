@@ -22,3 +22,5 @@ dist/
 
 .deployment
 deploy.sh
+
+.VSCodeCounter

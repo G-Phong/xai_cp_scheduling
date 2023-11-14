@@ -485,6 +485,7 @@ export default function EduGame() {
                       nrOfLevels={10} // Set the number of levels to 10
                       percent={percent}
                       colors={colors}
+                      textColor={"#FF0000"}
                       arcWidth={0.2}
                       formatTextValue={(value) =>
                         Math.round(value / 10).toString() + " shift(s)"
@@ -601,32 +602,32 @@ export default function EduGame() {
             draggable
             onDragStart={(e) => handleDragStart(e, employee)}
           >
-            {"E: " + employee.name}
-            <div>Shifts: {shiftCounts[employee.name]}</div>
+            {employee.name}
+            {/* <div>Shifts: {shiftCounts[employee.name]}</div> */}
           </div>
         ))}
       </div>
 
       <div className="table-responsive">
-  <table className="table table-bordered table-striped table-info">
-    <thead className="thead-dark">
-      <tr>
-        <th className="col-md-1 ">Job-Description</th>
-        {weekdays.map((weekday) => (
-          <th key={weekday} className="col-1">
-            {weekday}
-          </th>
-        ))}
-      </tr>
-    </thead>
-    <tbody>
+        <table className="table table-bordered table-striped table-info">
+          <thead>
+            <tr>
+              <th className="col-1">Job-Description</th>
+              {weekdays.map((weekday) => (
+                <th key={weekday} className="col-1">
+                  {weekday}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          {/* <tbody>
       {shiftTypes.map((shiftType) => (
         <tr key={shiftType}>
           <td className="table-info">
             {Object.values(jobDescriptions).map((job, index) => (
               <div
                 key={index}
-                className="subcell bg-light  p-2 rounded mb-1"
+                className="subcell bg-primary p-2 rounded mb-2"
               >
                 {job}
               </div>
@@ -675,12 +676,86 @@ export default function EduGame() {
           ))}
         </tr>
       ))}
-    </tbody>
-  </table>
-</div>
+    </tbody> */}
 
+          <tbody>
+            {shiftTypes.map((shiftType) => (
+              <tr key={shiftType}>
+                <td className="table-info">
+                  {Object.values(jobDescriptions).map((job, index) => (
+                    <div
+                      key={index}
+                      className="subcell bg-primary p-2 rounded mb-1 d-flex justify-content-center align-items-center"
+                      style={{ height: "80px" }}
+                    >
+                      {job}
+                    </div>
+                  ))}
+                </td>
+                {weekdays.map((weekday) => (
+                  <td key={weekday} className="col-1">
+                    {scheduleData[weekday][shiftType].map(
+                      (subShift, subIndex) => {
+                        const constraintStatus = allConstraintsStatus[weekday];
+                        const isViolated =
+                          constraintStatus["DayShift"][subIndex][
+                            "constraint5Violated"
+                          ];
 
-      <div className="container">
+                        let className = "bg-light p-2 rounded mb-1";
+
+                        if (subShift.employee) {
+                          className = isViolated
+                            ? "bg-danger p-2 rounded mb-1"
+                            : "bg-success p-2 rounded mb-1";
+                        } else {
+                          className += " dotted-border"; // Hier fügen Sie die gestrichelte Border-Klasse hinzu
+                        }
+
+                        return (
+                          <div
+                            key={subIndex}
+                            className={className}
+                            onDragOver={(e) => handleDragOver(e)}
+                            onDrop={(e) =>
+                              handleDrop(e, weekday, shiftType, subIndex)
+                            }
+                            style={{ height: "80px" }}
+                          >
+                            <div className="tier-one d-flex justify-content-center align-items-center">
+                              {subShift.employee
+                                ? subShift.employee.name
+                                : "> Place an Employee here <"}
+                            </div>
+                            <div className="tier-two">
+                              {subShift.employee && (
+                                <button
+                                  className="btn btn-sm btn-info"
+                                  onClick={() =>
+                                    handleRemoveFromShift(
+                                      weekday,
+                                      shiftType,
+                                      subIndex
+                                    )
+                                  }
+                                >
+                                  Remove
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      }
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/*   <div className="edugame-container">
         <div className="row mb">
           <div className="col-12">
             <div
@@ -689,25 +764,71 @@ export default function EduGame() {
               }`}
               role="alert"
             >
-              <strong>Status: </strong>
+              <strong> Puzzle Status: </strong>
               {tableStatus}
             </div>
-            <small className="text-muted">
-              {remainingCells} Cell(s) to be filled
-            </small>
           </div>
         </div>
-        <div className="row">
+        <div className="row-progress">
           <div className="col-12 text-right">
-            <div className="alert alert-info" role="alert">
-              <strong>Total Preference: </strong> {totalPreference}
+            <h4> Progress-Bar: {remainingCells} cell(s) left!</h4>
+            <div className="progress">
+              <div
+                className="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                style={{
+                  width: `${((15 - remainingCells) / 15) * 100}%`,
+                  position: "relative",
+                }}
+                aria-valuenow={15 - remainingCells}
+                aria-valuemin="0"
+                aria-valuemax={15}
+              >
+                {Math.round(((15 - remainingCells) / 15) * 100)}%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> */}
+
+      <div className="edugame-container">
+        <div className="row row-status">
+          <div className="col-md-9">
+            <h4>Progress-Bar: {remainingCells} cell(s) left!</h4>
+
+            <div className="progress">
+              <div
+                className="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                style={{
+                  width: `${((15 - remainingCells) / 15) * 100}%`,
+                  position: "relative",
+                }}
+                aria-valuenow={15 - remainingCells}
+                aria-valuemin="0"
+                aria-valuemax={15}
+              >
+                {Math.round(((15 - remainingCells) / 15) * 100)}%
+              </div>
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div
+              className={`alert ${
+                tableStatus === "SOLVED" ? "alert-success" : "alert-danger"
+              }`}
+              role="alert"
+            >
+              <strong>Puzzle Status: </strong>
+              {tableStatus}
+              <p className="small">Please comply to the operational requirements (=hard constraints).</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mt-4">
-        <div className="row justify-content-center">
+      <div className="container mt-4 hard-constraints-container">
+        <div className="row justify-content-left">
           <div className="col-md-3">
             <div
               className={`alert ${
@@ -717,11 +838,11 @@ export default function EduGame() {
             >
               <strong>Hard Constraint 1:</strong>
               <br />
-              No employee may work more than 1 shift per day.
+              No employee may work more than one shift per day.
             </div>
           </div>
 
-          <div className="col-md-3">
+          {/*   <div className="col-md-3">
             <div
               className={`alert ${
                 constraint2Violated ? "alert-danger" : "alert-success"
@@ -731,7 +852,7 @@ export default function EduGame() {
               <strong>Hard Constraint 2:</strong>
               <br />A job is to be done by exactly 1 employee.
             </div>
-          </div>
+          </div> */}
           <div className="col-md-3">
             <div
               className={`alert ${
@@ -739,10 +860,9 @@ export default function EduGame() {
               }`}
               role="alert"
             >
-              <strong>Hard Constraint 3:</strong>
+              <strong>Hard Constraint 2:</strong>
               <br />
-              Min. and max. working times (number of shifts) must be complied
-              with!
+              An employee's specified workload must be adhered to.
             </div>
           </div>
           <div className="col-md-3">
@@ -752,9 +872,9 @@ export default function EduGame() {
               }`}
               role="alert"
             >
-              <strong>Hard Constraint 5:</strong>
+              <strong>Hard Constraint 3:</strong>
               <br />
-              Availabilities of an employee must be respected.
+              Only assign an employee to a shift if he/she is available.
             </div>
           </div>
         </div>
@@ -863,7 +983,7 @@ export default function EduGame() {
                     }`}
                     role="alert"
                   >
-                    <strong>Status: </strong>
+                    <strong>Puzzle Status: </strong>
                     {tableStatus}
                   </div>
                 </div>
