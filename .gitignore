@@ -1,26 +1,23 @@
-# Python Virtual Environment
-xai_venv/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Node.js Modules
-node_modules/
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
-# Compiled JavaScript
-build/
-dist/
+# testing
+/coverage
 
-# Log-Dateien
-*.log
+# production
+/build
 
-# Umgebungskonfigurationsdateien (z.B., .env)
-.env
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Visual Studio Code-Dateien
-.vscode/
-
-# Lokale Konfigurationsdateien
-*.local
-
-.deployment
-deploy.sh
-
-.VSCodeCounter
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

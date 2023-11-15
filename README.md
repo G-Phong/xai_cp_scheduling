@@ -1,61 +1,70 @@
-# Explainable AI: An Explanatory Model for a Scheduling COP
+# Getting Started with Create React App
 
-## Overview
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-This repository is dedicated to the development of an Explanatory Model for a CP-based shift scheduling algorithm with optimization. The project aims to deliver human-centered explanations by leveraging cognitive psychology principles.
+## Available Scripts
 
-## Architecture
+In the project directory, you can run:
 
-The software architecture consists of four key components:
+### `npm start`
 
-- **Frontend**: Developed using ReactJS for a responsive and dynamic UI.
-- **Backend**: Built with Python Flask for managing API calls and data manipulation.
-- **In-Memory Data Storage**: For efficient data handling and quick retrieval. No Database used here.
-- **COP Model**: Constraint Optimization Programming model for generating optimized shift plans. This is based on a master thesis of Sebastian Storcher.
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-## Features
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-The Explanatory Model includes the following key features:
+### `npm test`
 
-- Frequently Asked Questions
-- Scenario-Infographic
-- Flipped Classroom: Quiz
-- Analysis Dashboard
-- Educational Drag-and-Drop Optimization Game
-- etc.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-## Project Structure
+### `npm run build`
 
-This repository is organized as follows:
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-- **backend**: This directory contains all the server-side logic.
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-- **cop_model**: This directory contains everything related to the Constraint Optimization Problem (COP) model.
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-- **frontend**: All client-side code is located here.
+### `npm run eject`
 
-- **node_modules**: This directory contains Node.js modules required for the frontend.
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-## How to Run Locally
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-### Requirements
-- Node.js and npm
-- Python 3.x
-- Flask
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-### Steps
+## Learn More
 
-1. Clone this repository.
-2. Navigate to the project directory.
-3. Run `npm install` in the `xai_frontend` folder to install React dependencies.
-4. Run `pip install -r requirements.txt` in the project folder to install Flask and other Python dependencies.
-5. Use `npm start` in the `xai_frontend` folder to start the React development server.
-6. Use `flask run` or `python backend.py` to start the Flask server.
-7. Follow the instructions in Terminal and see the model in your internet browser.
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-## Contributing
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-Please create a new branch for each new feature or bugfix. Refer to GitLab's branching strategy and workflow for more details.
+### Code Splitting
 
-Contact: giaphong.tran@tum.de
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
