@@ -1,0 +1,72 @@
+/* FAQ.css */
+
+.faq-container {
+  color: white;
+  padding-top: 0;
+  margin-top: 0;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.faq-container .mt-5 {
+  color: ivory;
+  font-size: 36px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+
+.faq-container .h2-category {
+  text-align: left;
+  font-size: xx-large;
+  margin-bottom: 2%;
+  margin-top: 2%;
+}
+
+.accordion-item {
+  justify-content: center;
+  width: 1300px;
+}
+
+.accordion-button {
+  text-align: left;
+  font-size: x-large;
+  width: 1300px;
+  justify-content: center;
+  align-items: center;
+}
+
+.accordion-button.collapsed {
+  background-color: rgb(129, 157, 156);
+  width: 1300px;
+  justify-content: center;
+  align-items: center;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: darkslategrey;
+  color: white;
+  font-size: x-large;
+  width: 1300px;
+  justify-content: center;
+  align-items: center;
+}
+
+.accordion-collapse.show .accordion-body {
+  background-color: lightsteelblue;
+  width: 1300px;
+  font-size: x-large;
+  justify-content: left;
+  align-items: left;
+  text-align: left;
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
+}

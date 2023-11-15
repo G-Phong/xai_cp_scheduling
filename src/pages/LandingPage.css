@@ -1,0 +1,526 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400&display=swap");
+
+/* --- MAIN STYLE ---*/
+
+body {
+  background: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+}
+
+a {
+  color: #444;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+section {
+  padding: 0;
+}
+
+/* --- HERO STYLE ---*/
+.hero {
+  background: rgb(239, 238, 238);
+  text-align: center;
+  padding-top: 10vh;
+  /* height: 100vh; */
+}
+
+.left-col .sub-head {
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 3px;
+  font-size: 1.2em;
+  color: #6e6c6c;
+}
+
+.left-col h1 {
+  text-transform: capitalize;
+  font-size: 2.5em;
+  font-weight: bolder;
+  margin-top: 0;
+  line-height: 1.3em;
+}
+
+.primery-cta {
+  background-color: #0067d6b9;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.6em 1.3em;
+  font-size: 1.2em;
+  border-radius: 5em;
+  white-space: nowrap;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.hero-img {
+  width: 80%;
+  margin-top: 3em;
+}
+
+/* --- FEATURES STYLE ---*/
+.features-section {
+  background: #20272e;
+  color: #fff;
+  padding: 2em 0; /* Top and bottom padding, adjust as needed */
+  overflow: auto; /* Add this line */
+}
+
+.features-section ul {
+  padding-left: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+}
+
+.features-section li {
+  width: 1000px;
+  font-size: 1.1em;
+  margin-bottom: 1em;
+  margin-left: 2em;
+  display: flex;
+  position: relative;
+}
+
+.features-section li:before {
+  content: "";
+  position: absolute;
+  left: -2em;
+  width: 20px;
+  height: 20px;
+  background: url("../Img/bullet.svg");
+  background-size: contain;
+}
+
+/* --- TEST STYLE ---*/
+.test-monials-section {
+  background: #91a3a5;
+  color: #ffffff;
+  padding-top: 60px;
+  padding-bottom: 30px;
+}
+
+.test-monials-section li {
+  background: #91a3a5;
+  color: #000000;
+  padding-top: 60px;
+  padding-bottom: 30px;
+}
+
+.test-monials-section li cite {
+  color: #ffffff;
+}
+
+/* .test-monials-section img {
+  width: 80%;
+  height: auto;
+  border: 5px solid #4c5e71b9;
+  border-radius: 5em;
+  margin-top: -4.5em;
+  background-size: cover;
+} */
+
+.test-monials-section li:nth-child(1) img {
+  width: 70%;
+  height: auto;
+  border: 5px solid #4c5e71b9;
+  border-radius: 5em;
+  margin-top: -4.5em;
+  background-size: cover;
+}
+
+.test-monials-section ul li {
+  width: auto; /* You can adjust the width as per your preference */
+}
+
+
+.test-monials-section li:nth-child(2) img {
+  width: 60%;
+  height: auto;
+  border: 5px solid #4c5e71b9;
+  border-radius: 5em;
+  margin-top: -4.5em;
+  background-size: cover;
+}
+
+
+.test-monials-section li {
+  background: #c3cfdc42;
+  text-align: center;
+  padding: 2em 1em;
+  width: 80%;
+  margin: 0 auto 5em auto;
+  border-radius: 1em;
+}
+
+/* --- CONTACT STYLE ---*/
+h2 {
+  font-size: 2em;
+}
+
+label {
+  display: block;
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 0.8em;
+  margin-bottom: 1em;
+  border-radius: 0.3em;
+  border: 1px solid gray;
+  box-sizing: border-box;
+}
+
+input[type="submit"] {
+  background-color: var(--primary-color);
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.3em;
+  border-radius: 5em;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 5em;
+  padding: 0.8em 2em;
+  cursor: pointer;
+}
+
+iframe {
+  width: 100%;
+  height: 300px;
+}
+
+/* --- 769px STYLE ---*/
+@media only screen and (min-width: 768px) {
+  .mobile-menu,
+  .mobile-menu-exit {
+    display: none;
+  }
+  .nav-bar .container {
+    display: -ms-grid;
+    width: 100%;
+    margin: 0;
+    display: grid;
+    -ms-grid-columns: 180px auto;
+    grid-template-columns: 180px auto;
+    -webkit-box-pack: unset;
+    -ms-flex-pack: unset;
+    justify-content: unset;
+  }
+  .nav-bar nav {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    background: none;
+    position: unset;
+    height: auto;
+    width: 100%;
+    padding: 0;
+  }
+  .nav-bar nav ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .nav-bar nav a {
+    color: #000;
+    padding: 0.1em 1em;
+    font-size: 1em;
+  }
+  .nav-bar ul.primary-nav {
+    margin: 0;
+  }
+  .nav-bar li.current a {
+    font-weight: bold;
+  }
+  .nav-bar li.go-premium-cta a {
+    color: var(--primary-color);
+    border: 3px solid var(--primary-color);
+    border-radius: 5em;
+    font-weight: bold;
+    margin-top: -0.2em;
+  }
+  .nav-bar li.go-premium-cta a:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+}
+
+/* --- 1080px STYLE ---*/
+@media only screen and (min-width: 1080px) {
+  .container {
+    width: 1050px;
+    margin: 0 auto;
+  }
+  section {
+    padding: 10em 4em;
+    margin: 0;
+  }
+  .hero .container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    text-align: left;
+  }
+  .left-col {
+    margin: 4em 3em 0 5em;
+  }
+  .left-col h1 {
+    font-size: 3em;
+    width: 90%;
+  }
+  .hero-img {
+    width: 30%;
+    margin-right: 8em;
+  }
+  .hero-cta {
+    display: flex;
+    justify-content: center; /* horizontally centers the button */
+    align-items: center; /* vertically centers the button (optional, if needed) */
+    margin: 0;
+  }
+
+  .primery-cta {
+    margin-right: 10px;
+    margin-left: 0;
+  }
+  .features-section ul {
+    display: block;
+    margin-left: 5em;
+    float: left; /* Added this to float text to the left */
+    width: 60%; /* Giving some width to text to make space for the image */
+  }
+  .features-section ul li {
+    color: #fff; /* White color */
+    font-size: 1.4em;
+  }
+  .features-section ul li::before {
+    color: #fff; /* White color */
+    margin-top: -0.1em;
+    width: 30px;
+    height: 30px;
+  }
+  .features-section {
+    background: #20272e;
+    color: #fff;
+    padding: 2em 0; /* Top and bottom padding, adjust as needed */
+  }
+
+  .features-section .container {
+    display: flex;
+    align-items: start;
+  }
+
+  .features-section img {
+    display: block;
+    float: right; /* Added this to float image to the right */
+    margin: auto;
+    border-radius: 100%;
+    width: 45%; /* Adjust the width as needed */
+    height: auto; /* Keep the aspect ratio of the image */
+    margin-left: 0;
+    margin-right: 0px;
+  }
+
+  .features-section h1 {
+    float: left;
+    margin: auto;
+    margin-right: 25px;
+    opacity: 50%;
+  }
+
+  .test-monials-section ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 90%;
+  }
+
+  .test-monials-section h1 {
+    float: left;
+    margin: auto;
+    margin-right: 25px;
+    opacity: 50%;
+  }
+
+  .test-monials-section ul li {
+    margin: 0 1em;
+  }
+  .contact-section {
+    position: relative;
+    padding: 0;
+  }
+  .contact-section .container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 0;
+  }
+  .contact-section .contact-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 45%;
+    height: 100%;
+  }
+  .contact-section iframe {
+    height: 100%;
+    margin-left: 0;
+  }
+}
+.get-started-section {
+  background: #c7adad;
+  padding: 30px;
+}
+
+.get-started-section .container {
+  position: relative;
+  padding: 0;
+}
+
+.info-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-top: 40px;
+}
+
+.info-box {
+  flex: 1;
+  padding-right: 30px;
+}
+
+.steps-section {
+  flex: 2;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  align-items: center;
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  z-index: 2;
+  position: relative;
+}
+
+.step img {
+  margin-bottom: 20px;
+  border-radius: 50%;
+  border: 3px solid #000; /* Adjust border color as needed */
+  width: 80%; /* or adjust as needed */
+  height: auto;
+}
+
+.steps-section::before {
+  content: "";
+  position: absolute;
+  top: 27%; /* Adjusted the top value */
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background-color: #000;
+  z-index: 1;
+}
+
+.label-left {
+  position: absolute;
+  text-align: center;
+  left: -25%; /* Je nach gewünschtem Abstand von der Linie anpassen */
+  top: 32%;
+  transform: translateY(-50%); /* Vertikal zentriert */
+  white-space: normal; /* Verhindert Zeilenumbrüche */
+  width: 150px;
+  font-size: 1.5em; /* Adjust font size */
+  font-weight: bold; /* Make text bold */
+  /* font-family: 'Desired Font Family', sans-serif;  Uncomment and replace with the desired font if needed */
+}
+
+.contact-item {
+  margin-bottom: 20px;
+  color: black;
+  text-align: left;
+  margin-left: 265px;
+  font-size: 1.1em;
+}
+
+.contact-item strong {
+  font-size: 1.2em;
+  color: white;
+}
+
+.contact-item a {
+  font-size: 1.1em;
+  color: black;
+  text-decoration: underline;
+}
+
+.container-flex {
+  display: flex;
+  margin-right: 0px;
+}
+
+.container-flex strong {
+  color: b;
+}
+
+/* .get-started-btn {
+  display: inline-block;
+  padding: 15px 25px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.get-started-btn:hover {
+  background-color: #555;
+} */
+
+.getstarted-button {
+  background-color: #333;
+  color: #ffffff;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px; /* Increased for rounded shape */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* smooth transition for hover effect */
+  text-decoration: none; /* Removes underline */
+  padding: 25px 50px; /* Adjusts padding for top/bottom and left/right respectively */
+}
+
+.getstarted-button:hover {
+  background-color: #618bd7;
+  color: #333;
+}
+
+.icon {
+  font-size: 36px;
+  margin-right: 15px;
+}
+
+.icon,
+.text {
+  font-size: 28px;
+  display: inline-block;
+  vertical-align: middle; /* This ensures they are aligned to each other's middle */
+}
+
+/*# sourceMappingURL=App.css.map */

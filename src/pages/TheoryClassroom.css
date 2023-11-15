@@ -1,0 +1,32 @@
+/* General styles for the container */
+
+.theory-classroom-container {
+  transition: background-color 0.5s; /* 0.5s duration for smooth transition */
+  padding: auto;
+  margin: auto;
+  justify-content: center;
+  margin-top: 0;
+}
+
+/* FAQ section background */
+.faq-section {
+  background-color: rgb(84, 101, 99); /* Replace with your desired color */
+  margin-top: 0;
+  padding-top: 10px;
+}
+
+/* Quiz section background */
+.quiz-section {
+  background-color: darkkhaki; /* Replace with your desired color */
+  padding: 10vh;
+}
+
+/* When viewing the FAQ section, make the container have the FAQ color */
+.theory-classroom-container:target .faq-section ~ .quiz-section {
+  background-color: blueviolet;
+}
+
+/* When viewing the Quiz section, make the container have the Quiz color */
+.theory-classroom-container:target .quiz-section ~ .faq-section {
+  background-color: orangered;
+}

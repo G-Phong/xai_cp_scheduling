@@ -1,0 +1,179 @@
+/* EduGame.css */
+
+.eduGame {
+  background-color: lightsteelblue;
+  text-align: center;
+  /* padding: 5vh; */
+}
+
+.table-responsive {
+  padding-left: 10vh;
+  padding-right: 10vh;
+}
+
+.edugame-container {
+  padding-left: 10vh;
+  padding-right: 10vh;
+}
+
+.employee-kiosk {
+  background-color: #3498db; /* You can change this color to your preference */
+  border: 2px solid #ccc;
+  padding: 8px;
+  margin: 4px;
+  color: #fff; /* Text color */
+  cursor: grab;
+  transition: transform 0.2s;
+}
+
+.employee-kiosk:active {
+  background-color: #2980b9; /* Color when clicked */
+  transform: scale(1.1);
+}
+
+.subcell {
+  border: 1px solid #ccc;
+  padding: 8px;
+  margin: 4px;
+  background-color: #fff;
+  transition: transform 0.2s;
+}
+
+.subcell:hover {
+  transform: scale(1.05);
+}
+
+.employee-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  justify-content: center; /* Center-align items horizontally */
+  align-items: center; /* Center-align items vertically */
+}
+
+.alert {
+  display: inline-block;
+  max-width: 300px;
+  margin: 0;
+}
+
+.row-gaugeCharts {
+  display: flex;
+  justify-content: center; /* Horizontally center the content in the row */
+  align-items: center; /* Vertically center the content in the row */
+}
+
+.gauge-charts {
+  display: flex;
+  flex-direction: row; /* Ensure charts are in a row */
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically */
+}
+
+.row-availability {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* Fügen Sie diese CSS-Regel hinzu, um eine gestrichelte Border hinzuzufügen */
+.dotted-border {
+  border: 1px dashed #000; /* Sie können die Farbe anpassen */
+}
+
+.progress {
+  width: 90vh;
+}
+
+.row .row-status {
+  text-align: left;
+}
+
+.hard-constraints-container {
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}
+
+.timer-container {
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+
+.timer {
+  font-size: 2rem; /* Hier kannst du die Schriftgröße nach Bedarf anpassen */
+  color: darkblue;
+  padding: 0;
+  margin: 0;
+}
+
+.timer-text {
+  margin-top: 2vh;
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+
+.btn {
+  width: 20vh;
+  height: 5vh;
+}
+
+.container-ai-statistics {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.solution-time {
+  text-align: left;
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+.header-section {
+  background-color: lightcoral;
+  padding-top: 5vh;
+  padding-bottom: 2vh;
+}
+
+.ai-solutions-section {
+  background-color: lightslategrey;
+  padding: 5vh;
+}
+
+.solve-game-section {
+  background-color: darkcyan;
+  padding-top: 3vh;
+  padding-bottom: 5vh;
+}
+
+.constraints-section {
+  background-color: lightslategrey;
+  padding-top: 1vh;
+  padding-bottom: 3vh;
+}
+
+.container-challenge {
+  margin: 0;
+}
+
+.custom-small-button {
+  font-size: 12px;
+  margin-top: 0.5vh;
+  padding: auto;
+  width: auto;
+  height: auto;
+}
+
+.reset-button{
+  font-size: 12px;
+  margin-top: 0.5vh;
+  margin-left: 1vh;
+  padding: auto;
+  width: auto;
+  height: auto;
+}

@@ -1,0 +1,185 @@
+.container-what-if {
+  background-color: lightslategray;
+  padding: 0;
+  margin: 0;
+}
+
+.container-what-if h1 {
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 10px;
+}
+
+.row {
+  margin-bottom: 0px;
+}
+
+.row-generate{
+  padding: 0;
+}
+
+.sliders {
+  width: 55vh;
+  color: white;
+  background-color: #4a5d62;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: auto; /* Centers the sliders */
+  margin-bottom: 30px;
+}
+
+.spider-plot {
+  background-color: lightcyan;
+  width: 60%;
+  margin: auto; /* Centers the spider plot */
+}
+
+.spider-plot h5 {
+  text-align: center;
+}
+
+.custom-icon {
+  width: 40px;
+  height: auto;
+}
+
+/* .generate-button {
+  margin-top: 1vh;
+  width: 20vh;
+  height: 30vh;
+  padding: 0;
+  text-align: left;
+} */
+
+.generate-button {
+  margin-top: 1vh;
+  color: white;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  min-width: 250px;
+  white-space: nowrap;
+}
+
+/* CSS for Two-Column Layout */
+.schedule-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.schedule-view {
+  margin-top: 30px;
+  padding: 3px;
+  margin-left: 5vh;
+  margin-right: 5vh;
+  width: auto;
+}
+
+.schedule-view h2,
+.schedule-view h3 {
+  text-align: center;
+}
+
+.button-container {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.custom-control-input {
+  width: 25px;
+  height: 25px;
+  display: block;
+  margin: auto;
+}
+
+/* CSS for Availability Mask Table */
+.availability-mask {
+  margin: 0 auto; /* Center the table horizontally */
+  display: block;
+}
+
+.availability-mask h2 {
+  text-align: center;
+  /* If there are any additional styles that might be affecting it, address them here */
+}
+
+.availability-mask th,
+.availability-mask td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ccc;
+  background-color: #78979e;
+  transition: background-color 0.3s ease;
+}
+
+/* Override Bootstrap styles for Availability Mask Table */
+.availability-mask th {
+  background-color: #4a5d62;
+  color: white;
+}
+
+.availability-mask td {
+  background-color: #78979e;
+}
+
+/* Centering content within the columns */
+.centered-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Increase specificity for your custom table styles */
+.container-what-if .availability-mask .table th,
+.container-what-if .availability-mask .table td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ccc;
+  background-color: #78979e; /* Your desired color */
+}
+
+.container-what-if .availability-mask .table th {
+  background-color: #4a5d62; /* Your desired color */
+  color: white;
+}
+
+.container-what-if .availability-mask .table td {
+  background-color: #78979e; /* Your desired color */
+}
+
+.status-box {
+  border: 1px solid #ccc; /* Border style */
+  padding: 10px; /* Padding for content inside the box */
+  margin-top: 20px; /* Margin for spacing */
+}
+
+.status-box p {
+  margin: 0; /* Remove default margin for paragraphs inside the box */
+}
+
+.comparison-section {
+  text-align: center;
+  background-color: lightblue;
+  padding: 0;
+  margin:0;
+}
+
+.what-if-header-section {
+  background-color: lightseagreen;
+  padding: 0;
+  margin: 0;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+}
+
+.what-if-main-section {
+  padding: 0;
+  margin: 0;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+}

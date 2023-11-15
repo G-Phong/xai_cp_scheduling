@@ -1,0 +1,65 @@
+.infographic {
+  display: block; /* to prevent any unwanted whitespace around the image */
+  width: 100%; /* scale to the width of the container */
+  height: auto; /* maintain the aspect ratio */
+  max-width: 100%; /* optional, to ensure it doesn't get bigger than its actual size */
+}
+
+.schedule-container {
+  position: relative;
+  padding: 15vh;
+  padding-top: 1vh;
+  background-color: #AEC5CD;
+}
+
+/* This class will position your buttons container */
+.buttons-container {
+  position: absolute;
+  bottom: 6%; /* Increase the percentage to move the buttons lower */
+  left: 50%;
+  transform: translateX(-50%);
+  /* Optional: add z-index if the buttons are not clickable or appearing under other elements */
+  z-index: 10;
+}
+
+.schedule-container {
+  position: relative;
+}
+
+.buttons-container {
+  position: absolute;
+  width: 100%;
+  bottom: 6%; /* Adjust as necessary */
+  left: 50%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.btn.info {
+  /* Add your custom styling here */
+  background-color: #007bff; /* Bootstrap "info" color */
+  color: white;
+  font-family: 'Arial', sans-serif; /* Choose your font */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  /* Add a class-specific for each button to adjust individual positions */
+}
+
+.what-if-button {
+  position: absolute;
+  bottom: 20%; /* Adjust based on actual position */
+  left: 22%; /* Adjust based on actual position */
+}
+
+.game-button {
+  position: absolute;
+  bottom: 20%; /* Adjust based on actual position */
+  left: 44%; /* Adjust based on actual position */
+}
+
+.classroom-button {
+  position: absolute;
+  bottom: 20%; /* Adjust based on actual position */
+  left: 67%; /* Adjust based on actual position */
+}
