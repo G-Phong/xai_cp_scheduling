@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import axios from "axios"; // JavaScript Library for HTTP-requests
+import {axios} from "axios";
 
 import {
   ResponsiveContainer,
