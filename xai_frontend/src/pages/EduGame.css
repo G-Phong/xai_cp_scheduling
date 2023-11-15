@@ -3,7 +3,17 @@
 .eduGame {
   background-color: lightsteelblue;
   text-align: center;
-  padding: 5vh;
+  /* padding: 5vh; */
+}
+
+.table-responsive{
+  padding-left: 10vh;
+  padding-right: 10vh;
+}
+
+.edugame-container{
+  padding-left: 10vh;
+  padding-right: 10vh;
 }
 
 .employee-kiosk {
@@ -45,7 +55,7 @@
 .alert {
   display: inline-block;
   max-width: 300px;
-  margin:0;
+  margin: 0;
 }
 
 .row-gaugeCharts {
@@ -74,12 +84,11 @@
   border: 1px dashed #000; /* Sie können die Farbe anpassen */
 }
 
-
-.progress{
-  width: 100vh;
+.progress {
+  width: 90vh;
 }
 
-.row .row-status{
+.row .row-status {
   text-align: left;
 }
 
@@ -87,4 +96,69 @@
   text-align: left;
   margin: 0;
   padding: 0;
+}
+
+.timer-container {
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+
+.timer {
+  font-size: 2rem; /* Hier kannst du die Schriftgröße nach Bedarf anpassen */
+  color: darkblue;
+  padding: 0;
+  margin: 0;
+}
+
+.timer-text {
+  margin-top: 2vh;
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+
+.btn {
+  width: 20vh;
+  height: 5vh;
+}
+
+.container-ai-statistics {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.solution-time {
+  text-align: left;
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+.header-section{
+  background-color: lightcoral;
+  padding-top: 5vh;
+  padding-bottom:2vh;
+}
+
+.ai-solutions-section{
+  background-color: lightslategrey;
+  padding: 5vh;
+ 
+}
+
+.solve-game-section{
+  background-color: darkcyan;
+  padding-top: 3vh;
+  padding-bottom: 5vh;
+}
+
+.constraints-section{
+  background-color: lightslategrey;
+  padding-top: 1vh;
+  padding-bottom: 3vh;
+}
+
+
+.container-challenge{
+  margin: 0;
 }

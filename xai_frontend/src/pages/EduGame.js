@@ -47,6 +47,10 @@ export default function EduGame() {
   const [constraint4Violated, setConstraint4] = useState(true); //An employee must meet the qualifications for a job.
   const [constraint5Violated, setConstraint5] = useState(true); //Availabilities of an employee must be respected.
 
+  // Zustandsvariablen für den Timer
+  const [timer, setTimer] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
   const [shiftCounts, setShiftCounts] = useState({
     John: 0,
     Alice: 0,
@@ -54,6 +58,8 @@ export default function EduGame() {
     Emily: 0,
     Franck: 0,
   });
+
+  const [isTableVisible, setTableVisible] = useState(true);
 
   const handleDragStart = (event, employee) => {
     event.dataTransfer.setData("employee", JSON.stringify(employee));
@@ -369,9 +375,47 @@ export default function EduGame() {
     return colors;
   };
 
+  // Startfunktion für den Timer
+  const startTimer = () => {
+    setIsRunning(true);
+  };
+
+  // Stopfunktion für den Timer
+  const stopTimer = () => {
+    setIsRunning(false);
+  };
+
+  // Updatefunktion für den Timer
+  const updateTimer = () => {
+    if (isRunning) {
+      setTimeout(() => {
+        setTimer(timer + 1);
+      }, 1000);
+    }
+  };
+
+  // Funktion zur Formatierung der Zeit in Minuten und Sekunden
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  const jumpToSolution = () => {
+    // Update the tableStatus state to "SOLVED"
+    setTableStatus("SOLVED");
+  };
+
+  const toggleTable = () => {
+    setTableVisible(!isTableVisible);
+  };
+
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
+    startTimer();
   }, []); // The empty array ensures it only runs once on mount
 
   useEffect(() => {
@@ -412,6 +456,7 @@ export default function EduGame() {
   useEffect(() => {
     if (tableStatus === "SOLVED") {
       setIsExpanded(true);
+      stopTimer();
     }
   }, [tableStatus]);
 
@@ -451,176 +496,271 @@ export default function EduGame() {
     setShiftCounts(calculateShiftCounts());
   }, [weekdays, shiftTypes, scheduleData]);
 
+  // Effekt für die Timer-Aktualisierung
+  useEffect(() => {
+    updateTimer();
+  }, [timer, isRunning]);
+
   return (
     <div className="eduGame">
-      <h1>Shift Puzzle Game</h1>
+      <section class="header-section">
+        <h1>Shift Puzzle Game 🧩</h1>
+        <h4>Solve this puzzle and understand how shift scheduling works.</h4>
+      </section>
+      <section class="constraints-section">
+        <div className="container-edugame">
+          <h2>📜 Game Rules 📜</h2>
+          <br />
+          <h4>
+            Your 5 employees must take a certain amount of shifts. Try to be in
+            the green area.
+          </h4>
+          <br />
+          <div className="row row-gaugeCharts">
+            <div className="col-md-4 ">
+              <div className="gauge-charts">
+                {workingHoursData.map((user, index) => {
+                  const { name, minShifts, maxShifts } = user;
 
-      <div className="container-edugame">
-        <br />
-        <h4>Employees must take a certain amount of shifts:</h4>
-        <br />
-        <div className="row row-gaugeCharts">
-          <div className="col-md-4 ">
-            <div className="gauge-charts">
-              {workingHoursData.map((user, index) => {
-                const { name, minShifts, maxShifts } = user;
+                  // Get the number of assigned shifts from the state
+                  const assignedShifts = shiftCounts[name] || 0;
 
-                // Get the number of assigned shifts from the state
-                const assignedShifts = shiftCounts[name] || 0;
+                  // Calculate the percent based on assignedShifts and the range
+                  const percent = assignedShifts / 10;
 
-                // Calculate the percent based on assignedShifts and the range
-                const percent = assignedShifts / 10;
+                  // Get the colors based on assignedShifts, minShifts, and maxShifts
+                  let colors = getColorForArcs(minShifts, maxShifts);
 
-                // Get the colors based on assignedShifts, minShifts, and maxShifts
-                let colors = getColorForArcs(minShifts, maxShifts);
-
-                return (
-                  <div key={index}>
-                    <h3>{user.name}</h3>
-                    <GaugeChart
-                      id={`gauge-chart-${index}`}
-                      animate={true}
-                      animDelay={200}
-                      animateDuration={1000}
-                      nrOfLevels={10} // Set the number of levels to 10
-                      percent={percent}
-                      colors={colors}
-                      textColor={"#FF0000"}
-                      arcWidth={0.2}
-                      formatTextValue={(value) =>
-                        Math.round(value / 10).toString() + " shift(s)"
-                      } // Display integers
-                    />
-                  </div>
-                );
-              })}
+                  return (
+                    <div key={index}>
+                      <h3>{user.name}</h3>
+                      <GaugeChart
+                        id={`gauge-chart-${index}`}
+                        animate={true}
+                        animDelay={200}
+                        animateDuration={1000}
+                        nrOfLevels={10} // Set the number of levels to 10
+                        percent={percent}
+                        colors={colors}
+                        textColor={"white"}
+                        arcWidth={0.2}
+                        formatTextValue={(value) =>
+                          Math.round(value / 10).toString() + " shift(s)"
+                        } // Display integers
+                      />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
-          {/*           <div className="col-md-4">
-            <h2>Employee Job Preferences</h2>
-            <table className="table table-sm table-info">
-              <thead>
-                <tr>
-                  <th>Employee</th>
-                  <th>Preference for Job 1</th>
-                  <th>Preference for Job 2</th>
-                  <th>Preference for Job 3</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.keys(jobPreference).map((employeeID, rowIndex) => {
-                  const employee = employees.find(
-                    (emp) => emp.employeeID === employeeID
-                  );
-                  return (
-                    <tr key={rowIndex}>
-                      <td>{employee ? employee.name : employeeID}</td>
-                      {Object.values(jobPreference[employeeID]).map(
-                        (pref, cellIndex) => (
-                          <td key={cellIndex}>{pref}</td>
-                        )
-                      )}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className="container mt-4 hard-constraints-container">
+            <div className="row justify-content-center text-center">
+              <br />
+              <br />
+              <h4>Your company has strict rules. Make sure you follow them.</h4>
+              <br />
+            </div>
+
+            <div className="row justify-content-center">
+              <div className="col-md-3">
+                <div
+                  className={`alert ${
+                    constraint1Violated ? "alert-danger" : "alert-success"
+                  }`}
+                  role="alert"
+                >
+                  <strong>Hard Constraint 1:</strong>
+                  <br />
+                  No employee may work more than one shift per day.
+                </div>
+              </div>
+
+              {/*   <div className="col-md-3">
+            <div
+              className={`alert ${
+                constraint2Violated ? "alert-danger" : "alert-success"
+              }`}
+              role="alert"
+            >
+              <strong>Hard Constraint 2:</strong>
+              <br />A job is to be done by exactly 1 employee.
+            </div>
           </div> */}
-        </div>
+              <div className="col-md-3">
+                <div
+                  className={`alert ${
+                    constraint3Violated ? "alert-danger" : "alert-success"
+                  }`}
+                  role="alert"
+                >
+                  <strong>Hard Constraint 2:</strong>
+                  <br />
+                  An employee's specified workload must be adhered to.
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div
+                  className={`alert ${
+                    constraint5Violated ? "alert-danger" : "alert-success"
+                  }`}
+                  role="alert"
+                >
+                  <strong>Hard Constraint 3:</strong>
+                  <br />
+                  Only assign an employee to a shift if he/she is available.
+                </div>
+              </div>
+            </div>
+          </div>
 
-        <div className="row-availability">
-          <div className="col-md-8">
-            <br />
-            <br />
-            <h4>Consider their availabilities:</h4>
-            <br />
-            <table className="table table-md table-info">
-              <thead>
-                <tr>
-                  {Object.keys(availability).map((day) => (
-                    <th key={day}>{day}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  {Object.keys(availability).map((day) => (
-                    <td key={day}>
-                      <div style={{ display: "flex", flexDirection: "column" }}>
-                        {Object.entries(availability[day]["DayShift"]).map(
-                          ([employeeID, isAvailable]) => {
-                            const employee = employees.find(
-                              (emp) => emp.employeeID === employeeID
-                            );
-                            const availabilityText =
-                              isAvailable === 1 ? "Available" : "Not Available";
-                            const cellColor =
-                              isAvailable === 1 ? "lightgreen" : "orange";
-                            return (
-                              <div
-                                key={employeeID}
-                                className="badge badge-secondary mb-1"
-                                style={{
-                                  border: "1px solid black",
-                                  color: "black",
-                                  backgroundColor: cellColor,
-                                }}
-                              >
-                                {employee
-                                  ? `${employee.name}: ${availabilityText}`
-                                  : `${employeeID}: ${availabilityText}`}
-                              </div>
-                            );
-                          }
-                        )}
-                      </div>
-                    </td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
+          <div className="row-availability">
+            <div className="col-md-8">
+              <br />
+              <h4>
+                Employees can only work at certain times. Consider their
+                availabilities.
+              </h4>
+
+              <table className="table table-md table-dark">
+                <thead>
+                  <tr>
+                    {Object.keys(availability).map((day) => (
+                      <th key={day}>{day}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    {Object.keys(availability).map((day) => (
+                      <td key={day}>
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          {Object.entries(availability[day]["DayShift"]).map(
+                            ([employeeID, isAvailable]) => {
+                              const employee = employees.find(
+                                (emp) => emp.employeeID === employeeID
+                              );
+                              const availabilityText =
+                                isAvailable === 1
+                                  ? "Available"
+                                  : "Not Available";
+                              const cellColor =
+                                isAvailable === 1 ? "lightgreen" : "darkorange";
+                              return (
+                                <div
+                                  key={employeeID}
+                                  className="badge badge-secondary mb-1"
+                                  style={{
+                                    border: "1px solid black",
+                                    color: "black",
+                                    backgroundColor: cellColor,
+                                  }}
+                                >
+                                  {employee
+                                    ? `${employee.name}: ${availabilityText}`
+                                    : `${employeeID}: ${availabilityText}`}
+                                </div>
+                              );
+                            }
+                          )}
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="container-challenge">
+            <h2>
+              ⬇️ Need an extra challenge? Consider employee preferences! ⬇️
+            </h2>
+            <button className="btn btn-primary btn-sm rounded mb-4" onClick={toggleTable}>
+              {isTableVisible ? "Hide Preferences" : "Show Preferences"}
+            </button>
+            <br></br>
+            {isTableVisible && (
+              <div className="col-md-12 d-flex justify-content-md-center">
+                <div>
+                  <h3>Your employees have specific preferences for jobs.</h3>
+                  <table className="table table-success table-hover table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Employee</th>
+                        <th>Preference for Forklifting</th>
+                        <th>Preference for Sorting</th>
+                        <th>Preference for Picking</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.keys(jobPreference).map(
+                        (employeeID, rowIndex) => {
+                          const employee = employees.find(
+                            (emp) => emp.employeeID === employeeID
+                          );
+                          return (
+                            <tr key={rowIndex}>
+                              <td>{employee ? employee.name : employeeID}</td>
+                              {Object.values(jobPreference[employeeID]).map(
+                                (pref, cellIndex) => (
+                                  <td key={cellIndex}>{pref}</td>
+                                )
+                              )}
+                            </tr>
+                          );
+                        }
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      </div>
-
-      <div className="row">
-        <div className="col text-center">
-          <br />
-          <h3>
-            Drag and Drop the employees below into the Week-Schedule to assign
-            them shifts:
-          </h3>
-        </div>
-      </div>
-
-      <div className="employee-box">
-        {employees.map((employee) => (
-          <div
-            key={employee.employeeID}
-            className="employee-kiosk"
-            draggable
-            onDragStart={(e) => handleDragStart(e, employee)}
-          >
-            {employee.name}
-            {/* <div>Shifts: {shiftCounts[employee.name]}</div> */}
+      </section>
+      <section class="solve-game-section">
+        <h2>🎲 Solve the game 🎲</h2>
+        <div className="row-solve">
+          <div className="col text-center">
+            <br />
+            <h3>
+              Drag and Drop the employees below into the Week-Schedule to assign
+              them shifts:
+            </h3>
           </div>
-        ))}
-      </div>
+        </div>
 
-      <div className="table-responsive">
-        <table className="table table-bordered table-striped table-info">
-          <thead>
-            <tr>
-              <th className="col-1">Job-Description</th>
-              {weekdays.map((weekday) => (
-                <th key={weekday} className="col-1">
-                  {weekday}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          {/* <tbody>
+        <div className="employee-box">
+          {employees.map((employee) => (
+            <div
+              key={employee.employeeID}
+              className="employee-kiosk"
+              draggable
+              onDragStart={(e) => handleDragStart(e, employee)}
+            >
+              {employee.name}
+              {/* <div>Shifts: {shiftCounts[employee.name]}</div> */}
+            </div>
+          ))}
+        </div>
+
+        <div className="table-responsive">
+          <table className="table table-bordered table-striped table-info">
+            <thead>
+              <tr>
+                <th className="col-1">Job-Description</th>
+                {weekdays.map((weekday) => (
+                  <th key={weekday} className="col-1">
+                    {weekday}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            {/* <tbody>
       {shiftTypes.map((shiftType) => (
         <tr key={shiftType}>
           <td className="table-info">
@@ -678,84 +818,85 @@ export default function EduGame() {
       ))}
     </tbody> */}
 
-          <tbody>
-            {shiftTypes.map((shiftType) => (
-              <tr key={shiftType}>
-                <td className="table-info">
-                  {Object.values(jobDescriptions).map((job, index) => (
-                    <div
-                      key={index}
-                      className="subcell bg-primary p-2 rounded mb-1 d-flex justify-content-center align-items-center"
-                      style={{ height: "80px" }}
-                    >
-                      {job}
-                    </div>
-                  ))}
-                </td>
-                {weekdays.map((weekday) => (
-                  <td key={weekday} className="col-1">
-                    {scheduleData[weekday][shiftType].map(
-                      (subShift, subIndex) => {
-                        const constraintStatus = allConstraintsStatus[weekday];
-                        const isViolated =
-                          constraintStatus["DayShift"][subIndex][
-                            "constraint5Violated"
-                          ];
-
-                        let className = "bg-light p-2 rounded mb-1";
-
-                        if (subShift.employee) {
-                          className = isViolated
-                            ? "bg-danger p-2 rounded mb-1"
-                            : "bg-success p-2 rounded mb-1";
-                        } else {
-                          className += " dotted-border"; // Hier fügen Sie die gestrichelte Border-Klasse hinzu
-                        }
-
-                        return (
-                          <div
-                            key={subIndex}
-                            className={className}
-                            onDragOver={(e) => handleDragOver(e)}
-                            onDrop={(e) =>
-                              handleDrop(e, weekday, shiftType, subIndex)
-                            }
-                            style={{ height: "80px" }}
-                          >
-                            <div className="tier-one d-flex justify-content-center align-items-center">
-                              {subShift.employee
-                                ? subShift.employee.name
-                                : "> Place an Employee here <"}
-                            </div>
-                            <div className="tier-two">
-                              {subShift.employee && (
-                                <button
-                                  className="btn btn-sm btn-info"
-                                  onClick={() =>
-                                    handleRemoveFromShift(
-                                      weekday,
-                                      shiftType,
-                                      subIndex
-                                    )
-                                  }
-                                >
-                                  Remove
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      }
-                    )}
+            <tbody>
+              {shiftTypes.map((shiftType) => (
+                <tr key={shiftType}>
+                  <td className="table-info">
+                    {Object.values(jobDescriptions).map((job, index) => (
+                      <div
+                        key={index}
+                        className="subcell bg-primary p-2 rounded mb-1 d-flex justify-content-center align-items-center"
+                        style={{ height: "80px" }}
+                      >
+                        {job}
+                      </div>
+                    ))}
                   </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                  {weekdays.map((weekday) => (
+                    <td key={weekday} className="col-1">
+                      {scheduleData[weekday][shiftType].map(
+                        (subShift, subIndex) => {
+                          const constraintStatus =
+                            allConstraintsStatus[weekday];
+                          const isViolated =
+                            constraintStatus["DayShift"][subIndex][
+                              "constraint5Violated"
+                            ];
 
-      {/*   <div className="edugame-container">
+                          let className = "bg-light p-2 rounded mb-1";
+
+                          if (subShift.employee) {
+                            className = isViolated
+                              ? "bg-danger p-2 rounded mb-1"
+                              : "bg-success p-2 rounded mb-1";
+                          } else {
+                            className += " dotted-border"; // Hier fügen Sie die gestrichelte Border-Klasse hinzu
+                          }
+
+                          return (
+                            <div
+                              key={subIndex}
+                              className={className}
+                              onDragOver={(e) => handleDragOver(e)}
+                              onDrop={(e) =>
+                                handleDrop(e, weekday, shiftType, subIndex)
+                              }
+                              style={{ height: "80px" }}
+                            >
+                              <div className="tier-one d-flex justify-content-center align-items-center">
+                                {subShift.employee
+                                  ? subShift.employee.name
+                                  : "> Place an Employee here <"}
+                              </div>
+                              <div className="tier-two">
+                                {subShift.employee && (
+                                  <button
+                                    className="btn btn-sm btn-info"
+                                    onClick={() =>
+                                      handleRemoveFromShift(
+                                        weekday,
+                                        shiftType,
+                                        subIndex
+                                      )
+                                    }
+                                  >
+                                    Remove
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        }
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/*   <div className="edugame-container">
         <div className="row mb">
           <div className="col-12">
             <div
@@ -791,214 +932,176 @@ export default function EduGame() {
         </div>
       </div> */}
 
-      <div className="edugame-container">
-        <div className="row row-status">
-          <div className="col-md-9">
-            <h4>Progress-Bar: {remainingCells} cell(s) left!</h4>
+        <div className="edugame-container">
+          <div className="row row-status">
+            <div className="col-md-9">
+              <h4>Progress-Bar: {remainingCells} cell(s) left!</h4>
 
-            <div className="progress">
+              <div className="progress">
+                <div
+                  className="progress-bar progress-bar-striped progress-bar-animated"
+                  role="progressbar"
+                  style={{
+                    width: `${((15 - remainingCells) / 15) * 100}%`,
+                    position: "relative",
+                  }}
+                  aria-valuenow={15 - remainingCells}
+                  aria-valuemin="0"
+                  aria-valuemax={15}
+                >
+                  {Math.round(((15 - remainingCells) / 15) * 100)}%
+                </div>
+              </div>
+
+              <div className="timer-container">
+                <p className="timer-text">
+                  This timer measures your solving time:
+                </p>
+                <div id="timer" className="timer">
+                  {formatTime(timer)}
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-3">
               <div
-                className="progress-bar progress-bar-striped progress-bar-animated"
-                role="progressbar"
-                style={{
-                  width: `${((15 - remainingCells) / 15) * 100}%`,
-                  position: "relative",
-                }}
-                aria-valuenow={15 - remainingCells}
-                aria-valuemin="0"
-                aria-valuemax={15}
+                className={`alert ${
+                  tableStatus === "SOLVED" ? "alert-success" : "alert-danger"
+                }`}
+                role="alert"
               >
-                {Math.round(((15 - remainingCells) / 15) * 100)}%
+                <strong>Puzzle Status: </strong>
+                {tableStatus}
+                <p className="small">Please comply with all constraints.</p>
+              </div>
+
+              <div className="alert alert-primary" role="alert">
+                <strong>Preference Score: </strong> {totalPreference}
               </div>
             </div>
           </div>
-          <div className="col-md-3">
-            <div
-              className={`alert ${
-                tableStatus === "SOLVED" ? "alert-success" : "alert-danger"
-              }`}
-              role="alert"
-            >
-              <strong>Puzzle Status: </strong>
-              {tableStatus}
-              <p className="small">Please comply to the operational requirements (=hard constraints).</p>
-            </div>
-          </div>
         </div>
-      </div>
-
-      <div className="container mt-4 hard-constraints-container">
-        <div className="row justify-content-left">
-          <div className="col-md-3">
-            <div
-              className={`alert ${
-                constraint1Violated ? "alert-danger" : "alert-success"
-              }`}
-              role="alert"
-            >
-              <strong>Hard Constraint 1:</strong>
-              <br />
-              No employee may work more than one shift per day.
-            </div>
-          </div>
-
-          {/*   <div className="col-md-3">
-            <div
-              className={`alert ${
-                constraint2Violated ? "alert-danger" : "alert-success"
-              }`}
-              role="alert"
-            >
-              <strong>Hard Constraint 2:</strong>
-              <br />A job is to be done by exactly 1 employee.
-            </div>
-          </div> */}
-          <div className="col-md-3">
-            <div
-              className={`alert ${
-                constraint3Violated ? "alert-danger" : "alert-success"
-              }`}
-              role="alert"
-            >
-              <strong>Hard Constraint 2:</strong>
-              <br />
-              An employee's specified workload must be adhered to.
-            </div>
-          </div>
-          <div className="col-md-3">
-            <div
-              className={`alert ${
-                constraint5Violated ? "alert-danger" : "alert-success"
-              }`}
-              role="alert"
-            >
-              <strong>Hard Constraint 3:</strong>
-              <br />
-              Only assign an employee to a shift if he/she is available.
-            </div>
-          </div>
-        </div>
-      </div>
-
+      </section>
       {/* Buttons */}
-      <div className="row justify-content-center mt-4">
-        <div className="col-auto">
-          <button
-            className={`btn ${
-              currentData !== optimalShiftData1
-                ? "btn-outline-dark"
-                : "btn-primary"
-            }`}
-            onClick={() => showSolution(optimalShiftData1, totalPreference1)}
-          >
-            AI solution 1
-          </button>
+      <section class="ai-solutions-section">
+        <h2>💻 Solutions 💻 </h2> {/* 🤖 */}
+        <div className="row justify-content-center mt-4">
+          <h3> Want to know how the AI solves the puzzle? Click below ⬇️ </h3>
         </div>
-        <div className="col-auto">
-          <button
-            className={`btn ${
-              currentData !== optimalShiftData2
-                ? "btn-outline-dark"
-                : "btn-primary"
-            }`}
-            onClick={() => showSolution(optimalShiftData2, totalPreference2)}
-          >
-            AI solution 2
-          </button>
+        <div className="row justify-content-center mt-4">
+          <div className="col-auto">
+            <button
+              className={`btn ${
+                currentData !== optimalShiftData1
+                  ? "btn-outline-dark"
+                  : "btn-primary"
+              }`}
+              onClick={() => showSolution(optimalShiftData1, totalPreference1)}
+            >
+              AI solution 1
+            </button>
+          </div>
+          <div className="col-auto">
+            <button
+              className={`btn ${
+                currentData !== optimalShiftData2
+                  ? "btn-outline-dark"
+                  : "btn-primary"
+              }`}
+              onClick={() => showSolution(optimalShiftData2, totalPreference2)}
+            >
+              AI solution 2
+            </button>
+          </div>
+          <div className="col-auto">
+            <button
+              className={`btn ${
+                currentData !== optimalShiftData3
+                  ? "btn-outline-dark"
+                  : "btn-primary"
+              }`}
+              onClick={() => showSolution(optimalShiftData3, totalPreference3)}
+            >
+              AI solution 3
+            </button>
+          </div>
         </div>
-        <div className="col-auto">
-          <button
-            className={`btn ${
-              currentData !== optimalShiftData3
-                ? "btn-outline-dark"
-                : "btn-primary"
-            }`}
-            onClick={() => showSolution(optimalShiftData3, totalPreference3)}
-          >
-            AI solution 3
-          </button>
+        <div className="row justify-content-center mt-4">
+          <div className="col-auto text-center d-flex align-items-center">
+            Don't feel like solving the puzzle by yourself?
+          </div>
+          <div className="col-auto">
+            <button
+              className="btn btn-info btn-outline-light"
+              onClick={jumpToSolution}
+            >
+              ➡️ Jump directly to the AI solutions
+            </button>
+          </div>
         </div>
-      </div>
+        {/* Ausklappbarer Container */}
+        {isExpanded && (
+          <div className="expandable-container">
+            <br></br>
+            <h2>
+              Congratulations! You solved the puzzle. Now compare solutions.
+            </h2>
 
-      {/* Ausklappbarer Container */}
-      {isExpanded && (
-        <div className="expandable-container">
-          <br></br>
-          <h1>
-            Congratulations! You solved the puzzle. Now click through the
-            AI-generated solutions to compare.
-          </h1>
-
-          <div>
-            <table className="table  table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th>Job-Description</th>
-                  {weekdays.map((weekday) => (
-                    <th key={weekday}>{weekday}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {shiftTypes.map((shiftType) => (
-                  <tr key={shiftType}>
-                    <td>
-                      {Object.values(jobDescriptions).map((job, index) => (
-                        <div
-                          key={index}
-                          className="subcell bg-light p-2 rounded mb-1"
-                        >
-                          {"Job " + (index + 1) + ":\n" + job}
-                        </div>
-                      ))}
-                    </td>
+            <div>
+              <table className="table table-dark table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Job-Description</th>
                     {weekdays.map((weekday) => (
-                      <td key={weekday}>
-                        {currentData[weekday][shiftType].map(
-                          (subShift, subIndex) => {
-                            const className = "bg-light p-2 rounded mb-1";
-
-                            return (
-                              <div key={subIndex} className={className}>
-                                {subShift && `E: ${subShift.name}`}
-                              </div>
-                            );
-                          }
-                        )}
-                      </td>
+                      <th key={weekday}>{weekday}</th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {shiftTypes.map((shiftType) => (
+                    <tr key={shiftType}>
+                      <td>
+                        {Object.values(jobDescriptions).map((job, index) => (
+                          <div
+                            key={index}
+                            className="subcell bg-dark p-2 rounded mb-1"
+                          >
+                            {job}
+                          </div>
+                        ))}
+                      </td>
+                      {weekdays.map((weekday) => (
+                        <td key={weekday}>
+                          {currentData[weekday][shiftType].map(
+                            (subShift, subIndex) => {
+                              const className = "bg-dark p-2 rounded mb-1";
 
-            <div className="container">
-              <div className="row mb">
-                <div className="col-12">
-                  <div
-                    className={`alert ${
-                      tableStatus === "SOLVED"
-                        ? "alert-success"
-                        : "alert-danger"
-                    }`}
-                    role="alert"
-                  >
-                    <strong>Puzzle Status: </strong>
-                    {tableStatus}
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-12 text-right">
-                  <div className="alert alert-info" role="alert">
-                    <strong>Total Preference: </strong> {currentTotalPreference}
-                  </div>
+                              return (
+                                <div key={subIndex} className={className}>
+                                  {subShift && `${subShift.name}`}
+                                </div>
+                              );
+                            }
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <div className="container-ai-statistics">
+                <p class="solution-time">
+                  The AI took less than one second to get this solution.
+                </p>
+                <div className="alert alert-primary" role="alert">
+                  <strong>Preference Score: </strong> {currentTotalPreference}
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </section>
     </div>
   );
 }
