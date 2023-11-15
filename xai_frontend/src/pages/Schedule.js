@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import WeekView from "../components/WeekView.js";
 // Import SVG as a component (if using SVGR/Webpack)
 import { ReactComponent as Infographic } from "../Images_Infographics/XAI_How_it_works.svg";
 
