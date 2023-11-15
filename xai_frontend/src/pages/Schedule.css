@@ -7,6 +7,9 @@
 
 .schedule-container {
   position: relative;
+  padding: 15vh;
+  padding-top: 1vh;
+  background-color: #AEC5CD;
 }
 
 /* This class will position your buttons container */
@@ -46,17 +49,17 @@
 .what-if-button {
   position: absolute;
   bottom: 20%; /* Adjust based on actual position */
-  left: 18%; /* Adjust based on actual position */
+  left: 22%; /* Adjust based on actual position */
 }
 
 .game-button {
   position: absolute;
   bottom: 20%; /* Adjust based on actual position */
-  left: 45%; /* Adjust based on actual position */
+  left: 44%; /* Adjust based on actual position */
 }
 
 .classroom-button {
   position: absolute;
   bottom: 20%; /* Adjust based on actual position */
-  left: 74%; /* Adjust based on actual position */
+  left: 67%; /* Adjust based on actual position */
 }

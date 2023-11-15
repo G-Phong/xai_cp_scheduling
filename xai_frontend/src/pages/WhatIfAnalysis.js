@@ -250,7 +250,7 @@ export default function WhatIfAnalysis() {
         // Calculate the satisfaction rate as a percentage
         let satisfactionRate = (preferenceScore / maxPossiblePreference) * 100;
 
-/*         if(satisfactionRate > 100){
+        /*         if(satisfactionRate > 100){
           window.alert("The satisfaction rate was higher than 100?! It is " + satisfactionRate.toString()
           + ". preferenceScore is " + preferenceScore.toString() 
           + ", maxPossiblePreference is " + maxPossiblePreference.toString()
@@ -261,8 +261,6 @@ export default function WhatIfAnalysis() {
 
         // Check if satisfaction rate exceeds 100 and set it to 100 if it does
         satisfactionRate = satisfactionRate > 100 ? 100 : satisfactionRate;
-
-        
 
         const employeeNames = {
           0: "YOU",
@@ -557,7 +555,10 @@ export default function WhatIfAnalysis() {
 
   return (
     <div className="container-what-if">
-      <h1>What-If-Scenarios</h1>
+      <section className="what-if-header-section">
+        <h1>What-If-Scenarios</h1>
+      </section>
+      <section className="what-if-main-section">
       <div className="row align-items-start">
         {/*first column*/}
         <div className="col-md-6 centered-flex">
@@ -567,8 +568,8 @@ export default function WhatIfAnalysis() {
               When are you available? <br />
             </h2>
 
-            <div className="row-availability">
-              <div className="col-4">
+            <div className="row-availability-what-if">
+              <div className="col-md-12">
                 <table className="table table-bordered">
                   <thead>
                     <tr>
@@ -694,7 +695,7 @@ export default function WhatIfAnalysis() {
             <div className="row">
               <div className="col-md-12">
                 <button
-                  className="btn btn-primary custom-button"
+                  className="btn btn-primary generate-button"
                   onClick={() => {
                     generateSolution(
                       preferencesListA,
@@ -810,7 +811,7 @@ export default function WhatIfAnalysis() {
 
               {/* Preference Satisfaction Bar */}
               <div className="preference-satisfaction">
-                <h3>How well are my preferences satisfied?</h3>
+              <h3>How well are my preferences satisfied?               </h3>
                 {solutionDataA && solutionDataA.solution_count > 0 ? (
                   <ResponsiveContainer width="100%" height={400}>
                     <BarChart data={stackedBarDataA}>
@@ -915,9 +916,9 @@ export default function WhatIfAnalysis() {
               When are you available? <br />
             </h2>
 
-            <div className="row-availability">
-              <div className="col-4">
-                <table className="table table-bordered">
+            <div className="row-availability-what-if">
+              <div className="col-md-12">
+                <table className="table table-bordered w-100">
                   <thead>
                     <tr>
                       <th scope="col">Shift Type</th>
@@ -1039,10 +1040,10 @@ export default function WhatIfAnalysis() {
 
           {/* Generate Schedule Button */}
           {
-            <div className="row">
+            <div className="row-generate">
               <div className="col-md-12">
                 <button
-                  className="btn btn-primary custom-button"
+                  className="btn btn-primary text-align-left generate-button"
                   onClick={() => {
                     generateSolution(
                       preferencesListB,
@@ -1157,7 +1158,7 @@ export default function WhatIfAnalysis() {
 
               {/* Preference Satisfaction Bar */}
               <div className="preference-satisfaction">
-                <h3>How well are my preferences satisfied?</h3>
+                <h3>How well are my preferences satisfied?               </h3>
                 {solutionDataB && solutionDataB.solution_count > 0 ? (
                   <ResponsiveContainer width="100%" height={400}>
                     <BarChart data={stackedBarDataB}>
@@ -1252,6 +1253,7 @@ export default function WhatIfAnalysis() {
           )}
         </div>
       </div>
+      </section>
     </div>
   );
 }

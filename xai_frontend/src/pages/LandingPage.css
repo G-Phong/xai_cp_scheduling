@@ -28,7 +28,7 @@ section {
 .hero {
   background: rgb(239, 238, 238);
   text-align: center;
-  padding: 250px;
+  padding-top: 10vh;
   /* height: 100vh; */
 }
 

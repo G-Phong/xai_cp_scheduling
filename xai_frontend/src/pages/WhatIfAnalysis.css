@@ -1,8 +1,7 @@
 .container-what-if {
-  padding: 5vh;
   background-color: lightslategray;
-  padding-bottom: 0;
-  margin-bottom: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .container-what-if h1 {
@@ -13,6 +12,10 @@
 
 .row {
   margin-bottom: 0px;
+}
+
+.row-generate{
+  padding: 0;
 }
 
 .sliders {
@@ -38,14 +41,26 @@
 }
 
 .custom-icon {
-  width: 50px;
+  width: 40px;
   height: auto;
 }
 
-.custom-button {
-  margin-bottom: 10px;
-  font-size: 20px;
-  margin-left: 20px;
+/* .generate-button {
+  margin-top: 1vh;
+  width: 20vh;
+  height: 30vh;
+  padding: 0;
+  text-align: left;
+} */
+
+.generate-button {
+  margin-top: 1vh;
+  color: white;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  min-width: 250px;
+  white-space: nowrap;
 }
 
 /* CSS for Two-Column Layout */
@@ -59,6 +74,8 @@
 .schedule-view {
   margin-top: 30px;
   padding: 3px;
+  margin-left: 5vh;
+  margin-right: 5vh;
   width: auto;
 }
 
@@ -117,7 +134,6 @@
   align-items: center;
 }
 
-
 /* Increase specificity for your custom table styles */
 .container-what-if .availability-mask .table th,
 .container-what-if .availability-mask .table td {
@@ -149,5 +165,21 @@
 .comparison-section {
   text-align: center;
   background-color: lightblue;
+  padding: 0;
+  margin:0;
 }
 
+.what-if-header-section {
+  background-color: lightseagreen;
+  padding: 0;
+  margin: 0;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+}
+
+.what-if-main-section {
+  padding: 0;
+  margin: 0;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+}
