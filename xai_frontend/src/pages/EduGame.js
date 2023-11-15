@@ -339,36 +339,35 @@ export default function EduGame() {
     return colors;
   };
 
-
   let timerInterval;
 
- // Startfunktion für den Timer
-const startTimer = () => {
-  setIsRunning(true);
-  // Start the timer with an interval of 1000 milliseconds (1 second)
-  timerInterval = setInterval(updateTimer, 1000);
-};
+  // Startfunktion für den Timer
+  const startTimer = () => {
+    setIsRunning(true);
+    // Start the timer with an interval of 1000 milliseconds (1 second)
+    timerInterval = setInterval(updateTimer, 1000);
+  };
 
-// Stopfunktion für den Timer
-const stopTimer = () => {
-  setIsRunning(false);
-  // Clear the interval if it exists
-  clearInterval(timerInterval);
-};
+  // Stopfunktion für den Timer
+  const stopTimer = () => {
+    setIsRunning(false);
+    // Clear the interval if it exists
+    clearInterval(timerInterval);
+  };
 
-// Updatefunktion für den Timer
-const updateTimer = () => {
-  if (isRunning) {
-    setTimer((prevTimer) => prevTimer + 1);
-  }
-};
+  // Updatefunktion für den Timer
+  const updateTimer = () => {
+    if (isRunning) {
+      setTimer((prevTimer) => prevTimer + 1);
+    }
+  };
 
-// Updatefunktion für den Timer
-const resetTimer = () => {
-  setTimer(0);
-  // Clear the interval if it exists
-  clearInterval(timerInterval);
-};
+  // Updatefunktion für den Timer
+  const resetTimer = () => {
+    setTimer(0);
+    // Clear the interval if it exists
+    clearInterval(timerInterval);
+  };
 
   // Funktion zur Formatierung der Zeit in Minuten und Sekunden
   const formatTime = (timeInSeconds) => {
@@ -379,8 +378,6 @@ const resetTimer = () => {
       .toString()
       .padStart(2, "0")}`;
   };
-
-  
 
   const jumpToSolution = () => {
     // Update the tableStatus state to "SOLVED"
@@ -857,7 +854,7 @@ const resetTimer = () => {
                   This timer measures your solving time:
                 </p>
                 <div id="timer" className="timer">
-                  {formatTime(timer/60)}
+                  {formatTime(timer / 60)}
                 </div>
                 <button
                   className="btn btn-primary btn-sm reset-button"
@@ -997,8 +994,13 @@ const resetTimer = () => {
 
               <div className="container-ai-statistics">
                 <p class="solution-time">
-                  The AI took less than one second to get this solution.
+                  The AI took less than one second to get this solution and is{" "}
+                  {(-100+((currentTotalPreference / totalPreference) * 100)).toFixed(
+                    2
+                  )}
+                  % better in terms of preference satisfaction.
                 </p>
+
                 <div className="alert alert-primary" role="alert">
                   <strong>Preference Score: </strong> {currentTotalPreference}
                 </div>
