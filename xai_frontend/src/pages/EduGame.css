@@ -6,12 +6,12 @@
   /* padding: 5vh; */
 }
 
-.table-responsive{
+.table-responsive {
   padding-left: 10vh;
   padding-right: 10vh;
 }
 
-.edugame-container{
+.edugame-container {
   padding-left: 10vh;
   padding-right: 10vh;
 }
@@ -134,31 +134,46 @@
   font-size: 1.2rem;
 }
 
-.header-section{
+.header-section {
   background-color: lightcoral;
   padding-top: 5vh;
-  padding-bottom:2vh;
+  padding-bottom: 2vh;
 }
 
-.ai-solutions-section{
+.ai-solutions-section {
   background-color: lightslategrey;
   padding: 5vh;
- 
 }
 
-.solve-game-section{
+.solve-game-section {
   background-color: darkcyan;
   padding-top: 3vh;
   padding-bottom: 5vh;
 }
 
-.constraints-section{
+.constraints-section {
   background-color: lightslategrey;
   padding-top: 1vh;
   padding-bottom: 3vh;
 }
 
-
-.container-challenge{
+.container-challenge {
   margin: 0;
+}
+
+.custom-small-button {
+  font-size: 12px;
+  margin-top: 0.5vh;
+  padding: auto;
+  width: auto;
+  height: auto;
+}
+
+.reset-button{
+  font-size: 12px;
+  margin-top: 0.5vh;
+  margin-left: 1vh;
+  padding: auto;
+  width: auto;
+  height: auto;
 }

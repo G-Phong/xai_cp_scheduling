@@ -91,42 +91,6 @@ export default function EduGame() {
     setConstraint3(constraintsStatus.constraint3Violated);
     setConstraint4(constraintsStatus.constraint4Violated);
     setConstraint5(constraintsStatus.constraint5Violated);
-
-    // Calculate the new shift count for the employee
-    /* const updatedShiftCount =
-      updatedScheduleData[day][shiftType].filter(
-        (subShift) => subShift.employee
-      )?.length || 0;
- */
-
-    /* const updatedShiftCount = updatedScheduleData[day][shiftType].filter(
-      (subShift) => subShift.employee?.employeeID === employee.employeeID
-    ).length; */
-
-    /* WORKING CODE BELOW!!! */
-
-    /* console.log("updatedScheduleData");
-    console.log(updatedScheduleData);
-    console.log("employeeID");
-    console.log(employeeID);
-
-    // Calculate the new total shift count for the employee across all days
-    const updatedShiftCount = weekdays.reduce((totalShiftCount, day) => {
-      const dayShifts = updatedScheduleData[day]["DayShift"];
-      const dayShiftCountForEmployee = dayShifts.reduce((count, subShift) => {
-        const employeeName = subShift.employee?.name;
-        return employeeName === employee.name ? count + 1 : count;
-      }, 0);
-      return totalShiftCount + dayShiftCountForEmployee;
-    }, 0);
-
-    window.alert(updatedShiftCount);
-
-    // Update the shift count for the employee in the shiftCounts object
-    setShiftCounts((prevShiftCounts) => ({
-      ...prevShiftCounts,
-      [employee.name]: updatedShiftCount,
-    })); */
   };
 
   const handleRemoveFromShift = (day, shiftType, subIndex) => {
@@ -375,33 +339,48 @@ export default function EduGame() {
     return colors;
   };
 
-  // Startfunktion für den Timer
-  const startTimer = () => {
-    setIsRunning(true);
-  };
 
-  // Stopfunktion für den Timer
-  const stopTimer = () => {
-    setIsRunning(false);
-  };
+  let timerInterval;
 
-  // Updatefunktion für den Timer
-  const updateTimer = () => {
-    if (isRunning) {
-      setTimeout(() => {
-        setTimer(timer + 1);
-      }, 1000);
-    }
-  };
+ // Startfunktion für den Timer
+const startTimer = () => {
+  setIsRunning(true);
+  // Start the timer with an interval of 1000 milliseconds (1 second)
+  timerInterval = setInterval(updateTimer, 1000);
+};
+
+// Stopfunktion für den Timer
+const stopTimer = () => {
+  setIsRunning(false);
+  // Clear the interval if it exists
+  clearInterval(timerInterval);
+};
+
+// Updatefunktion für den Timer
+const updateTimer = () => {
+  if (isRunning) {
+    setTimer((prevTimer) => prevTimer + 1);
+  }
+};
+
+// Updatefunktion für den Timer
+const resetTimer = () => {
+  setTimer(0);
+  // Clear the interval if it exists
+  clearInterval(timerInterval);
+};
 
   // Funktion zur Formatierung der Zeit in Minuten und Sekunden
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
+    let seconds = timeInSeconds % 60;
+    seconds = Math.round(seconds);
     return `${minutes.toString().padStart(2, "0")}:${seconds
       .toString()
       .padStart(2, "0")}`;
   };
+
+  
 
   const jumpToSolution = () => {
     // Update the tableStatus state to "SOLVED"
@@ -496,10 +475,19 @@ export default function EduGame() {
     setShiftCounts(calculateShiftCounts());
   }, [weekdays, shiftTypes, scheduleData]);
 
-  // Effekt für die Timer-Aktualisierung
+  // Effekt für die Timer-Aktualisierung bei isRunning
   useEffect(() => {
-    updateTimer();
+    if (isRunning) {
+      updateTimer();
+    }
   }, [timer, isRunning]);
+
+  // Effekt für die Timer-Aktualisierung bei Timer-Reset
+  useEffect(() => {
+    if (!isRunning) {
+      setTimer(0); // Reset the timer to 0
+    }
+  }, [isRunning]);
 
   return (
     <div className="eduGame">
@@ -679,7 +667,10 @@ export default function EduGame() {
             <h2>
               ⬇️ Need an extra challenge? Consider employee preferences! ⬇️
             </h2>
-            <button className="btn btn-primary btn-sm rounded mb-4" onClick={toggleTable}>
+            <button
+              className="btn btn-primary btn-sm rounded mb-4"
+              onClick={toggleTable}
+            >
               {isTableVisible ? "Hide Preferences" : "Show Preferences"}
             </button>
             <br></br>
@@ -749,7 +740,7 @@ export default function EduGame() {
         </div>
 
         <div className="table-responsive">
-          <table className="table table-bordered table-striped table-info">
+          <table className="table table-bordered table-striped table-info ">
             <thead>
               <tr>
                 <th className="col-1">Job-Description</th>
@@ -760,63 +751,6 @@ export default function EduGame() {
                 ))}
               </tr>
             </thead>
-            {/* <tbody>
-      {shiftTypes.map((shiftType) => (
-        <tr key={shiftType}>
-          <td className="table-info">
-            {Object.values(jobDescriptions).map((job, index) => (
-              <div
-                key={index}
-                className="subcell bg-primary p-2 rounded mb-2"
-              >
-                {job}
-              </div>
-            ))}
-          </td>
-          {weekdays.map((weekday) => (
-            <td key={weekday} className="col-1">
-              {scheduleData[weekday][shiftType].map(
-                (subShift, subIndex) => {
-                  const constraintStatus = allConstraintsStatus[weekday];
-                  const isViolated =
-                    constraintStatus["DayShift"][subIndex][
-                      "constraint5Violated"
-                    ];
-                  const className = isViolated
-                    ? "bg-danger p-2 rounded mb-1"
-                    : "bg-light p-2 rounded mb-1";
-
-                  return (
-                    <div
-                      key={subIndex}
-                      className={className}
-                      onDragOver={(e) => handleDragOver(e)}
-                      onDrop={(e) =>
-                        handleDrop(e, weekday, shiftType, subIndex)
-                      }
-                    >
-                      {subShift.employee && `E: ${subShift.employee.name}`}
-                      <button
-                        className="btn btn-sm btn-info"
-                        onClick={() =>
-                          handleRemoveFromShift(
-                            weekday,
-                            shiftType,
-                            subIndex
-                          )
-                        }
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  );
-                }
-              )}
-            </td>
-          ))}
-        </tr>
-      ))}
-    </tbody> */}
 
             <tbody>
               {shiftTypes.map((shiftType) => (
@@ -871,7 +805,8 @@ export default function EduGame() {
                               <div className="tier-two">
                                 {subShift.employee && (
                                   <button
-                                    className="btn btn-sm btn-info"
+                                    className="btn btn-sm btn-warning custom-small-button"
+                                    /* style={{ width: '7vh', heigth: "1px", lineHeight: '1', fontSize: '0.8rem' }} */
                                     onClick={() =>
                                       handleRemoveFromShift(
                                         weekday,
@@ -895,42 +830,6 @@ export default function EduGame() {
             </tbody>
           </table>
         </div>
-
-        {/*   <div className="edugame-container">
-        <div className="row mb">
-          <div className="col-12">
-            <div
-              className={`alert ${
-                tableStatus === "SOLVED" ? "alert-success" : "alert-danger"
-              }`}
-              role="alert"
-            >
-              <strong> Puzzle Status: </strong>
-              {tableStatus}
-            </div>
-          </div>
-        </div>
-        <div className="row-progress">
-          <div className="col-12 text-right">
-            <h4> Progress-Bar: {remainingCells} cell(s) left!</h4>
-            <div className="progress">
-              <div
-                className="progress-bar progress-bar-striped progress-bar-animated"
-                role="progressbar"
-                style={{
-                  width: `${((15 - remainingCells) / 15) * 100}%`,
-                  position: "relative",
-                }}
-                aria-valuenow={15 - remainingCells}
-                aria-valuemin="0"
-                aria-valuemax={15}
-              >
-                {Math.round(((15 - remainingCells) / 15) * 100)}%
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
 
         <div className="edugame-container">
           <div className="row row-status">
@@ -958,8 +857,14 @@ export default function EduGame() {
                   This timer measures your solving time:
                 </p>
                 <div id="timer" className="timer">
-                  {formatTime(timer)}
+                  {formatTime(timer/60)}
                 </div>
+                <button
+                  className="btn btn-primary btn-sm reset-button"
+                  onClick={resetTimer}
+                >
+                  Reset Timer
+                </button>
               </div>
             </div>
 
