@@ -114,7 +114,7 @@ export default function WhatIfAnalysis() {
 
     // Send a POST request to the backend using axios-library
     axios
-      .post("http://localhost:5000/solve_shifts_what_if", {
+      .post("https://flask-scheduling.azurewebsites.net/solve_shifts_what_if", {
         job1Preference: preferencesList[0],
         job2Preference: preferencesList[1],
         job3Preference: preferencesList[2],
