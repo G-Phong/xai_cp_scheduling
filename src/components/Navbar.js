@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import TUM_logo from "../Img/TUM_Logo_extern_mt_EN_RGB_p.png";
-import fml_logo from "../Img/FML_logo.jpg";
+import fml_logo from "../Img/Lehrstuhl_fml_quadratisch_Web.png";
 import youtube_logo from "../Img/youtube_logo.jpg";
 import linkedin_logo from "../Img/linkedin_logo.jpg";
 
